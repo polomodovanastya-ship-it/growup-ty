@@ -1,4 +1,5 @@
-import { Headphones, ClipboardCheck, ListChecks, Heart, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame } from "lucide-react";
+import { useState } from "react";
+import { Headphones, ClipboardCheck, ListChecks, Heart, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 
@@ -9,22 +10,64 @@ const topics = [
 
 const podcasts = [
   {
-    title: "Тревога — не враг",
-    description: "Разбираемся, откуда берётся тревога и что с ней делать",
-    icon: Brain,
-    status: "Новый",
+    title: "Зачем вообще психолог?",
+    description: "Мне ведь не так уж плохо — или всё-таки стоит попробовать?",
+    icon: Search,
   },
   {
-    title: "Про отношения честно",
-    description: "Как строить здоровые связи и не терять себя",
-    icon: Users,
-    status: "Популярный",
+    title: "Кто чем помогает?",
+    description: "Психолог, психиатр, коуч, тьютор — в чём разница и к кому идти",
+    icon: UserCheck,
   },
   {
-    title: "Выгорание: перезагрузка",
-    description: "Когда устал от всего — что делать дальше",
+    title: "Первая сессия",
+    description: "Что происходит на первой встрече и что значит конфиденциальность",
+    icon: Shield,
+  },
+  {
+    title: "Почему я ничего не хочу",
+    description: "Лень, выгорание или потеря контакта с собой?",
     icon: Flame,
-    status: "Скоро",
+  },
+  {
+    title: "Чего я хочу на самом деле?",
+    description: "А чего от меня просто ждут — и как это различить",
+    icon: Brain,
+  },
+  {
+    title: "Стыд и прокрастинация",
+    description: "Перфекционизм, откладывание и что за этим стоит",
+    icon: Sparkles,
+  },
+  {
+    title: "Повторяющиеся отношения",
+    description: "Почему я снова и снова выбираю одно и то же",
+    icon: Repeat,
+  },
+  {
+    title: "Родители и границы",
+    description: "Сепарация без войны — возможно ли это?",
+    icon: Home,
+  },
+  {
+    title: "Парням тоже можно",
+    description: "Просить помощи — это не слабость",
+    icon: HandHeart,
+  },
+  {
+    title: "Соцсети и сравнение",
+    description: "Инстадивы, одиночество и digital well-being",
+    icon: Smartphone,
+  },
+  {
+    title: "Онлайн-терапия",
+    description: "Как она работает и почему раз в неделю лучше, чем каждый день",
+    icon: MessageCircle,
+  },
+  {
+    title: "Свой или чужой?",
+    description: "С кем я дружу и почему друзей приходится выбирать",
+    icon: Users,
   },
 ];
 
@@ -40,7 +83,12 @@ const checklists = [
   { title: "Первые шаги к терапевту", icon: MessageCircle },
 ];
 
+const INITIAL_VISIBLE = 3;
+
 const Index = () => {
+  const [showAllPodcasts, setShowAllPodcasts] = useState(false);
+  const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
+
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Hero */}
@@ -89,19 +137,20 @@ const Index = () => {
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">Послушай</h2>
+            <span className="ml-1 text-sm text-muted-foreground">· {podcasts.length} выпусков</span>
           </div>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {podcasts.map((p, i) => (
-            <ScrollReveal key={p.title} delay={i * 100}>
-              <div className="group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer">
+          {visiblePodcasts.map((p, i) => (
+            <ScrollReveal key={p.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
+              <div className="group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer h-full">
                 <div className="flex items-start justify-between mb-3">
                   <div className="rounded-xl bg-primary/10 p-2.5">
                     <p.icon className="text-primary" size={20} />
                   </div>
-                  <span className="rounded-full bg-secondary/15 text-secondary px-2.5 py-0.5 text-xs font-medium">
-                    {p.status}
+                  <span className="rounded-full bg-muted text-muted-foreground px-2.5 py-0.5 text-xs font-medium">
+                    {i + 1}/{podcasts.length}
                   </span>
                 </div>
                 <h3 className="font-semibold text-foreground mb-1">{p.title}</h3>
@@ -109,6 +158,20 @@ const Index = () => {
               </div>
             </ScrollReveal>
           ))}
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <Button
+            variant="ghost"
+            className="rounded-full gap-2 text-muted-foreground hover:text-primary"
+            onClick={() => setShowAllPodcasts(!showAllPodcasts)}
+          >
+            {showAllPodcasts ? (
+              <>Свернуть <ChevronUp size={16} /></>
+            ) : (
+              <>Ещё {podcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
+            )}
+          </Button>
         </div>
       </section>
 
