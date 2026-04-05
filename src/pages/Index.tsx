@@ -65,13 +65,13 @@ const Index = () => {
         <ScrollReveal delay={200}>
           <div className="relative mt-6 flex flex-wrap justify-center gap-2">
             {topics.map((t, i) => (
-              <span
-                key={t}
-                className="rounded-full bg-muted px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary cursor-default"
-                style={{ animation: `float-tag 3s ease-in-out ${i * 0.3}s infinite` }}
-              >
-                {t}
-              </span>
+              <ScrollReveal key={t} delay={300 + i * 80}>
+                <span
+                  className="inline-block rounded-full bg-muted px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary cursor-default"
+                >
+                  {t}
+                </span>
+              </ScrollReveal>
             ))}
           </div>
         </ScrollReveal>
