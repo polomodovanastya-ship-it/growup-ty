@@ -151,7 +151,7 @@ const plans: Record<CareerStage, { steps: string[]; motto: string }> = {
   },
 };
 
-type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan" | "heavy";
+type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan" | "heavy" | "heavy-simple" | "heavy-adult" | "heavy-support";
 
 const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   const [screen, setScreen] = useState<Screen>("intro");
