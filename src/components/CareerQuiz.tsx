@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Compass, Target, Puzzle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, Target, Puzzle, Heart, MessageCircle, HandHeart } from "lucide-react";
 
-type Stage = "find" | "take" | "make";
+type Stage = "find" | "take" | "make" | "heavy";
 
 interface CareerQuizProps {
   open: boolean;
@@ -18,6 +18,7 @@ const questions = [
       { label: "Я в основном смотрю, читаю, думаю, но не пробую", stage: "find" as Stage },
       { label: "Уже пробую маленькие задачи, но чувствую себя неуверенно", stage: "take" as Stage },
       { label: "Уже что-то делаю и хочу понять, как делать это по-своему", stage: "make" as Stage },
+      { label: "Вообще ничего не хочется", stage: "heavy" as Stage },
     ],
   },
   {
@@ -26,6 +27,7 @@ const questions = [
       { label: "Ничего не понятно, всё слишком большое", stage: "find" as Stage },
       { label: "Страшно ошибиться и облажаться", stage: "take" as Stage },
       { label: "Не хочу быть копией других", stage: "make" as Stage },
+      { label: "Слишком тревожно, мне сейчас не до работы", stage: "heavy" as Stage },
     ],
   },
   {
@@ -148,7 +150,7 @@ const plans: Record<Stage, { steps: string[]; motto: string }> = {
   },
 };
 
-type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan";
+type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan" | "heavy";
 
 const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   const [screen, setScreen] = useState<Screen>("intro");
@@ -169,10 +171,13 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   };
 
   const computeResult = (ans: Stage[]): Stage | "tie" => {
-    const counts: Record<Stage, number> = { find: 0, take: 0, make: 0 };
-    ans.forEach((a) => counts[a]++);
+    const heavyCount = ans.filter((a) => a === "heavy").length;
+    if (heavyCount >= 2) return "heavy";
+
+    const counts: Record<string, number> = { find: 0, take: 0, make: 0 };
+    ans.forEach((a) => { if (a !== "heavy") counts[a]++; });
     const max = Math.max(counts.find, counts.take, counts.make);
-    const winners = (Object.keys(counts) as Stage[]).filter((k) => counts[k] === max);
+    const winners = (["find", "take", "make"] as Stage[]).filter((k) => counts[k] === max);
     if (winners.length === 1) return winners[0];
     return "tie";
   };
@@ -181,14 +186,23 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     const newAnswers = [...answers, stage];
     setAnswers(newAnswers);
 
+    // Early exit to heavy if 2 heavy answers already
+    const heavyCount = newAnswers.filter((a) => a === "heavy").length;
+    if (heavyCount >= 2) {
+      setScreen("heavy");
+      return;
+    }
+
     if (questionIndex < questions.length - 1) {
       setQuestionIndex(questionIndex + 1);
     } else {
       const res = computeResult(newAnswers);
       if (res === "tie") {
         setScreen("tiebreaker");
+      } else if (res === "heavy") {
+        setScreen("heavy");
       } else {
-        setResult(res);
+        setResult(res as Stage);
         setScreen("result");
       }
     }
