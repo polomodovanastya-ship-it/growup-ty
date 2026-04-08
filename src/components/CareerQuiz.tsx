@@ -121,7 +121,34 @@ const results: Record<Stage, {
   },
 };
 
-type Screen = "intro" | "question" | "tiebreaker" | "result";
+const plans: Record<Stage, { steps: string[]; motto: string }> = {
+  find: {
+    steps: [
+      "Выбери 2 направления, которые тебе сейчас реально интересны.",
+      'Найди 1 живого человека или 1 честный разбор "как выглядит эта работа на самом деле".',
+      "Сделай 1 микропробу на 20–30 минут.",
+    ],
+    motto: "Не выбираю навсегда. Просто проверяю.",
+  },
+  take: {
+    steps: [
+      "Возьми 1 маленькую задачу / мини-проект.",
+      "Попроси 1 понятный фидбек: что получилось, что улучшить.",
+      "После пробы ответь себе на 3 вопроса: что было интересно / что далось трудно / что хочу повторить?",
+    ],
+    motto: "Я не обязан быть идеальным. Я собираю опыт.",
+  },
+  make: {
+    steps: [
+      'Сформулируй в одну строку: "я пробую себя в…"',
+      "Собери 3 доказательства, что ты уже не с нуля: задача, кейс, проект, помощь, результат.",
+      "Сделай 1 реальный выход наружу: отклик, стажировка, подработка, проект.",
+    ],
+    motto: "Я не копирую чужой путь. Я собираю свой.",
+  },
+};
+
+type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan";
 
 const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   const [screen, setScreen] = useState<Screen>("intro");
@@ -320,8 +347,58 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             </div>
 
             <div className="flex flex-col gap-2 pt-2">
-              <Button size="lg" className="rounded-full gap-2">
+              <Button size="lg" className="rounded-full gap-2" onClick={() => setScreen("plan")}>
                 Собрать мой план <ArrowRight size={16} />
+              </Button>
+              <Button
+                variant="ghost"
+                className="text-sm text-muted-foreground"
+                onClick={reset}
+              >
+                Пройти заново
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Plan */}
+        {screen === "plan" && result && (
+          <div className="p-6 space-y-4">
+            <DialogTitle className="sr-only">Твой план</DialogTitle>
+            <div className="flex items-center gap-2">
+              {(() => {
+                const Icon = results[result].icon;
+                return <Icon size={20} className="text-primary" />;
+              })()}
+              <span className="text-xs font-bold tracking-wider text-primary uppercase">
+                {results[result].tag} — твой план
+              </span>
+            </div>
+            <h3 className="text-lg font-bold text-foreground leading-snug">
+              Твои 3 шага:
+            </h3>
+            <ol className="space-y-3">
+              {plans[result].steps.map((step, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-foreground">
+                  <span className="flex shrink-0 items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary font-bold text-xs">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="rounded-xl bg-primary/5 border border-primary/20 px-4 py-3">
+              <p className="text-sm font-medium text-foreground italic">
+                «{plans[result].motto}»
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="ghost"
+                className="text-sm text-muted-foreground"
+                onClick={() => setScreen("result")}
+              >
+                <ArrowLeft size={14} className="mr-1" /> Назад к результату
               </Button>
               <Button
                 variant="ghost"
