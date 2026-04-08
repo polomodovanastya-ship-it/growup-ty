@@ -425,6 +425,53 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             </div>
           </div>
         )}
+
+        {/* Heavy — support branch */}
+        {screen === "heavy" && (
+          <div className="p-6 space-y-4">
+            <DialogTitle className="sr-only">Поддержка</DialogTitle>
+            <div className="flex items-center gap-2">
+              <Heart size={20} className="text-primary" />
+            </div>
+            <h3 className="text-lg font-bold text-foreground leading-snug">
+              Похоже, тебе сейчас важнее не «выбрать путь», а немного вернуть себе опору.
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Давай начнём с очень маленького шага.
+            </p>
+            <div className="flex flex-col gap-2.5 pt-2">
+              <button
+                onClick={() => {
+                  setResult("find");
+                  setScreen("plan");
+                }}
+                className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
+              >
+                <Target size={18} className="text-primary shrink-0" />
+                Упростить план до 1 шага
+              </button>
+              <button
+                className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
+              >
+                <MessageCircle size={18} className="text-primary shrink-0" />
+                Поговорить с близким взрослым
+              </button>
+              <button
+                className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
+              >
+                <HandHeart size={18} className="text-primary shrink-0" />
+                Найти поддержку
+              </button>
+            </div>
+            <Button
+              variant="ghost"
+              className="text-sm text-muted-foreground"
+              onClick={reset}
+            >
+              Пройти заново
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
