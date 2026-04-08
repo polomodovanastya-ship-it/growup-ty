@@ -186,7 +186,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             </DialogTitle>
             <div className="space-y-2 text-sm text-muted-foreground">
               <p className="font-medium text-foreground/80">За 2 минуты поймём, где ты сейчас:&nbsp;ищешь, примеряешь или собираешь своё.</p>
-              <p>Тут нет правильных ответов.</p>
+              
             </div>
             <div className="flex flex-col gap-2 pt-2">
               <Button
