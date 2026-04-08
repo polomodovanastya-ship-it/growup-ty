@@ -441,22 +441,21 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             </p>
             <div className="flex flex-col gap-2.5 pt-2">
               <button
-                onClick={() => {
-                  setResult("find");
-                  setScreen("plan");
-                }}
+                onClick={() => setScreen("heavy-simple")}
                 className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
               >
                 <Target size={18} className="text-primary shrink-0" />
                 Упростить план до 1 шага
               </button>
               <button
+                onClick={() => setScreen("heavy-adult")}
                 className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
               >
                 <MessageCircle size={18} className="text-primary shrink-0" />
                 Поговорить с близким взрослым
               </button>
               <button
+                onClick={() => setScreen("heavy-support")}
                 className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
               >
                 <HandHeart size={18} className="text-primary shrink-0" />
@@ -470,6 +469,119 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             >
               Пройти заново
             </Button>
+          </div>
+        )}
+
+        {/* Heavy — simplified 1 step */}
+        {screen === "heavy-simple" && (
+          <div className="p-6 space-y-4">
+            <DialogTitle className="sr-only">Один шаг</DialogTitle>
+            <div className="flex items-center gap-2">
+              <Target size={20} className="text-primary" />
+              <span className="text-xs font-bold tracking-wider text-primary uppercase">Один шаг</span>
+            </div>
+            <h3 className="text-lg font-bold text-foreground leading-snug">
+              Не нужно планировать всё. Вот один маленький шаг:
+            </h3>
+            <div className="rounded-xl bg-primary/5 border border-primary/20 px-4 py-4">
+              <p className="text-sm text-foreground leading-relaxed">
+                Выбери что-то одно, что тебе хоть немного интересно, и потрать на это 15 минут. Просто посмотри, почитай, попробуй. Без обязательств.
+              </p>
+            </div>
+            <div className="rounded-xl bg-muted/50 px-4 py-3">
+              <p className="text-sm text-muted-foreground italic">
+                «Мне не нужно знать весь путь. Достаточно одного шага.»
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="ghost"
+                className="text-sm text-muted-foreground gap-1"
+                onClick={() => setScreen("heavy")}
+              >
+                <ArrowLeft size={14} /> Назад
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Heavy — close adult */}
+        {screen === "heavy-adult" && (
+          <div className="p-6 space-y-4">
+            <DialogTitle className="sr-only">Близкий взрослый</DialogTitle>
+            <div className="flex items-center gap-2">
+              <MessageCircle size={20} className="text-primary" />
+              <span className="text-xs font-bold tracking-wider text-primary uppercase">Близкий взрослый</span>
+            </div>
+            <h3 className="text-lg font-bold text-foreground leading-snug">
+              Кто такой «близкий взрослый»?
+            </h3>
+            <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+              <p>
+                Это не обязательно кто-то из семьи. Это человек, рядом с которым тебе <span className="text-foreground font-medium">спокойно</span>.
+              </p>
+              <p>
+                С ним можно <span className="text-foreground font-medium">помолчать</span> — и это не будет неловко. Можно рассказать что-то — и знать, что тебя <span className="text-foreground font-medium">услышат</span>, а не начнут сразу учить.
+              </p>
+              <p>
+                Это человек, рядом с которым ты чувствуешь себя <span className="text-foreground font-medium">в безопасности</span>. Он не оценивает, не сравнивает, не торопит.
+              </p>
+              <p>
+                Может, это тренер. Может, старший друг. Может, учитель, который когда-то сказал что-то важное. Или кто-то совсем неожиданный.
+              </p>
+            </div>
+            <div className="rounded-xl bg-muted/50 px-4 py-3">
+              <p className="text-sm text-muted-foreground italic">
+                Попробуй вспомнить одного такого человека. Не нужно ничего решать прямо сейчас — просто подумай о нём.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="ghost"
+                className="text-sm text-muted-foreground gap-1"
+                onClick={() => setScreen("heavy")}
+              >
+                <ArrowLeft size={14} /> Назад
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Heavy — find support */}
+        {screen === "heavy-support" && (
+          <div className="p-6 space-y-4">
+            <DialogTitle className="sr-only">Найти поддержку</DialogTitle>
+            <div className="flex items-center gap-2">
+              <HandHeart size={20} className="text-primary" />
+              <span className="text-xs font-bold tracking-wider text-primary uppercase">Поддержка</span>
+            </div>
+            <h3 className="text-lg font-bold text-foreground leading-snug">
+              Иногда нужен кто-то, кто поможет разобраться
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Карьерный консультант — это не человек, который скажет «иди туда». Это тот, кто поможет тебе услышать себя и найти свой следующий шаг.
+            </p>
+            <a
+              href="https://t.me/KemjeIstanu_LadoslavaF"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 px-4 py-4 text-sm text-foreground transition-all hover:border-primary/60 hover:bg-primary/10"
+            >
+              <div className="flex-1">
+                <p className="font-medium">Карьерный консультант</p>
+                <p className="text-muted-foreground text-xs mt-0.5">@KemjeIstanu_LadoslavaF · Telegram</p>
+              </div>
+              <ExternalLink size={16} className="text-primary shrink-0" />
+            </a>
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                variant="ghost"
+                className="text-sm text-muted-foreground gap-1"
+                onClick={() => setScreen("heavy")}
+              >
+                <ArrowLeft size={14} /> Назад
+              </Button>
+            </div>
           </div>
         )}
       </DialogContent>
