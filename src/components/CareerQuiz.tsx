@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Compass, Target, Puzzle, Heart, MessageCircle, HandHeart } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, Target, Puzzle, Heart, MessageCircle, HandHeart, ExternalLink } from "lucide-react";
 
 type Stage = "find" | "take" | "make" | "heavy";
 type CareerStage = "find" | "take" | "make";
