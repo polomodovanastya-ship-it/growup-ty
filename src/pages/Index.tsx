@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, Heart, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, Heart, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass } from "lucide-react";
+import CareerQuiz from "@/components/CareerQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 
@@ -75,6 +76,7 @@ const checkups = [
   { title: "Уровень стресса", icon: Shield },
   { title: "Эмоциональное состояние", icon: Heart },
   { title: "Качество сна", icon: Sparkles },
+  { title: "Выбор профессии", icon: Compass, action: "career-quiz" },
 ];
 
 const checklists = [
@@ -87,6 +89,7 @@ const INITIAL_VISIBLE = 3;
 
 const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
+  const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
 
   return (
@@ -193,6 +196,9 @@ const Index = () => {
                   <li
                     key={c.title}
                     className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted cursor-pointer group"
+                    onClick={() => {
+                      if ((c as any).action === "career-quiz") setCareerQuizOpen(true);
+                    }}
                   >
                     <c.icon size={18} className="text-primary/70 group-hover:text-primary transition-colors" />
                     <span className="text-sm font-medium text-foreground">{c.title}</span>
@@ -227,6 +233,8 @@ const Index = () => {
           </ScrollReveal>
         </div>
       </section>
+
+      <CareerQuiz open={careerQuizOpen} onOpenChange={setCareerQuizOpen} />
 
       {/* Footer */}
       <footer className="px-4 py-8 text-center">
