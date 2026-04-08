@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Compass, Target, Puzzle, Heart, MessageCircle, HandHeart } from "lucide-react";
 
 type Stage = "find" | "take" | "make" | "heavy";
+type CareerStage = "find" | "take" | "make";
 
 interface CareerQuizProps {
   open: boolean;
@@ -65,7 +66,7 @@ const tiebreakerQuestion = {
   ],
 };
 
-const results: Record<Stage, {
+const results: Record<CareerStage, {
   icon: typeof Compass;
   tag: string;
   title: string;
@@ -123,7 +124,7 @@ const results: Record<Stage, {
   },
 };
 
-const plans: Record<Stage, { steps: string[]; motto: string }> = {
+const plans: Record<CareerStage, { steps: string[]; motto: string }> = {
   find: {
     steps: [
       "Выбери 2 направления, которые тебе сейчас реально интересны.",
