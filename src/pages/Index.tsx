@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, Heart, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, Heart, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, Moon, Frown, MessageSquareOff, Angry } from "lucide-react";
 import CareerQuiz from "@/components/CareerQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
@@ -128,9 +129,35 @@ const Index = () => {
         </ScrollReveal>
 
         <ScrollReveal delay={300}>
-          <Button size="lg" className="relative mt-8 rounded-full px-8 text-base gap-2">
-            Начать <ArrowRight size={18} />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="lg" className="relative mt-8 rounded-full px-8 text-base gap-2">
+                Начать <ArrowRight size={18} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64 rounded-xl p-2" sideOffset={8}>
+              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer" onClick={() => setCareerQuizOpen(true)}>
+                <Compass size={18} className="text-primary" />
+                <span>Выбор профессии</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
+                <Moon size={18} className="text-primary" />
+                <span>Качество сна и свободного времени</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
+                <Frown size={18} className="text-primary" />
+                <span>Ощущение одиночества</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
+                <Angry size={18} className="text-primary" />
+                <span>Все бесит</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
+                <MessageSquareOff size={18} className="text-primary" />
+                <span>Не получается общаться</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </ScrollReveal>
       </section>
 
