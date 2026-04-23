@@ -257,7 +257,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                     <RadioGroup
                       value={answers[q.id] ?? ""}
                       onValueChange={(val) => setAnswers((prev) => ({ ...prev, [q.id]: val }))}
-                      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2"
+                      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 items-stretch"
                     >
                       {q.scale.map((opt) => {
                         const inputId = `${q.id}-${opt}`;
@@ -266,13 +266,13 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                           <Label
                             key={opt}
                             htmlFor={inputId}
-                            className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 cursor-pointer transition-all text-sm md:text-base ${
+                            className={`flex items-center gap-2 rounded-xl border-2 px-3 py-2.5 cursor-pointer transition-colors text-sm md:text-base h-full min-h-[3.25rem] ${
                               checked
                                 ? "border-primary bg-primary/10 text-foreground"
                                 : "border-border/60 bg-background hover:border-primary/40 hover:bg-primary/5 text-muted-foreground"
                             }`}
                           >
-                            <RadioGroupItem id={inputId} value={opt} />
+                            <RadioGroupItem id={inputId} value={opt} className="shrink-0" />
                             <span className="leading-tight">{opt}</span>
                           </Label>
                         );
