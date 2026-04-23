@@ -216,33 +216,56 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
 
   const totalSteps = questions.length;
   const progress = screen === "question" ? ((questionIndex + 1) / totalSteps) * 100 : screen === "tiebreaker" ? 100 : 0;
+  const showHeader = screen === "question" || screen === "tiebreaker";
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-5xl lg:max-w-6xl w-[96vw] max-h-[94vh] overflow-y-auto p-0 gap-0 rounded-3xl border-border/50">
+      <DialogContent className="sm:max-w-5xl lg:max-w-6xl w-[96vw] max-h-[94vh] p-0 gap-0 rounded-3xl border-border/50 overflow-hidden flex flex-col">
+        {/* Sticky header with progress */}
+        {showHeader && (
+          <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border/40 bg-background">
+            <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
+              <span className="font-medium">
+                {screen === "tiebreaker" ? "Дополнительный вопрос" : `Шаг ${questionIndex + 1} из ${totalSteps}`}
+              </span>
+              <span>{Math.round(progress)}%</span>
+            </div>
+            <Progress value={progress} className="h-2" />
+          </div>
+        )}
+
+        <div id="career-body" className="overflow-y-auto flex-1">
         {/* Intro */}
         {screen === "intro" && (
-          <div className="p-6 space-y-4">
-            <DialogTitle className="text-xl font-bold text-foreground leading-tight">
+          <div className="p-6 md:p-8 space-y-5">
+            <div className="flex items-center gap-2">
+              <Sparkles className="text-primary" size={22} />
+              <span className="text-xs font-bold tracking-wider text-primary uppercase">Кем я хочу стать?</span>
+            </div>
+            <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
               Не знаешь, кем хочешь стать? Это нормально.
             </DialogTitle>
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <p className="font-medium text-foreground/80">За 2 минуты поймём, где ты сейчас:&nbsp;ищешь, примеряешь или собираешь своё.</p>
-              
-            </div>
-            <div className="flex flex-col gap-2 pt-2">
+            <DialogDescription className="text-base md:text-lg text-muted-foreground leading-relaxed">
+              За 2 минуты поймём, где ты сейчас: ищешь, примеряешь или собираешь своё.
+            </DialogDescription>
+            <ul className="space-y-2 text-base text-muted-foreground">
+              <li>• Это <span className="text-foreground font-medium">не тест</span> — здесь нет правильных и неправильных ответов.</li>
+              <li>• Выбирай ответ, который <span className="text-foreground font-medium">первым приходит в голову</span>.</li>
+              <li>• Твои ответы остаются <span className="text-foreground font-medium">только у тебя</span>.</li>
+            </ul>
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button
                 size="lg"
-                className="rounded-full gap-2"
+                className="rounded-full gap-2 text-base px-8"
                 onClick={() => { setScreen("question"); setQuestionIndex(0); }}
               >
-                Разобраться <ArrowRight size={16} />
+                Начать <ArrowRight size={18} />
               </Button>
               <Button
                 variant="ghost"
-                className="text-sm text-muted-foreground hover:text-primary"
+                size="lg"
+                className="rounded-full text-base text-muted-foreground hover:text-primary"
                 onClick={() => {
-                  // Jump to result as "article" mode — show FIND as default overview
                   setResult("find");
                   setScreen("result");
                 }}
@@ -257,15 +280,9 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
         {screen === "question" && (
           <div className="p-6 md:p-8 space-y-6">
             <DialogTitle className="sr-only">Вопрос {questionIndex + 1}</DialogTitle>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>{questionIndex + 1} / {totalSteps}</span>
-              </div>
-              <Progress value={progress} className="h-2" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-snug">
+            <h2 className="text-xl md:text-2xl font-bold text-foreground leading-snug">
               {questions[questionIndex].text}
-            </h3>
+            </h2>
             <div className="flex flex-col gap-3">
               {questions[questionIndex].options.map((opt, i) => (
                 <button
@@ -278,17 +295,18 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
               ))}
             </div>
             {questionIndex > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1 text-muted-foreground"
-                onClick={() => {
-                  setAnswers(answers.slice(0, -1));
-                  setQuestionIndex(questionIndex - 1);
-                }}
-              >
-                <ArrowLeft size={14} /> Назад
-              </Button>
+              <div className="flex items-center justify-between pt-2">
+                <Button
+                  variant="ghost"
+                  className="gap-1 text-muted-foreground"
+                  onClick={() => {
+                    setAnswers(answers.slice(0, -1));
+                    setQuestionIndex(questionIndex - 1);
+                  }}
+                >
+                  <ArrowLeft size={16} /> Назад
+                </Button>
+              </div>
             )}
           </div>
         )}
@@ -297,12 +315,9 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
         {screen === "tiebreaker" && (
           <div className="p-6 md:p-8 space-y-6">
             <DialogTitle className="sr-only">Дополнительный вопрос</DialogTitle>
-            <div className="space-y-2">
-              <Progress value={100} className="h-2" />
-            </div>
-            <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-snug">
+            <h2 className="text-xl md:text-2xl font-bold text-foreground leading-snug">
               {tiebreakerQuestion.text}
-            </h3>
+            </h2>
             <div className="flex flex-col gap-3">
               {tiebreakerQuestion.options.map((opt, i) => (
                 <button
