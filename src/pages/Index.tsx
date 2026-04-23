@@ -15,6 +15,7 @@ const podcasts = [
     title: "Зачем вообще психолог?",
     description: "Мне ведь не так уж плохо — или всё-таки стоит попробовать?",
     icon: Search,
+    url: "https://mave.stream/e/Ng8tfd3aZI",
   },
   {
     title: "Кто чем помогает?",
@@ -149,9 +150,12 @@ const Index = () => {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {visiblePodcasts.map((p, i) => (
-            <ScrollReveal key={p.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
-              <div className="group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer h-full">
+          {visiblePodcasts.map((p, i) => {
+            const url = (p as any).url as string | undefined;
+            const cardClasses =
+              "group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer h-full block";
+            const cardInner = (
+              <>
                 <div className="flex items-start justify-between mb-3">
                   <div className="rounded-xl bg-primary/10 p-2.5">
                     <p.icon className="text-primary" size={20} />
@@ -160,11 +164,27 @@ const Index = () => {
                     {i + 1}/{podcasts.length}
                   </span>
                 </div>
-                <h3 className="font-semibold text-foreground mb-1">{p.title}</h3>
+                <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{p.title}</h3>
                 <p className="text-sm text-muted-foreground">{p.description}</p>
-              </div>
-            </ScrollReveal>
-          ))}
+              </>
+            );
+            return (
+              <ScrollReveal key={p.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
+                {url ? (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cardClasses}
+                  >
+                    {cardInner}
+                  </a>
+                ) : (
+                  <div className={cardClasses}>{cardInner}</div>
+                )}
+              </ScrollReveal>
+            );
+          })}
         </div>
 
         <div className="flex justify-center mt-6">
