@@ -4,6 +4,7 @@ import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
@@ -96,6 +97,20 @@ const Index = () => {
 
   return (
     <div className="min-h-screen overflow-hidden">
+      {/* Header */}
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/40">
+        <div className="max-w-5xl mx-auto px-4 h-14 md:h-16 flex items-center">
+          <a href="/" aria-label="как ты — на главную" className="flex items-center">
+            <img
+              src={logo}
+              alt="как ты"
+              className="h-7 md:h-9 w-auto select-none"
+              draggable={false}
+            />
+          </a>
+        </div>
+      </header>
+
       {/* Hero */}
       <section className="relative px-4 py-16 md:py-24 flex flex-col items-center text-center">
         {/* Blobs */}
