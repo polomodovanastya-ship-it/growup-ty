@@ -168,21 +168,29 @@ const Index = () => {
                 </div>
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{p.title}</h3>
                 <p className="text-sm text-muted-foreground">{p.description}</p>
-                {audio && (
-                  <audio
-                    controls
-                    preload="none"
-                    className="mt-4 w-full"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <source src={audio} type="audio/mpeg" />
-                  </audio>
-                )}
-                {url && !audio && (
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary">
-                    Слушать на mave.stream <ArrowRight size={12} />
-                  </span>
-                )}
+                <div className="mt-auto">
+                  {audio && (
+                    <audio
+                      controls
+                      preload="none"
+                      className="mt-4 w-full"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <source src={audio} type="audio/mpeg" />
+                    </audio>
+                  )}
+                  {url && (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      Открыть на mave.stream <ArrowRight size={12} />
+                    </a>
+                  )}
+                </div>
               </>
             );
             return (
