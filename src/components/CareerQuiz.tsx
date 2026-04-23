@@ -599,6 +599,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             </div>
           </div>
         )}
+        </div>
       </DialogContent>
     </Dialog>
   );
