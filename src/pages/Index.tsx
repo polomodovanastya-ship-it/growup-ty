@@ -77,7 +77,7 @@ const podcasts = [
 ];
 
 const checkups = [
-  { title: "Давай познакомимся — как ты сейчас?", icon: HandHeart, action: "kidscreen" },
+  { title: "Давай познакомимся", icon: HandHeart, action: "kidscreen" },
   { title: "Кем я хочу стать?", icon: Compass, action: "career-quiz" },
 ];
 
