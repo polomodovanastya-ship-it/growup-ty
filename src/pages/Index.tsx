@@ -74,10 +74,10 @@ const podcasts = [
 ];
 
 const checkups = [
-  { title: "Уровень стресса", icon: Shield },
-  { title: "Эмоциональное состояние", icon: Heart },
-  { title: "Качество сна", icon: Sparkles },
-  { title: "Выбор профессии", icon: Compass, action: "career-quiz" },
+  { title: "Давай познакомимся — как ты сейчас?", icon: HandHeart },
+  { title: "Что у меня с настроением?", icon: Heart },
+  { title: "Высыпаюсь ли я?", icon: Moon },
+  { title: "Кем я хочу стать?", icon: Compass, action: "career-quiz" },
 ];
 
 const checklists = [
@@ -213,10 +213,10 @@ const Index = () => {
             <div className="rounded-2xl border bg-card p-5 md:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <ClipboardCheck className="text-primary" size={22} />
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">Разберись</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-foreground">Как ты сейчас?</h2>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                Короткие чекапы — чтобы лучше понять, что с тобой происходит.
+                Короткие вопросы — чтобы понять, что с тобой происходит прямо сейчас.
               </p>
               <ul className="space-y-2">
                 {checkups.map((c) => (
