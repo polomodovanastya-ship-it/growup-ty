@@ -74,7 +74,7 @@ const podcasts = [
 ];
 
 const checkups = [
-  { title: "Давай познакомимся — как ты сейчас?", icon: HandHeart },
+  { title: "Давай познакомимся — как ты сейчас?", icon: HandHeart, action: "kidscreen" },
   { title: "Кем я хочу стать?", icon: Compass, action: "career-quiz" },
 ];
 
@@ -201,7 +201,9 @@ const Index = () => {
                     key={c.title}
                     className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted cursor-pointer group"
                     onClick={() => {
-                      if ((c as any).action === "career-quiz") setCareerQuizOpen(true);
+                      const action = (c as any).action;
+                      if (action === "career-quiz") setCareerQuizOpen(true);
+                      if (action === "kidscreen") setKidscreenOpen(true);
                     }}
                   >
                     <c.icon size={18} className="text-primary/70 group-hover:text-primary transition-colors" />
