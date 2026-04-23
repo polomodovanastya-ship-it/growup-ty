@@ -112,7 +112,7 @@ const Index = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative px-4 py-16 md:py-24 flex flex-col items-center text-center">
+      <section className="relative px-4 pt-8 pb-10 md:pt-14 md:pb-16 flex flex-col items-center text-center">
         {/* Blobs */}
         <div className="blob w-48 h-48 md:w-72 md:h-72 bg-primary/30 -top-10 -left-10 md:-left-20" />
         <div className="blob w-40 h-40 md:w-64 md:h-64 bg-secondary/30 top-20 -right-8 md:-right-16" style={{ animationDelay: "2s" }} />
@@ -156,7 +156,7 @@ const Index = () => {
       </section>
 
       {/* Podcasts */}
-      <section className="px-4 py-12 md:py-16 max-w-5xl mx-auto">
+      <section className="px-4 pt-2 pb-12 md:pb-16 max-w-5xl mx-auto">
         <ScrollReveal>
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
