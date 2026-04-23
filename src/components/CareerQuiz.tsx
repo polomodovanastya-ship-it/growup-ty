@@ -219,7 +219,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto p-0 gap-0 rounded-2xl border-border/50">
+      <DialogContent className="sm:max-w-2xl max-h-[92vh] overflow-y-auto p-0 gap-0 rounded-3xl border-border/50">
         {/* Intro */}
         {screen === "intro" && (
           <div className="p-6 space-y-4">
