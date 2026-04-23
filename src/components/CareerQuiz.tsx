@@ -271,7 +271,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
                 <button
                   key={i}
                   onClick={() => handleAnswer(opt.stage)}
-                  className="text-left rounded-2xl border border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
+                  className="flex items-center text-left rounded-2xl border-2 border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-colors min-h-[4rem] hover:border-primary/40 hover:bg-primary/5"
                 >
                   {opt.label}
                 </button>
@@ -308,7 +308,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
                 <button
                   key={i}
                   onClick={() => handleTiebreaker(opt.stage)}
-                  className="text-left rounded-2xl border border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
+                  className="flex items-center text-left rounded-2xl border-2 border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-colors min-h-[4rem] hover:border-primary/40 hover:bg-primary/5"
                 >
                   {opt.label}
                 </button>
