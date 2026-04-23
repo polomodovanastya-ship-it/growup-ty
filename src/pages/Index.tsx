@@ -16,6 +16,7 @@ const podcasts = [
     description: "Мне ведь не так уж плохо — или всё-таки стоит попробовать?",
     icon: Search,
     url: "https://mave.stream/e/Ng8tfd3aZI",
+    audio: "/audio/episode-1.mp3",
   },
   {
     title: "Кто чем помогает?",
