@@ -195,18 +195,7 @@ const Index = () => {
             );
             return (
               <ScrollReveal key={p.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
-                {url && !audio ? (
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cardClasses + " cursor-pointer"}
-                  >
-                    {cardInner}
-                  </a>
-                ) : (
-                  <div className={cardClasses}>{cardInner}</div>
-                )}
+                <div className={cardClasses}>{cardInner}</div>
               </ScrollReveal>
             );
           })}
