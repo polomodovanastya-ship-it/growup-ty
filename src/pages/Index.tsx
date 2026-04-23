@@ -128,35 +128,13 @@ const Index = () => {
         </ScrollReveal>
 
         <ScrollReveal delay={300}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="lg" className="relative mt-8 rounded-full px-8 text-base gap-2">
-                Начать <ArrowRight size={18} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64 rounded-xl p-2" sideOffset={8}>
-              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer" onClick={() => setCareerQuizOpen(true)}>
-                <Compass size={18} className="text-primary" />
-                <span>Выбор профессии</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
-                <Moon size={18} className="text-primary" />
-                <span>Качество сна и свободного времени</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
-                <Frown size={18} className="text-primary" />
-                <span>Ощущение одиночества</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
-                <Angry size={18} className="text-primary" />
-                <span>Все бесит</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-3 rounded-lg px-3 py-2.5 cursor-pointer">
-                <MessageSquareOff size={18} className="text-primary" />
-                <span>Не получается общаться</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            size="lg"
+            className="relative mt-8 rounded-full px-8 text-base gap-2"
+            onClick={() => setKidscreenOpen(true)}
+          >
+            Начать <ArrowRight size={18} />
+          </Button>
         </ScrollReveal>
       </section>
 
