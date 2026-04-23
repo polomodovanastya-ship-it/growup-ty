@@ -193,7 +193,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-3xl max-h-[92vh] p-0 gap-0 rounded-3xl border-border/50 overflow-hidden flex flex-col">
+      <DialogContent className="sm:max-w-5xl lg:max-w-6xl w-[96vw] max-h-[94vh] p-0 gap-0 rounded-3xl border-border/50 overflow-hidden flex flex-col">
         {/* Header with progress (sticky) */}
         {screen !== "intro" && (
           <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border/40 bg-background">
