@@ -239,6 +239,7 @@ const Index = () => {
       </section>
 
       <CareerQuiz open={careerQuizOpen} onOpenChange={setCareerQuizOpen} />
+      <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
       {/* Footer */}
       <footer className="px-4 py-8 text-center">
