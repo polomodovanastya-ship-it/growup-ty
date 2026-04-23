@@ -153,8 +153,9 @@ const Index = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visiblePodcasts.map((p, i) => {
             const url = (p as any).url as string | undefined;
+            const audio = (p as any).audio as string | undefined;
             const cardClasses =
-              "group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer h-full block";
+              "group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col";
             const cardInner = (
               <>
                 <div className="flex items-start justify-between mb-3">
@@ -167,16 +168,31 @@ const Index = () => {
                 </div>
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{p.title}</h3>
                 <p className="text-sm text-muted-foreground">{p.description}</p>
+                {audio && (
+                  <audio
+                    controls
+                    preload="none"
+                    className="mt-4 w-full"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <source src={audio} type="audio/mpeg" />
+                  </audio>
+                )}
+                {url && !audio && (
+                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary">
+                    Слушать на mave.stream <ArrowRight size={12} />
+                  </span>
+                )}
               </>
             );
             return (
               <ScrollReveal key={p.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
-                {url ? (
+                {url && !audio ? (
                   <a
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cardClasses}
+                    className={cardClasses + " cursor-pointer"}
                   >
                     {cardInner}
                   </a>
