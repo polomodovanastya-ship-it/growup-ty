@@ -255,23 +255,23 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
 
         {/* Questions */}
         {screen === "question" && (
-          <div className="p-6 space-y-5">
+          <div className="p-6 md:p-8 space-y-6">
             <DialogTitle className="sr-only">Вопрос {questionIndex + 1}</DialogTitle>
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>{questionIndex + 1} / {totalSteps}</span>
               </div>
-              <Progress value={progress} className="h-1.5" />
+              <Progress value={progress} className="h-2" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground leading-snug">
+            <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-snug">
               {questions[questionIndex].text}
             </h3>
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-3">
               {questions[questionIndex].options.map((opt, i) => (
                 <button
                   key={i}
                   onClick={() => handleAnswer(opt.stage)}
-                  className="text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
+                  className="text-left rounded-2xl border border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
                 >
                   {opt.label}
                 </button>
@@ -295,20 +295,20 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
 
         {/* Tiebreaker */}
         {screen === "tiebreaker" && (
-          <div className="p-6 space-y-5">
+          <div className="p-6 md:p-8 space-y-6">
             <DialogTitle className="sr-only">Дополнительный вопрос</DialogTitle>
             <div className="space-y-2">
-              <Progress value={100} className="h-1.5" />
+              <Progress value={100} className="h-2" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground leading-snug">
+            <h3 className="text-xl md:text-2xl font-semibold text-foreground leading-snug">
               {tiebreakerQuestion.text}
             </h3>
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-3">
               {tiebreakerQuestion.options.map((opt, i) => (
                 <button
                   key={i}
                   onClick={() => handleTiebreaker(opt.stage)}
-                  className="text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
+                  className="text-left rounded-2xl border border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
                 >
                   {opt.label}
                 </button>
