@@ -89,6 +89,7 @@ const INITIAL_VISIBLE = 3;
 const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
+  const [kidscreenOpen, setKidscreenOpen] = useState(false);
   const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
 
   return (
