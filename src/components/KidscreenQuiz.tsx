@@ -349,20 +349,75 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
             </div>
           )}
 
-          {/* Done */}
-          {screen === "done" && (
-            <div className="p-6 md:p-8 space-y-5 text-center">
-              <div className="flex justify-center">
-                <div className="rounded-full bg-primary/10 p-4">
-                  <CheckCircle2 className="text-primary" size={40} />
+          {/* Loading */}
+          {screen === "loading" && (
+            <div className="p-10 md:p-16 flex flex-col items-center justify-center gap-4 text-center">
+              <Loader2 className="text-primary animate-spin" size={40} />
+              <p className="text-base md:text-lg text-muted-foreground">Считаем твой профиль…</p>
+            </div>
+          )}
+
+          {/* Done — профиль */}
+          {screen === "done" && profile && (
+            <div className="p-6 md:p-8 space-y-6">
+              <div className="text-center space-y-3">
+                <div className="flex justify-center">
+                  <div className="rounded-full bg-primary/10 p-4">
+                    <CheckCircle2 className="text-primary" size={36} />
+                  </div>
                 </div>
+                <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
+                  Твой профиль самочувствия
+                </DialogTitle>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                  {profile.summary}
+                </p>
+                {submitError && (
+                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground bg-muted/40 rounded-full px-3 py-1.5">
+                    <AlertCircle size={14} /> {submitError}
+                  </div>
+                )}
               </div>
-              <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
-                Спасибо, что прошёл(ла) опросник!
-              </DialogTitle>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
-                Ты сделал(а) важный шаг — остановился(ась) и прислушался(ась) к себе. Это уже забота о себе.
-              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {profile.scales.map((s) => {
+                  const barColor =
+                    s.level === "low"
+                      ? "bg-destructive"
+                      : s.level === "below_avg"
+                      ? "bg-orange-400"
+                      : s.level === "average"
+                      ? "bg-primary/70"
+                      : "bg-primary";
+                  return (
+                    <div key={s.scaleId} className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-2">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-semibold text-foreground leading-tight">{s.name}</h3>
+                        <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
+                          {s.levelLabel}
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className={`h-full ${barColor} transition-all`}
+                          style={{ width: `${Math.max(4, s.tValue)}%` }}
+                        />
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed pt-1">{s.text}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {profile.supportAreas.length > 0 && (
+                <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 md:p-5">
+                  <p className="text-sm md:text-base text-foreground leading-relaxed">
+                    <span className="font-semibold">Сферы, которые просят поддержки:</span>{" "}
+                    {profile.supportAreas.join(", ")}. Это не приговор — это сигнал. Поговори с тем, кому доверяешь.
+                  </p>
+                </div>
+              )}
+
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
                 <Button size="lg" className="rounded-full gap-2 px-6" onClick={() => handleClose(false)}>
                   Закрыть
