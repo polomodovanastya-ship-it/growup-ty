@@ -14,16 +14,145 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      kidscreen_answers: {
+        Row: {
+          answer_value: number
+          assessment_id: string
+          created_at: string
+          id: string
+          question_id: string
+        }
+        Insert: {
+          answer_value: number
+          assessment_id: string
+          created_at?: string
+          id?: string
+          question_id: string
+        }
+        Update: {
+          answer_value?: number
+          assessment_id?: string
+          created_at?: string
+          id?: string
+          question_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kidscreen_answers_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "kidscreen_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kidscreen_assessments: {
+        Row: {
+          age: number | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          session_token: string
+          sex: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          age?: number | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          session_token: string
+          sex?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          age?: number | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          session_token?: string
+          sex?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      kidscreen_scale_results: {
+        Row: {
+          assessment_id: string
+          created_at: string
+          id: string
+          level: string
+          raw_score: number
+          scale_id: string
+          support_flag: boolean
+          t_value: number
+        }
+        Insert: {
+          assessment_id: string
+          created_at?: string
+          id?: string
+          level: string
+          raw_score: number
+          scale_id: string
+          support_flag?: boolean
+          t_value: number
+        }
+        Update: {
+          assessment_id?: string
+          created_at?: string
+          id?: string
+          level?: string
+          raw_score?: number
+          scale_id?: string
+          support_flag?: boolean
+          t_value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kidscreen_scale_results_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "kidscreen_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +279,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
