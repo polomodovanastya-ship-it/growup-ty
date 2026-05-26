@@ -149,18 +149,22 @@ const sections: Section[] = [
 ];
 
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
-  const [screen, setScreen] = useState<"intro" | "questions" | "done">("intro");
+  const [screen, setScreen] = useState<"intro" | "questions" | "loading" | "done">("intro");
   const [sectionIndex, setSectionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [profile, setProfile] = useState<ProfileReport | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const totalSections = sections.length;
   const currentSection = sections[sectionIndex];
-  const progress = screen === "intro" ? 0 : screen === "done" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
+  const progress = screen === "intro" ? 0 : screen === "done" || screen === "loading" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
 
   const reset = () => {
     setScreen("intro");
     setSectionIndex(0);
     setAnswers({});
+    setProfile(null);
+    setSubmitError(null);
   };
 
   const handleClose = (val: boolean) => {
@@ -170,16 +174,51 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
   const allCurrentAnswered = currentSection?.questions.every((q) => answers[q.id]);
 
+  const submit = async () => {
+    setScreen("loading");
+    setSubmitError(null);
+
+    // Конвертируем строковые ответы в числа 1..5
+    const numeric: Record<string, number> = {};
+    for (const sec of sections) {
+      for (const q of sec.questions) {
+        const ans = answers[q.id];
+        if (ans) numeric[q.id] = answerToValue(ans, q.scale);
+      }
+    }
+
+    // Локальный профиль (как fallback, чтобы UX был мгновенным)
+    const local = computeProfile(numeric);
+    setProfile(local);
+
+    // session_token
+    let token = localStorage.getItem("kidscreen_session");
+    if (!token) {
+      token = crypto.randomUUID();
+      localStorage.setItem("kidscreen_session", token);
+    }
+
+    try {
+      const { error } = await supabase.functions.invoke("submit-kidscreen", {
+        body: { session_token: token, answers: numeric },
+      });
+      if (error) console.warn("submit-kidscreen error:", error);
+    } catch (e) {
+      console.warn("submit-kidscreen failed:", e);
+      setSubmitError("Не удалось сохранить результат на сервере, но твой профиль ниже.");
+    }
+    setScreen("done");
+  };
+
   const handleNext = () => {
     if (sectionIndex < totalSections - 1) {
       setSectionIndex(sectionIndex + 1);
-      // scroll to top of dialog body
       requestAnimationFrame(() => {
         const el = document.getElementById("kidscreen-body");
         if (el) el.scrollTop = 0;
       });
     } else {
-      setScreen("done");
+      submit();
     }
   };
 
