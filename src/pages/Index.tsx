@@ -30,8 +30,8 @@ const podcasts = [
     icon: Shield,
   },
   {
-    title: "Почему я ничего не хочу",
-    description: "Лень, выгорание или потеря контакта с собой?",
+    title: "Что делать, если сильно устал? Часть 1. Про сон",
+    description: "Почему недосып — не наша вина, и как бережно вернуть себе силы.",
     icon: Flame,
     url: "https://mave.stream/e/q2en9dlbty",
     audio: "/audio/episode-4.mp3",
