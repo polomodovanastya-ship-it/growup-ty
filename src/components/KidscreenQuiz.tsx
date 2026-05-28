@@ -210,8 +210,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     }
 
     try {
+      const ageNum = age === "до 12" ? 11 : age === "12–14" ? 13 : age === "15–17" ? 16 : age === "18 и старше" ? 18 : undefined;
       const { error } = await supabase.functions.invoke("submit-kidscreen", {
-        body: { session_token: token, answers: numeric },
+        body: { session_token: token, age: ageNum, sex: sex || undefined, answers: numeric },
       });
       if (error) console.warn("submit-kidscreen error:", error);
     } catch (e) {
