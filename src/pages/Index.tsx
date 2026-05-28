@@ -33,6 +33,8 @@ const podcasts = [
     title: "Почему я ничего не хочу",
     description: "Лень, выгорание или потеря контакта с собой?",
     icon: Flame,
+    url: "https://mave.stream/e/q2en9dlbty",
+    audio: "/audio/episode-4.mp3",
   },
   {
     title: "Чего я хочу на самом деле?",
