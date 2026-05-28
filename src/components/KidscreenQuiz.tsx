@@ -148,21 +148,32 @@ const sections: Section[] = [
   },
 ];
 
+const AGE_OPTIONS = ["до 12", "12–14", "15–17", "18 и старше"];
+const SEX_OPTIONS = [
+  { value: "female", label: "девушка" },
+  { value: "male", label: "парень" },
+  { value: "other", label: "другое / не хочу указывать" },
+];
+
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
-  const [screen, setScreen] = useState<"intro" | "questions" | "loading" | "done">("intro");
+  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done">("intro");
   const [sectionIndex, setSectionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [age, setAge] = useState<string>("");
+  const [sex, setSex] = useState<string>("");
   const [profile, setProfile] = useState<ProfileReport | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const totalSections = sections.length;
   const currentSection = sections[sectionIndex];
-  const progress = screen === "intro" ? 0 : screen === "done" || screen === "loading" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
+  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
 
   const reset = () => {
     setScreen("intro");
     setSectionIndex(0);
     setAnswers({});
+    setAge("");
+    setSex("");
     setProfile(null);
     setSubmitError(null);
   };
