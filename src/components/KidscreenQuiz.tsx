@@ -283,10 +283,84 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
               <Button
                 size="lg"
                 className="rounded-full gap-2 text-base px-8"
-                onClick={() => setScreen("questions")}
+                onClick={() => setScreen("demographics")}
               >
                 Начать <ArrowRight size={18} />
               </Button>
+            </div>
+          )}
+
+          {/* Demographics */}
+          {screen === "demographics" && (
+            <div className="p-6 md:p-8 space-y-6">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                  Расскажи немного о себе
+                </h2>
+                <p className="mt-2 text-base text-muted-foreground">
+                  Это поможет лучше понять контекст. Анонимно — имя не нужно.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-foreground">Сколько тебе лет?</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {AGE_OPTIONS.map((a) => {
+                    const checked = age === a;
+                    return (
+                      <button
+                        key={a}
+                        type="button"
+                        onClick={() => setAge(a)}
+                        className={`rounded-xl border-2 px-3 py-2.5 text-sm md:text-base transition-colors ${
+                          checked
+                            ? "border-primary bg-primary/10 text-foreground"
+                            : "border-border/60 bg-background hover:border-primary/40 hover:bg-primary/5 text-muted-foreground"
+                        }`}
+                      >
+                        {a}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-foreground">Кто ты?</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {SEX_OPTIONS.map((s) => {
+                    const checked = sex === s.value;
+                    return (
+                      <button
+                        key={s.value}
+                        type="button"
+                        onClick={() => setSex(s.value)}
+                        className={`rounded-xl border-2 px-3 py-2.5 text-sm md:text-base transition-colors ${
+                          checked
+                            ? "border-primary bg-primary/10 text-foreground"
+                            : "border-border/60 bg-background hover:border-primary/40 hover:bg-primary/5 text-muted-foreground"
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <Button variant="ghost" className="gap-1 text-muted-foreground" onClick={() => setScreen("intro")}>
+                  <ArrowLeft size={16} /> Назад
+                </Button>
+                <Button
+                  size="lg"
+                  className="rounded-full gap-2 px-6"
+                  onClick={() => setScreen("questions")}
+                  disabled={!age || !sex}
+                >
+                  Далее <ArrowRight size={16} />
+                </Button>
+              </div>
             </div>
           )}
 
