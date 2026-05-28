@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
+import { generateReportPdf } from "@/kidscreen/pdfReport";
 
 interface KidscreenQuizProps {
   open: boolean;
@@ -163,6 +164,26 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [sex, setSex] = useState<string>("");
   const [profile, setProfile] = useState<ProfileReport | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!profile) return;
+    setPdfLoading(true);
+    try {
+      const sexLabel = SEX_OPTIONS.find((s) => s.value === sex)?.label;
+      await generateReportPdf({
+        profile,
+        answers,
+        sections,
+        age,
+        sex: sexLabel,
+      });
+    } catch (e) {
+      console.error("PDF generation failed:", e);
+    } finally {
+      setPdfLoading(false);
+    }
+  };
 
   const totalSections = sections.length;
   const currentSection = sections[sectionIndex];
@@ -505,11 +526,27 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
               )}
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <Button size="lg" className="rounded-full gap-2 px-6" onClick={() => handleClose(false)}>
-                  Закрыть
+                <Button
+                  size="lg"
+                  className="rounded-full gap-2 px-6"
+                  onClick={handleDownloadPdf}
+                  disabled={pdfLoading}
+                >
+                  {pdfLoading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> Готовим PDF…
+                    </>
+                  ) : (
+                    <>
+                      <Download size={18} /> Скачать PDF
+                    </>
+                  )}
                 </Button>
                 <Button size="lg" variant="outline" className="rounded-full gap-2 px-6" onClick={reset}>
                   Пройти заново
+                </Button>
+                <Button size="lg" variant="ghost" className="rounded-full gap-2 px-6" onClick={() => handleClose(false)}>
+                  Закрыть
                 </Button>
               </div>
             </div>
