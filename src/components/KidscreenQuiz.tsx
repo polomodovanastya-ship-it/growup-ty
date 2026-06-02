@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Do
 import { supabase } from "@/integrations/supabase/client";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
 import { generateReportPdf } from "@/kidscreen/pdfReport";
+import { RECOMMENDATIONS } from "@/kidscreen/recommendations";
 
 interface KidscreenQuizProps {
   open: boolean;
@@ -157,7 +158,7 @@ const SEX_OPTIONS = [
 ];
 
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
-  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done">("intro");
+  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done" | "recommendations">("intro");
   const [sectionIndex, setSectionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [age, setAge] = useState<string>("");
@@ -187,7 +188,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
   const totalSections = sections.length;
   const currentSection = sections[sectionIndex];
-  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
+  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" || screen === "recommendations" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
 
   const reset = () => {
     setScreen("intro");
@@ -273,7 +274,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
           <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border/40 bg-background">
             <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
               <span className="font-medium">
-                {screen === "done" ? "Готово" : `Шаг ${sectionIndex + 1} из ${totalSections}`}
+                {screen === "done" || screen === "recommendations" ? "Готово" : `Шаг ${sectionIndex + 1} из ${totalSections}`}
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
@@ -516,16 +517,98 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 })}
               </div>
 
-              {profile.supportAreas.length > 0 && (
-                <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 md:p-5">
-                  <p className="text-sm md:text-base text-foreground leading-relaxed">
-                    <span className="font-semibold">Сферы, которые просят поддержки:</span>{" "}
-                    {profile.supportAreas.join(", ")}. Это не приговор — это сигнал. Поговори с тем, кому доверяешь.
-                  </p>
-                </div>
-              )}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                <Button
+                  size="lg"
+                  className="rounded-full gap-2 px-6"
+                  onClick={() => {
+                    setScreen("recommendations");
+                    requestAnimationFrame(() => {
+                      const el = document.getElementById("kidscreen-body");
+                      if (el) el.scrollTop = 0;
+                    });
+                  }}
+                >
+                  Далее <ArrowRight size={18} />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full gap-2 px-6"
+                  onClick={handleDownloadPdf}
+                  disabled={pdfLoading}
+                >
+                  {pdfLoading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> Готовим PDF…
+                    </>
+                  ) : (
+                    <>
+                      <Download size={18} /> Скачать PDF
+                    </>
+                  )}
+                </Button>
+                <Button size="lg" variant="ghost" className="rounded-full gap-2 px-6" onClick={() => handleClose(false)}>
+                  Закрыть
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {screen === "recommendations" && profile && (
+            <div className="p-6 md:p-8 space-y-6">
+              <div className="text-center space-y-3">
+                <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
+                  Что можно сделать
+                </DialogTitle>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                  Маленькие шаги по сферам, которые сейчас просят внимания. Выбирай то, что откликается — без давления.
+                </p>
+              </div>
+
+              {(() => {
+                const focus = profile.scales.filter((s) => s.level === "low" || s.level === "below_avg");
+                const list = focus.length > 0 ? focus : profile.scales;
+                return (
+                  <div className="space-y-3">
+                    {list.map((s) => (
+                      <div key={s.scaleId} className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="font-semibold text-foreground leading-tight">{s.name}</h3>
+                          <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
+                            {s.levelLabel}
+                          </span>
+                        </div>
+                        <ul className="space-y-2">
+                          {RECOMMENDATIONS[s.scaleId].map((rec, i) => (
+                            <li key={i} className="flex gap-2 text-sm md:text-base text-muted-foreground leading-relaxed">
+                              <span className="text-primary mt-0.5">•</span>
+                              <span>{rec}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full gap-2 px-6"
+                  onClick={() => {
+                    setScreen("done");
+                    requestAnimationFrame(() => {
+                      const el = document.getElementById("kidscreen-body");
+                      if (el) el.scrollTop = 0;
+                    });
+                  }}
+                >
+                  <ArrowLeft size={18} /> К результатам
+                </Button>
                 <Button
                   size="lg"
                   className="rounded-full gap-2 px-6"
@@ -541,9 +624,6 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                       <Download size={18} /> Скачать PDF
                     </>
                   )}
-                </Button>
-                <Button size="lg" variant="outline" className="rounded-full gap-2 px-6" onClick={reset}>
-                  Пройти заново
                 </Button>
                 <Button size="lg" variant="ghost" className="rounded-full gap-2 px-6" onClick={() => handleClose(false)}>
                   Закрыть
