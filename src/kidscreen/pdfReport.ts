@@ -54,7 +54,7 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
   const scalesHtml = profile.scales
     .map(
       (s) => `
-      <div style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;page-break-inside:avoid;">
+      <div data-pdf-section style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;">
         <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;">
           <strong style="font-size:14px;">${s.name}</strong>
           <span style="color:${levelColor(s.level)};font-weight:600;font-size:12px;white-space:nowrap;">
@@ -76,29 +76,29 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
         .map((q, i) => {
           const ans = answers[q.id] ?? "—";
           return `
-            <div style="padding:8px 0;border-bottom:1px solid #f1f5f9;page-break-inside:avoid;">
+            <div data-pdf-section style="padding:8px 10px;border:1px solid #f1f5f9;border-radius:8px;margin-bottom:6px;">
               <div style="color:#0f172a;"><span style="color:#3b82f6;">${i + 1}.</span> ${q.text}</div>
               <div style="color:#475569;margin-top:3px;font-size:12px;"><strong>Ответ:</strong> ${ans}</div>
             </div>`;
         })
         .join("");
       return `
-        <div style="margin-top:18px;page-break-inside:avoid;">
+        <div data-pdf-section style="margin-top:14px;">
           <h3 style="font-size:14px;margin:0 0 8px 0;color:#0f172a;">${sec.title}</h3>
-          ${items}
-        </div>`;
+        </div>
+        ${items}`;
     })
     .join("");
 
   const supportBlock =
     profile.supportAreas.length > 0
-      ? `<div style="margin-top:14px;border:1px solid #fecaca;background:#fef2f2;border-radius:12px;padding:12px;">
+      ? `<div data-pdf-section style="margin-top:14px;border:1px solid #fecaca;background:#fef2f2;border-radius:12px;padding:12px;">
           <strong>Сферы, которые просят поддержки:</strong> ${profile.supportAreas.join(", ")}.
         </div>`
       : "";
 
   container.innerHTML = `
-    <div style="border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:18px;">
+    <div data-pdf-section style="border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:18px;">
       <div style="font-size:22px;font-weight:700;">KIDSCREEN — отчёт о самочувствии</div>
       <div style="color:#64748b;font-size:12px;margin-top:4px;">Сформировано: ${date}</div>
       <div style="color:#64748b;font-size:12px;">
@@ -106,7 +106,7 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
       </div>
     </div>
 
-    <div style="background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:18px;">
+    <div data-pdf-section style="background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:18px;">
       <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Общий итог</div>
       <div style="color:#475569;">${profile.summary}</div>
       <div style="color:#94a3b8;font-size:12px;margin-top:6px;">
@@ -114,13 +114,12 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
       </div>
     </div>
 
-    <h2 style="font-size:16px;margin:0 0 10px 0;">Результаты по сферам</h2>
+    <h2 data-pdf-section style="font-size:16px;margin:0 0 10px 0;">Результаты по сферам</h2>
     ${scalesHtml}
     ${supportBlock}
 
-    <div style="page-break-before:always;"></div>
-    <h2 style="font-size:16px;margin:18px 0 6px 0;">Вопросы и ответы</h2>
-    <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">
+    <h2 data-pdf-section style="font-size:16px;margin:22px 0 6px 0;">Вопросы и ответы</h2>
+    <div data-pdf-section style="color:#94a3b8;font-size:12px;margin-bottom:6px;">
       Это упрощённый расчёт (без официальных норм KIDSCREEN A7_C). Используйте как ориентир, не как клинический диагноз.
     </div>
     ${qaHtml}
@@ -133,31 +132,45 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
 export async function generateReportPdf(args: BuildArgs): Promise<void> {
   const el = buildHtml(args);
   try {
-    const canvas = await html2canvas(el, {
-      scale: 2,
-      backgroundColor: "#ffffff",
-      useCORS: true,
-    });
-    const imgData = canvas.toDataURL("image/jpeg", 0.92);
+    const A4_W = 210;
+    const A4_H = 297;
+    const MARGIN = 12;
+    const CONTENT_W = A4_W - MARGIN * 2;
+    const CONTENT_H = A4_H - MARGIN * 2;
+    const GAP = 3;
 
-    const pdf = new jsPDF({ unit: "pt", format: "a4", compress: true });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+    const sections = Array.from(el.querySelectorAll<HTMLElement>("[data-pdf-section]"));
 
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let currentY = MARGIN;
 
-    let heightLeft = imgHeight;
-    let position = 0;
+    for (const section of sections) {
+      const canvas = await html2canvas(section, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
 
-    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+      const scaleFactor = CONTENT_W / (canvas.width / 2);
+      let heightMM = (canvas.height / 2) * scaleFactor;
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      // If section by itself is taller than a full page, scale it down to fit.
+      let widthMM = CONTENT_W;
+      if (heightMM > CONTENT_H) {
+        const shrink = CONTENT_H / heightMM;
+        heightMM = CONTENT_H;
+        widthMM = CONTENT_W * shrink;
+      }
+
+      const remaining = A4_H - MARGIN - currentY;
+      if (heightMM > remaining && currentY > MARGIN) {
+        pdf.addPage();
+        currentY = MARGIN;
+      }
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.92);
+      pdf.addImage(imgData, "JPEG", MARGIN, currentY, widthMM, heightMM);
+      currentY += heightMM + GAP;
     }
 
     pdf.save(`kidscreen-report-${new Date().toISOString().slice(0, 10)}.pdf`);
