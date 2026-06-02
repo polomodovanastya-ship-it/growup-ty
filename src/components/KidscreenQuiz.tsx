@@ -188,7 +188,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
   const totalSections = sections.length;
   const currentSection = sections[sectionIndex];
-  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
+  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" || screen === "recommendations" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
 
   const reset = () => {
     setScreen("intro");
