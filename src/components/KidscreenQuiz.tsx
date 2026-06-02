@@ -274,7 +274,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
           <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border/40 bg-background">
             <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
               <span className="font-medium">
-                {screen === "done" ? "Готово" : `Шаг ${sectionIndex + 1} из ${totalSections}`}
+                {screen === "done" || screen === "recommendations" ? "Готово" : `Шаг ${sectionIndex + 1} из ${totalSections}`}
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
