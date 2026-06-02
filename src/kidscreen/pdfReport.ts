@@ -65,7 +65,6 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
           <div style="height:100%;width:${Math.max(4, s.tValue)}%;background:${levelColor(s.level)};"></div>
         </div>
         <div style="color:#475569;font-size:12px;">${s.text}</div>
-        <div style="color:#94a3b8;font-size:11px;margin-top:4px;">Сырой балл: ${s.rawScore}</div>
       </div>`,
     )
     .join("");
