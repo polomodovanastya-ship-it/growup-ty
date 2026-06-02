@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Do
 import { supabase } from "@/integrations/supabase/client";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
 import { generateReportPdf } from "@/kidscreen/pdfReport";
+import { RECOMMENDATIONS } from "@/kidscreen/recommendations";
 
 interface KidscreenQuizProps {
   open: boolean;
