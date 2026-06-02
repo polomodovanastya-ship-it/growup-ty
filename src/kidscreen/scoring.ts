@@ -67,7 +67,7 @@ export function computeProfile(answers: Record<string, number>): ProfileReport {
   } else if (overallLevel === "average") {
     summary = "В целом нормально, но есть сферы, где можно стать к себе чуть внимательнее.";
   } else if (overallLevel === "below_avg") {
-    summary = "Сейчас непростой период. Это нормально. Посмотри, какие сферы просят твоего внимания.";
+    summary = "Посмотри, какие сферы просят твоего внимания.";
   } else {
     summary = "Кажется, тебе сейчас тяжело сразу в нескольких сферах. Это сигнал — стоит поговорить с кем-то, кому ты доверяешь.";
   }
