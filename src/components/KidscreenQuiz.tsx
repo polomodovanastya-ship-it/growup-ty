@@ -158,7 +158,7 @@ const SEX_OPTIONS = [
 ];
 
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
-  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done">("intro");
+  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done" | "recommendations">("intro");
   const [sectionIndex, setSectionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [age, setAge] = useState<string>("");
