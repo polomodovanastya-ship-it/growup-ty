@@ -59,7 +59,7 @@ const About = () => {
         </ScrollReveal>
         <ScrollReveal delay={100}>
           <p className="relative mt-4 max-w-xl text-base md:text-lg text-muted-foreground">
-            Кто стоит за проектом «Как ты» и зачем мы это делаем.
+            Зачем мы это делаем?
           </p>
         </ScrollReveal>
       </section>
