@@ -144,9 +144,17 @@ const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
+  const [activeTags, setActiveTags] = useState<string[]>([]);
   const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
 
-  return (
+  const toggleTag = (tag: string) => {
+    setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
+  };
+
+  const filteredLinks =
+    activeTags.length === 0
+      ? helpLinks
+      : helpLinks.filter((l) => activeTags.every((t) => l.tags.includes(t)));
     <div className="min-h-screen overflow-hidden">
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/40">
