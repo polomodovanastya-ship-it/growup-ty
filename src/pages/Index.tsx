@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy } from "lucide-react";
 import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -294,13 +294,34 @@ const Index = () => {
       <CareerQuiz open={careerQuizOpen} onOpenChange={setCareerQuizOpen} />
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
-      {/* Footer */}
-      <footer className="px-4 py-8 text-center space-y-3">
-        <div>
-          <a href="/links" className="text-sm font-medium text-primary hover:underline">
-            Полезные ссылки и экстренная помощь →
+      {/* Useful links & emergency help */}
+      <section className="px-4 pb-8 md:pb-12 max-w-5xl mx-auto">
+        <ScrollReveal>
+          <a
+            href="/links"
+            className="group flex items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5 md:p-6 transition-all hover:bg-primary/10 hover:shadow-lg hover:scale-[1.01]"
+          >
+            <div className="rounded-xl bg-primary/15 p-3 shrink-0">
+              <LifeBuoy className="text-primary" size={26} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                Помощь рядом
+              </h3>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                Полезные ссылки, экстренные службы и телефоны доверия — всегда под рукой.
+              </p>
+            </div>
+            <ArrowRight
+              size={22}
+              className="text-primary shrink-0 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all"
+            />
           </a>
-        </div>
+        </ScrollReveal>
+      </section>
+
+      {/* Footer */}
+      <footer className="px-4 py-8 text-center space-y-4">
         <p className="text-sm text-muted-foreground">
           Ты не один(а). <span className="text-primary font-medium">Как ты</span> — проект о ментальном здоровье 💜
         </p>
