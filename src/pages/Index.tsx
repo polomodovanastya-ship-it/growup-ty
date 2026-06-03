@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
 
@@ -493,12 +494,21 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="px-4 py-8 text-center space-y-4">
+      <footer className="px-4 py-8 text-center space-y-3">
         <p className="text-sm text-muted-foreground">
-          Ты не один(а). <span className="text-primary font-medium">Как ты</span> — проект о ментальном здоровье 💜
+          Ты не один(а).{" "}
+          <Link to="/about" className="text-primary font-medium hover:underline underline-offset-4 transition-colors">
+            Команда проекта
+          </Link>
         </p>
-        <a href="/about" className="inline-block text-sm text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline">
-          О нас
+        <p className="text-sm text-muted-foreground">
+          Как ты — проект о ментальном здоровье
+        </p>
+        <a
+          href="mailto:info@kak-ty.live"
+          className="inline-block text-sm text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
+        >
+          info@kak-ty.live
         </a>
       </footer>
     </div>
