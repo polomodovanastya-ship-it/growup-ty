@@ -274,6 +274,11 @@ const Index = () => {
           </div>
         </ScrollReveal>
 
+        {filteredPodcasts.length === 0 ? (
+          <p className="text-center text-muted-foreground py-8">
+            По выбранным тегам подкастов не нашли. Попробуй убрать часть фильтров.
+          </p>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visiblePodcasts.map((p, i) => {
             const url = (p as any).url as string | undefined;
@@ -287,11 +292,34 @@ const Index = () => {
                     <p.icon className="text-primary" size={20} />
                   </div>
                   <span className="rounded-full bg-muted text-muted-foreground px-2.5 py-0.5 text-xs font-medium">
-                    {i + 1}/{podcasts.length}
+                    {i + 1}/{filteredPodcasts.length}
                   </span>
                 </div>
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{p.title}</h3>
                 <p className="text-sm text-muted-foreground">{p.description}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {p.tags.map((t) => {
+                    const isActive = activeTags.includes(t);
+                    return (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleTag(t);
+                        }}
+                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] transition-colors ${
+                          isActive
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    );
+                  })}
+                </div>
                 <div className="mt-auto">
                   {audio && (
                     <audio
@@ -324,6 +352,7 @@ const Index = () => {
             );
           })}
         </div>
+        )}
 
         <div className="flex justify-center mt-6">
           <Button
