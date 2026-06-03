@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
 import anastasiaPhoto from "@/assets/anastasia.jpg.asset.json";
+import nataliaPhoto from "@/assets/natalia.jpg.asset.json";
 
 type Creator = {
   name: string;
@@ -29,6 +30,7 @@ const creators: Creator[] = [
     role: "Со-основательница проекта",
     bio: "Заботится о том, чтобы каждый подросток знал: с любой непростой ситуацией можно справиться, и рядом всегда есть те, кто поддержит.",
     initials: "НС",
+    photo: nataliaPhoto.url,
   },
 ];
 
