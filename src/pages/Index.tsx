@@ -354,19 +354,21 @@ const Index = () => {
         </div>
         )}
 
-        <div className="flex justify-center mt-6">
-          <Button
-            variant="ghost"
-            className="rounded-full gap-2 text-muted-foreground hover:text-primary"
-            onClick={() => setShowAllPodcasts(!showAllPodcasts)}
-          >
-            {showAllPodcasts ? (
-              <>Свернуть <ChevronUp size={16} /></>
-            ) : (
-              <>Ещё {podcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
-            )}
-          </Button>
-        </div>
+        {filteredPodcasts.length > INITIAL_VISIBLE && (
+          <div className="flex justify-center mt-6">
+            <Button
+              variant="ghost"
+              className="rounded-full gap-2 text-muted-foreground hover:text-primary"
+              onClick={() => setShowAllPodcasts(!showAllPodcasts)}
+            >
+              {showAllPodcasts ? (
+                <>Свернуть <ChevronUp size={16} /></>
+              ) : (
+                <>Ещё {filteredPodcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
+              )}
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* Checkups + Checklists */}
