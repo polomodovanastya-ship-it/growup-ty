@@ -502,7 +502,7 @@ const Index = () => {
           </Link>
         </p>
         <p className="text-sm text-muted-foreground">
-          Как ты — проект о ментальном здоровье
+          <span className="text-primary font-medium">Как ты</span> — проект о ментальном здоровье 💜
         </p>
         <a
           href="mailto:info@kak-ty.live"
