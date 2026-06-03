@@ -82,16 +82,19 @@ const podcasts = [
     icon: Search,
     url: "https://mave.stream/e/Ng8tfd3aZI",
     audio: "/audio/episode-1.mp3",
+    tags: ["самооценка", "мотивация", "тревога"],
   },
   {
     title: "Кто чем помогает?",
     description: "Психолог, психиатр, коуч, тьютор — в чём разница и к кому идти",
     icon: UserCheck,
+    tags: ["тревога", "стресс", "мотивация"],
   },
   {
     title: "Первая сессия",
     description: "Что происходит на первой встрече и что значит конфиденциальность",
     icon: Shield,
+    tags: ["тревога", "самооценка"],
   },
   {
     title: "Что делать, если сильно устал? Часть 1. Про сон",
@@ -99,46 +102,55 @@ const podcasts = [
     icon: Flame,
     url: "https://mave.stream/e/q2en9dlbty",
     audio: "/audio/episode-4.mp3",
+    tags: ["выгорание", "стресс"],
   },
   {
     title: "Чего я хочу на самом деле?",
     description: "А чего от меня просто ждут — и как это различить",
     icon: Brain,
+    tags: ["мотивация", "самооценка", "прокрастинация"],
   },
   {
     title: "Стыд и прокрастинация",
     description: "Перфекционизм, откладывание и что за этим стоит",
     icon: Sparkles,
+    tags: ["прокрастинация", "самооценка", "стресс"],
   },
   {
     title: "Повторяющиеся отношения",
     description: "Почему я снова и снова выбираю одно и то же",
     icon: Repeat,
+    tags: ["отношения", "самооценка"],
   },
   {
     title: "Родители и границы",
     description: "Сепарация без войны — возможно ли это?",
     icon: Home,
+    tags: ["отношения", "стресс"],
   },
   {
     title: "Парням тоже можно",
     description: "Просить помощи — это не слабость",
     icon: HandHeart,
+    tags: ["самооценка", "одиночество", "стресс"],
   },
   {
     title: "Соцсети и сравнение",
     description: "Инстадивы, одиночество и digital well-being",
     icon: Smartphone,
+    tags: ["одиночество", "самооценка", "тревога"],
   },
   {
     title: "Онлайн-терапия",
     description: "Как она работает и почему раз в неделю лучше, чем каждый день",
     icon: MessageCircle,
+    tags: ["тревога", "выгорание", "мотивация"],
   },
   {
     title: "Свой или чужой?",
     description: "С кем я дружу и почему друзей приходится выбирать",
     icon: Users,
+    tags: ["отношения", "одиночество"],
   },
 ];
 
@@ -160,7 +172,7 @@ const Index = () => {
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
   const [activeTags, setActiveTags] = useState<string[]>([]);
-  const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
+  
 
   const toggleTag = (tag: string) => {
     setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
@@ -170,6 +182,12 @@ const Index = () => {
     activeTags.length === 0
       ? helpLinks
       : helpLinks.filter((l) => activeTags.every((t) => l.tags.includes(t)));
+
+  const filteredPodcasts =
+    activeTags.length === 0
+      ? podcasts
+      : podcasts.filter((p) => activeTags.every((t) => p.tags.includes(t)));
+  const visiblePodcasts = showAllPodcasts ? filteredPodcasts : filteredPodcasts.slice(0, INITIAL_VISIBLE);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -252,10 +270,15 @@ const Index = () => {
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">Послушай</h2>
-            <span className="ml-1 text-sm text-muted-foreground">· {podcasts.length} выпусков</span>
+            <span className="ml-1 text-sm text-muted-foreground">· {filteredPodcasts.length} из {podcasts.length}</span>
           </div>
         </ScrollReveal>
 
+        {filteredPodcasts.length === 0 ? (
+          <p className="text-center text-muted-foreground py-8">
+            По выбранным тегам подкастов не нашли. Попробуй убрать часть фильтров.
+          </p>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visiblePodcasts.map((p, i) => {
             const url = (p as any).url as string | undefined;
@@ -269,11 +292,34 @@ const Index = () => {
                     <p.icon className="text-primary" size={20} />
                   </div>
                   <span className="rounded-full bg-muted text-muted-foreground px-2.5 py-0.5 text-xs font-medium">
-                    {i + 1}/{podcasts.length}
+                    {i + 1}/{filteredPodcasts.length}
                   </span>
                 </div>
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{p.title}</h3>
                 <p className="text-sm text-muted-foreground">{p.description}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {p.tags.map((t) => {
+                    const isActive = activeTags.includes(t);
+                    return (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleTag(t);
+                        }}
+                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] transition-colors ${
+                          isActive
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    );
+                  })}
+                </div>
                 <div className="mt-auto">
                   {audio && (
                     <audio
@@ -306,20 +352,23 @@ const Index = () => {
             );
           })}
         </div>
+        )}
 
-        <div className="flex justify-center mt-6">
-          <Button
-            variant="ghost"
-            className="rounded-full gap-2 text-muted-foreground hover:text-primary"
-            onClick={() => setShowAllPodcasts(!showAllPodcasts)}
-          >
-            {showAllPodcasts ? (
-              <>Свернуть <ChevronUp size={16} /></>
-            ) : (
-              <>Ещё {podcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
-            )}
-          </Button>
-        </div>
+        {filteredPodcasts.length > INITIAL_VISIBLE && (
+          <div className="flex justify-center mt-6">
+            <Button
+              variant="ghost"
+              className="rounded-full gap-2 text-muted-foreground hover:text-primary"
+              onClick={() => setShowAllPodcasts(!showAllPodcasts)}
+            >
+              {showAllPodcasts ? (
+                <>Свернуть <ChevronUp size={16} /></>
+              ) : (
+                <>Ещё {filteredPodcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
+              )}
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* Checkups + Checklists */}
