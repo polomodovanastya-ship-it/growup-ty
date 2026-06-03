@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Link as LinkIcon } from "lucide-react";
 import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -9,6 +9,55 @@ import logo from "@/assets/logo.png";
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
   "стресс", "мотивация", "одиночество", "выгорание",
+];
+
+type HelpLink = {
+  title: string;
+  description: string;
+  url: string;
+  tags: string[];
+  emergency?: boolean;
+};
+
+const helpLinks: HelpLink[] = [
+  {
+    title: "112 — единый номер экстренных служб",
+    description: "Бесплатно, с любого телефона, даже без сим-карты.",
+    url: "tel:112",
+    tags: ["тревога", "стресс", "одиночество", "выгорание"],
+    emergency: true,
+  },
+  {
+    title: "Телефон доверия для детей и подростков",
+    description: "8-800-2000-122 — анонимно, бесплатно, круглосуточно по всей России.",
+    url: "tel:88002000122",
+    tags: ["тревога", "стресс", "одиночество", "выгорание", "отношения", "самооценка"],
+    emergency: true,
+  },
+  {
+    title: "Помощь рядом",
+    description: "Психологическая поддержка для подростков онлайн — чат с психологом.",
+    url: "https://pomoschryadom.ru/",
+    tags: ["тревога", "стресс", "самооценка", "одиночество", "выгорание", "отношения", "прокрастинация", "мотивация"],
+  },
+  {
+    title: "Твоя территория (1221.chat)",
+    description: "Онлайн-консультации психологов в чате — анонимно и бесплатно.",
+    url: "https://1221.chat/",
+    tags: ["тревога", "стресс", "самооценка", "одиночество", "выгорание", "отношения", "прокрастинация"],
+  },
+  {
+    title: "Подростковая гостиная",
+    description: "Безопасное пространство, где можно поговорить и встретить других.",
+    url: "https://podrostkovaya-gostinaya.ru/",
+    tags: ["одиночество", "отношения", "самооценка", "мотивация"],
+  },
+  {
+    title: "Classgames",
+    description: "Игры и активности про общение, эмоции и взаимодействие в группе.",
+    url: "https://classgames.ru/",
+    tags: ["отношения", "одиночество", "мотивация", "самооценка"],
+  },
 ];
 
 const podcasts = [
@@ -95,7 +144,17 @@ const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
+  const [activeTags, setActiveTags] = useState<string[]>([]);
   const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
+
+  const toggleTag = (tag: string) => {
+    setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
+  };
+
+  const filteredLinks =
+    activeTags.length === 0
+      ? helpLinks
+      : helpLinks.filter((l) => activeTags.every((t) => l.tags.includes(t)));
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -134,15 +193,30 @@ const Index = () => {
 
         <ScrollReveal delay={200}>
           <div className="relative mt-6 flex flex-wrap justify-center gap-2">
-            {topics.map((t, i) => (
-              <ScrollReveal key={t} delay={300 + i * 80}>
-                <span
-                  className="inline-block rounded-full bg-muted px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary cursor-default"
-                >
-                  {t}
-                </span>
-              </ScrollReveal>
-            ))}
+            {topics.map((t, i) => {
+              const isActive = activeTags.includes(t);
+              return (
+                <ScrollReveal key={t} delay={300 + i * 80}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toggleTag(t);
+                      setTimeout(() => {
+                        document.getElementById("help-links")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 50);
+                    }}
+                    aria-pressed={isActive}
+                    className={`inline-block rounded-full px-3.5 py-1.5 text-sm transition-colors ${
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                </ScrollReveal>
+              );
+            })}
           </div>
         </ScrollReveal>
 
@@ -295,29 +369,89 @@ const Index = () => {
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
       {/* Useful links & emergency help */}
-      <section className="px-4 pb-8 md:pb-12 max-w-5xl mx-auto">
+      <section id="help-links" className="px-4 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
-          <a
-            href="/links"
-            className="group flex items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5 md:p-6 transition-all hover:bg-primary/10 hover:shadow-lg hover:scale-[1.01]"
-          >
-            <div className="rounded-xl bg-primary/15 p-3 shrink-0">
-              <LifeBuoy className="text-primary" size={26} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                Помощь рядом
-              </h3>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                Полезные ссылки, экстренные службы и телефоны доверия — всегда под рукой.
-              </p>
-            </div>
-            <ArrowRight
-              size={22}
-              className="text-primary shrink-0 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all"
-            />
-          </a>
+          <div className="flex items-center gap-2 mb-2">
+            <LifeBuoy className="text-primary" size={24} />
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">Помощь рядом</h2>
+          </div>
+          <p className="text-sm text-muted-foreground mb-6">
+            {activeTags.length === 0
+              ? "Полезные ссылки, экстренные службы и телефоны доверия. Выбери теги выше — отфильтруем по теме."
+              : `Подобрали по тегам: ${activeTags.join(", ")}.`}
+            {activeTags.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setActiveTags([])}
+                className="ml-2 underline-offset-4 hover:underline text-primary"
+              >
+                сбросить
+              </button>
+            )}
+          </p>
         </ScrollReveal>
+
+        {filteredLinks.length === 0 ? (
+          <p className="text-center text-muted-foreground py-8">
+            По выбранным тегам ничего не нашли. Попробуй убрать часть фильтров.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {filteredLinks.map((l, i) => (
+              <ScrollReveal key={l.title} delay={i * 60}>
+                <a
+                  href={l.url}
+                  target={l.url.startsWith("http") ? "_blank" : undefined}
+                  rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className={`group block h-full rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+                    l.emergency ? "border-destructive/40" : ""
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`rounded-xl p-2.5 ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
+                      {l.emergency ? (
+                        <LifeBuoy className="text-destructive" size={20} />
+                      ) : (
+                        <LinkIcon className="text-primary" size={20} />
+                      )}
+                    </div>
+                    <ArrowRight
+                      size={18}
+                      className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all"
+                    />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
+                    {l.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{l.description}</p>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {l.tags.map((t) => {
+                      const isActive = activeTags.includes(t);
+                      return (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleTag(t);
+                          }}
+                          className={`inline-block rounded-full px-2 py-0.5 text-xs transition-colors ${
+                            isActive
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </a>
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}
