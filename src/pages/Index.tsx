@@ -193,15 +193,30 @@ const Index = () => {
 
         <ScrollReveal delay={200}>
           <div className="relative mt-6 flex flex-wrap justify-center gap-2">
-            {topics.map((t, i) => (
-              <ScrollReveal key={t} delay={300 + i * 80}>
-                <span
-                  className="inline-block rounded-full bg-muted px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary cursor-default"
-                >
-                  {t}
-                </span>
-              </ScrollReveal>
-            ))}
+            {topics.map((t, i) => {
+              const isActive = activeTags.includes(t);
+              return (
+                <ScrollReveal key={t} delay={300 + i * 80}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toggleTag(t);
+                      setTimeout(() => {
+                        document.getElementById("help-links")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 50);
+                    }}
+                    aria-pressed={isActive}
+                    className={`inline-block rounded-full px-3.5 py-1.5 text-sm transition-colors ${
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                </ScrollReveal>
+              );
+            })}
           </div>
         </ScrollReveal>
 
