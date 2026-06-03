@@ -413,18 +413,22 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                         const inputId = `${q.id}-${opt}`;
                         const checked = answers[q.id] === opt;
                         return (
-                          <Label
+                          <label
                             key={opt}
                             htmlFor={inputId}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setAnswers((prev) => ({ ...prev, [q.id]: opt }));
+                            }}
                             className={`flex items-center gap-2 rounded-lg border-2 px-2.5 py-1.5 cursor-pointer transition-colors text-xs md:text-sm h-full min-h-[2.5rem] ${
                               checked
                                 ? "border-primary bg-primary/10 text-foreground"
                                 : "border-border/60 bg-background hover:border-primary/40 hover:bg-primary/5 text-muted-foreground"
                             }`}
                           >
-                            <RadioGroupItem id={inputId} value={opt} className="shrink-0" />
-                            <span className="leading-tight">{opt}</span>
-                          </Label>
+                            <RadioGroupItem id={inputId} value={opt} className="shrink-0" tabIndex={-1} />
+                            <span className="leading-tight break-words min-w-0 flex-1">{opt}</span>
+                          </label>
                         );
                       })}
                     </RadioGroup>
