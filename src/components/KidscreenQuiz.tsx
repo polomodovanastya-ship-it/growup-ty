@@ -481,9 +481,11 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
                   Спасибо, что ответил(а). Это снимок последних семи дней.
                 </p>
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                  {profile.summary}
-                </p>
+                {profile.summary?.trim() && (
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                    {profile.summary}
+                  </p>
+                )}
                 {submitError && (
                   <div className="inline-flex items-center gap-2 text-sm text-muted-foreground bg-muted/40 rounded-full px-3 py-1.5">
                     <AlertCircle size={14} /> {submitError}
