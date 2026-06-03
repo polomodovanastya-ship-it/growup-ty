@@ -107,7 +107,7 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
 
     <div data-pdf-section style="background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:18px;">
       <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Общий итог</div>
-      <div style="color:#475569;">${profile.summary}</div>
+      ${profile.summary ? `<div style="color:#475569;">${profile.summary}</div>` : ""}
       <div style="color:#94a3b8;font-size:12px;margin-top:6px;">
         Общий T-индекс: ${profile.overallTValue}
       </div>
