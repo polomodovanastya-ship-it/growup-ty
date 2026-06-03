@@ -411,35 +411,41 @@ const Index = () => {
             По выбранным тегам ничего не нашли. Попробуй убрать часть фильтров.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {filteredLinks.map((l, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {filteredLinks.map((l, i) => {
+              const favicon = l.url.startsWith("http") ? faviconFor(l.url) : null;
+              return (
               <ScrollReveal key={l.title} delay={i * 60}>
                 <a
                   href={l.url}
                   target={l.url.startsWith("http") ? "_blank" : undefined}
                   rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className={`group block h-full rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+                  className={`group block h-full rounded-xl border bg-card p-3 transition-all duration-300 hover:shadow-md hover:scale-[1.01] ${
                     l.emergency ? "border-destructive/40" : ""
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className={`rounded-xl p-2.5 ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
+                  <div className="flex items-start gap-3">
+                    <div className={`rounded-lg p-1.5 shrink-0 flex items-center justify-center w-9 h-9 ${l.emergency ? "bg-destructive/10" : "bg-muted"}`}>
                       {l.emergency ? (
-                        <LifeBuoy className="text-destructive" size={20} />
+                        <Phone className="text-destructive" size={18} />
+                      ) : favicon ? (
+                        <img src={favicon} alt="" className="w-6 h-6 rounded" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
                       ) : (
-                        <LinkIcon className="text-primary" size={20} />
+                        <LinkIcon className="text-primary" size={18} />
                       )}
                     </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug">
+                        {l.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{l.description}</p>
+                    </div>
                     <ArrowRight
-                      size={18}
-                      className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all"
+                      size={16}
+                      className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 mt-1"
                     />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
-                    {l.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">{l.description}</p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
+                  <div className="mt-2 flex flex-wrap gap-1 pl-12">
                     {l.tags.map((t) => {
                       const isActive = activeTags.includes(t);
                       return (
@@ -451,7 +457,7 @@ const Index = () => {
                             e.stopPropagation();
                             toggleTag(t);
                           }}
-                          className={`inline-block rounded-full px-2 py-0.5 text-xs transition-colors ${
+                          className={`inline-block rounded-full px-2 py-0.5 text-[10px] transition-colors ${
                             isActive
                               ? "bg-primary text-primary-foreground"
                               : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
@@ -464,7 +470,7 @@ const Index = () => {
                   </div>
                 </a>
               </ScrollReveal>
-            ))}
+            );})}
           </div>
         )}
       </section>
