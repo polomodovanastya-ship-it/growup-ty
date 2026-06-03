@@ -183,6 +183,12 @@ const Index = () => {
       ? helpLinks
       : helpLinks.filter((l) => activeTags.every((t) => l.tags.includes(t)));
 
+  const filteredPodcasts =
+    activeTags.length === 0
+      ? podcasts
+      : podcasts.filter((p) => activeTags.every((t) => p.tags.includes(t)));
+  const visiblePodcasts = showAllPodcasts ? filteredPodcasts : filteredPodcasts.slice(0, INITIAL_VISIBLE);
+
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Header */}
