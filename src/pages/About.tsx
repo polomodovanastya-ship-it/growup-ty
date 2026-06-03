@@ -45,7 +45,7 @@ const About = () => {
         </div>
       </header>
 
-      <section className="relative px-4 pt-8 pb-6 md:pt-14 md:pb-10 flex flex-col items-center text-center">
+      <section className="relative px-4 pt-6 pb-4 md:pt-10 md:pb-6 flex flex-col items-center text-center">
         <div className="blob w-48 h-48 md:w-72 md:h-72 bg-primary/30 -top-10 -left-10 md:-left-20" />
         <div
           className="blob w-40 h-40 md:w-64 md:h-64 bg-secondary/30 top-20 -right-8 md:-right-16"
@@ -64,9 +64,9 @@ const About = () => {
         </ScrollReveal>
       </section>
 
-      <section className="px-4 pb-10 max-w-5xl mx-auto">
+      <section className="px-4 pb-6 max-w-5xl mx-auto">
         <ScrollReveal>
-          <div className="border bg-card p-6 md:p-8 space-y-4 rounded-md px-[16px] py-[16px] mx-0">
+          <div className="border bg-card p-4 md:p-6 space-y-3 rounded-md px-[16px] py-[16px] mx-0">
             <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
               Мы верим: говорить о чувствах — нормально, просить о помощи — нормально, не знать
               ответов — тоже нормально. Этот сайт мы делаем для тех, кому сейчас непросто, и для
@@ -77,16 +77,16 @@ const About = () => {
         </ScrollReveal>
       </section>
 
-      <section className="px-4 pb-16 max-w-5xl mx-auto">
+      <section className="px-4 pb-10 max-w-5xl mx-auto">
         <ScrollReveal>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4 text-center">
             Команда проекта
           </h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
           {creators.map((c, i) => (
             <ScrollReveal key={c.name} delay={i * 80}>
-              <div className="group h-full rounded-2xl border bg-card p-6 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+              <div className="group h-full rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                 <div className="flex items-start gap-4 mb-4">
                   {c.photo ? (
                     <img
@@ -138,11 +138,11 @@ const About = () => {
           ))}
         </div>
 
-        <div className="mt-10 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+        <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Heart size={14} className="text-primary" /> Сделано с заботой о подростках
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
