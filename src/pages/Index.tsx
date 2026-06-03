@@ -270,7 +270,7 @@ const Index = () => {
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">Послушай</h2>
-            <span className="ml-1 text-sm text-muted-foreground">· {podcasts.length} выпусков</span>
+            <span className="ml-1 text-sm text-muted-foreground">· {filteredPodcasts.length} из {podcasts.length}</span>
           </div>
         </ScrollReveal>
 
