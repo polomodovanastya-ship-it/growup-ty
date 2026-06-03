@@ -388,25 +388,25 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
           {/* Questions */}
           {screen === "questions" && currentSection && (
-            <div className="p-6 md:p-8 space-y-6">
+            <div className="p-4 md:p-6 space-y-3">
               <div>
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">{currentSection.title}</h2>
+                <h2 className="text-lg md:text-xl font-bold text-foreground">{currentSection.title}</h2>
                 {currentSection.intro && (
-                  <p className="mt-1 text-sm md:text-base text-muted-foreground">{currentSection.intro}</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{currentSection.intro}</p>
                 )}
               </div>
 
-              <div className="space-y-5">
+              <div className="space-y-2">
                 {currentSection.questions.map((q, qi) => (
-                  <div key={q.id} className="rounded-2xl border border-border/60 bg-card p-4 md:p-5">
-                    <p className="text-base md:text-lg font-medium text-foreground leading-snug mb-3">
+                  <div key={q.id} className="rounded-xl border border-border/60 bg-card p-3">
+                    <p className="text-sm md:text-base font-medium text-foreground leading-snug mb-2">
                       <span className="text-primary mr-1.5">{qi + 1}.</span>
                       {q.text}
                     </p>
                     <RadioGroup
                       value={answers[q.id] ?? ""}
                       onValueChange={(val) => setAnswers((prev) => ({ ...prev, [q.id]: val }))}
-                      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 items-stretch"
+                      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1.5 items-stretch"
                     >
                       {q.scale.map((opt) => {
                         const inputId = `${q.id}-${opt}`;
@@ -415,7 +415,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                           <Label
                             key={opt}
                             htmlFor={inputId}
-                            className={`flex items-center gap-2 rounded-xl border-2 px-3 py-2.5 cursor-pointer transition-colors text-sm md:text-base h-full min-h-[3.25rem] ${
+                            className={`flex items-center gap-2 rounded-lg border-2 px-2.5 py-1.5 cursor-pointer transition-colors text-xs md:text-sm h-full min-h-[2.5rem] ${
                               checked
                                 ? "border-primary bg-primary/10 text-foreground"
                                 : "border-border/60 bg-background hover:border-primary/40 hover:bg-primary/5 text-muted-foreground"
@@ -431,9 +431,10 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 ))}
               </div>
 
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center justify-between pt-1">
                 <Button
                   variant="ghost"
+                  size="sm"
                   className="gap-1 text-muted-foreground"
                   onClick={handleBack}
                   disabled={sectionIndex === 0}
@@ -441,8 +442,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                   <ArrowLeft size={16} /> Назад
                 </Button>
                 <Button
-                  size="lg"
-                  className="rounded-full gap-2 px-6"
+                  className="rounded-full gap-2 px-5"
                   onClick={handleNext}
                   disabled={!allCurrentAnswered}
                 >
