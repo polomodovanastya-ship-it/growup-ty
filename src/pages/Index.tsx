@@ -384,9 +384,6 @@ const Index = () => {
             <ClipboardCheck className="text-primary" size={24} />
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">С чего начать</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
-            Короткие вопросы — чтобы понять, что с тобой происходит прямо сейчас.
-          </p>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -430,20 +427,6 @@ const Index = () => {
             <LifeBuoy className="text-primary" size={24} />
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">Помощь рядом</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-6">
-            {activeTags.length === 0
-              ? "Полезные ссылки, экстренные службы и телефоны доверия. Выбери теги выше — отфильтруем по теме."
-              : `Подобрали по тегам: ${activeTags.join(", ")}.`}
-            {activeTags.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setActiveTags([])}
-                className="ml-2 underline-offset-4 hover:underline text-primary"
-              >
-                сбросить
-              </button>
-            )}
-          </p>
         </ScrollReveal>
 
         {filteredLinks.length === 0 ? (
