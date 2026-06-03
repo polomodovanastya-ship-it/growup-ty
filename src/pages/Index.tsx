@@ -497,6 +497,9 @@ const Index = () => {
         <p className="text-sm text-muted-foreground">
           Ты не один(а). <span className="text-primary font-medium">Как ты</span> — проект о ментальном здоровье 💜
         </p>
+        <a href="/about" className="inline-block text-sm text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline">
+          О нас
+        </a>
       </footer>
     </div>
   );
