@@ -371,63 +371,48 @@ const Index = () => {
         )}
       </section>
 
-      {/* Checkups + Checklists */}
-      <section className="px-4 py-12 md:py-16 max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Checkups */}
-          <ScrollReveal>
-            <div className="rounded-2xl border bg-card p-5 md:p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <ClipboardCheck className="text-primary" size={22} />
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">Как ты сейчас?</h2>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Короткие вопросы — чтобы понять, что с тобой происходит прямо сейчас.
-              </p>
-              <ul className="space-y-2">
-                {checkups.map((c) => (
-                  <li
-                    key={c.title}
-                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted cursor-pointer group"
-                    onClick={() => {
-                      const action = (c as any).action;
-                      if (action === "career-quiz") setCareerQuizOpen(true);
-                      if (action === "kidscreen") setKidscreenOpen(true);
-                    }}
-                  >
-                    <c.icon size={18} className="text-primary/70 group-hover:text-primary transition-colors" />
-                    <span className="text-sm font-medium text-foreground">{c.title}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </ScrollReveal>
+      {/* Checkups */}
+      <section className="px-4 pb-12 md:pb-16 max-w-5xl mx-auto">
+        <ScrollReveal>
+          <div className="flex items-center gap-2 mb-2">
+            <ClipboardCheck className="text-primary" size={24} />
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">С чего начать</h2>
+          </div>
+          <p className="text-sm text-muted-foreground mb-6">
+            Короткие вопросы — чтобы понять, что с тобой происходит прямо сейчас.
+          </p>
+        </ScrollReveal>
 
-          {/* Checklists */}
-          <ScrollReveal delay={100}>
-            <div className="rounded-2xl border bg-card p-5 md:p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <ListChecks className="text-secondary" size={22} />
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">Действуй</h2>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Простые чеклисты — маленькие шаги, которые реально помогают.
-              </p>
-              <ul className="space-y-2">
-                {checklists.map((c) => (
-                  <li
-                    key={c.title}
-                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted cursor-pointer group"
-                  >
-                    <c.icon size={18} className="text-secondary/70 group-hover:text-secondary transition-colors" />
-                    <span className="text-sm font-medium text-foreground">{c.title}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </ScrollReveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {checkups.map((c, i) => (
+            <ScrollReveal key={c.title} delay={i * 60}>
+              <button
+                type="button"
+                onClick={() => {
+                  const action = (c as any).action;
+                  if (action === "career-quiz") setCareerQuizOpen(true);
+                  if (action === "kidscreen") setKidscreenOpen(true);
+                }}
+                className="group w-full text-left h-full rounded-xl border bg-card p-3 transition-all duration-300 hover:shadow-md hover:scale-[1.01]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-primary/10 p-1.5 shrink-0 flex items-center justify-center w-9 h-9">
+                    <c.icon className="text-primary" size={18} />
+                  </div>
+                  <span className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug flex-1 min-w-0">
+                    {c.title}
+                  </span>
+                  <ArrowRight
+                    size={16}
+                    className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0"
+                  />
+                </div>
+              </button>
+            </ScrollReveal>
+          ))}
         </div>
       </section>
+
 
       <CareerQuiz open={careerQuizOpen} onOpenChange={setCareerQuizOpen} />
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
