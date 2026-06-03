@@ -283,12 +283,12 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             <h2 className="text-xl md:text-2xl font-bold text-foreground leading-snug">
               {questions[questionIndex].text}
             </h2>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               {questions[questionIndex].options.map((opt, i) => (
                 <button
                   key={i}
                   onClick={() => handleAnswer(opt.stage)}
-                  className="flex items-center text-left rounded-2xl border-2 border-border/60 bg-card px-5 py-4 text-base md:text-lg text-foreground transition-colors min-h-[4rem] hover:border-primary/40 hover:bg-primary/5"
+                  className="flex items-center text-left rounded-xl border-2 border-border/60 bg-card px-4 py-2.5 text-sm md:text-base text-foreground transition-colors min-h-[2.75rem] hover:border-primary/40 hover:bg-primary/5"
                 >
                   {opt.label}
                 </button>
