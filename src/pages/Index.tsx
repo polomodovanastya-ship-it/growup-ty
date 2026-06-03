@@ -295,7 +295,12 @@ const Index = () => {
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
       {/* Footer */}
-      <footer className="px-4 py-8 text-center">
+      <footer className="px-4 py-8 text-center space-y-3">
+        <div>
+          <a href="/links" className="text-sm font-medium text-primary hover:underline">
+            Полезные ссылки и экстренная помощь →
+          </a>
+        </div>
         <p className="text-sm text-muted-foreground">
           Ты не один(а). <span className="text-primary font-medium">Как ты</span> — проект о ментальном здоровье 💜
         </p>
