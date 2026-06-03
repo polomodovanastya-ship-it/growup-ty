@@ -369,29 +369,89 @@ const Index = () => {
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
       {/* Useful links & emergency help */}
-      <section className="px-4 pb-8 md:pb-12 max-w-5xl mx-auto">
+      <section id="help-links" className="px-4 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
-          <a
-            href="/links"
-            className="group flex items-center gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5 md:p-6 transition-all hover:bg-primary/10 hover:shadow-lg hover:scale-[1.01]"
-          >
-            <div className="rounded-xl bg-primary/15 p-3 shrink-0">
-              <LifeBuoy className="text-primary" size={26} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                Помощь рядом
-              </h3>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                Полезные ссылки, экстренные службы и телефоны доверия — всегда под рукой.
-              </p>
-            </div>
-            <ArrowRight
-              size={22}
-              className="text-primary shrink-0 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all"
-            />
-          </a>
+          <div className="flex items-center gap-2 mb-2">
+            <LifeBuoy className="text-primary" size={24} />
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">Помощь рядом</h2>
+          </div>
+          <p className="text-sm text-muted-foreground mb-6">
+            {activeTags.length === 0
+              ? "Полезные ссылки, экстренные службы и телефоны доверия. Выбери теги выше — отфильтруем по теме."
+              : `Подобрали по тегам: ${activeTags.join(", ")}.`}
+            {activeTags.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setActiveTags([])}
+                className="ml-2 underline-offset-4 hover:underline text-primary"
+              >
+                сбросить
+              </button>
+            )}
+          </p>
         </ScrollReveal>
+
+        {filteredLinks.length === 0 ? (
+          <p className="text-center text-muted-foreground py-8">
+            По выбранным тегам ничего не нашли. Попробуй убрать часть фильтров.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {filteredLinks.map((l, i) => (
+              <ScrollReveal key={l.title} delay={i * 60}>
+                <a
+                  href={l.url}
+                  target={l.url.startsWith("http") ? "_blank" : undefined}
+                  rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className={`group block h-full rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+                    l.emergency ? "border-destructive/40" : ""
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`rounded-xl p-2.5 ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
+                      {l.emergency ? (
+                        <LifeBuoy className="text-destructive" size={20} />
+                      ) : (
+                        <LinkIcon className="text-primary" size={20} />
+                      )}
+                    </div>
+                    <ArrowRight
+                      size={18}
+                      className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all"
+                    />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
+                    {l.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{l.description}</p>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {l.tags.map((t) => {
+                      const isActive = activeTags.includes(t);
+                      return (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleTag(t);
+                          }}
+                          className={`inline-block rounded-full px-2 py-0.5 text-xs transition-colors ${
+                            isActive
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </a>
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}
