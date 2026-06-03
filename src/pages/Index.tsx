@@ -155,6 +155,8 @@ const Index = () => {
     activeTags.length === 0
       ? helpLinks
       : helpLinks.filter((l) => activeTags.every((t) => l.tags.includes(t)));
+
+  return (
     <div className="min-h-screen overflow-hidden">
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/40">
