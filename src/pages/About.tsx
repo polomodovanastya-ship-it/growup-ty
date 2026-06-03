@@ -66,7 +66,7 @@ const About = () => {
 
       <section className="px-4 pb-10 max-w-3xl mx-auto">
         <ScrollReveal>
-          <div className="rounded-2xl border bg-card p-6 md:p-8 space-y-4">
+          <div className="border bg-card p-6 md:p-8 space-y-4 rounded-md px-[16px] py-[16px] mx-0">
             <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
               «Как ты» — проект о ментальном здоровье подростков. Мы собрали в одном месте короткие
               опросы, подкасты и проверенные сервисы поддержки, чтобы в трудный момент было проще
