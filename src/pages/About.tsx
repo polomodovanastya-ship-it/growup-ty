@@ -84,7 +84,7 @@ const About = () => {
       <section className="px-4 pb-16 max-w-5xl mx-auto">
         <ScrollReveal>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6 text-center">
-            Создательницы
+            Команда проекта
           </h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
