@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
 import { generateReportPdf } from "@/kidscreen/pdfReport";
@@ -166,6 +166,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [profile, setProfile] = useState<ProfileReport | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
 
   const handleDownloadPdf = async () => {
     if (!profile) return;
@@ -478,6 +479,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                   Твой профиль самочувствия
                 </DialogTitle>
                 <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                  Спасибо, что ответил(а). Это снимок последних семи дней.
+                </p>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
                   {profile.summary}
                 </p>
                 {submitError && (
@@ -497,6 +501,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                       : s.level === "average"
                       ? "bg-primary/70"
                       : "bg-primary";
+                  const isOpen = !!expandedScales[s.scaleId];
                   return (
                     <div key={s.scaleId} className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-2">
                       <div className="flex items-start justify-between gap-3">
@@ -511,7 +516,25 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                           style={{ width: `${Math.max(4, s.tValue)}%` }}
                         />
                       </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed pt-1">{s.text}</p>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedScales((prev) => ({ ...prev, [s.scaleId]: !prev[s.scaleId] }))
+                        }
+                        className="flex items-center gap-1 text-xs font-medium text-primary hover:underline pt-1"
+                        aria-expanded={isOpen}
+                      >
+                        {isOpen ? "Свернуть" : "Подробнее"}
+                        <ChevronDown
+                          size={14}
+                          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                      {isOpen && (
+                        <p className="text-sm text-muted-foreground leading-relaxed pt-1">
+                          {RECOMMENDATIONS[s.scaleId][s.level]}
+                        </p>
+                      )}
                     </div>
                   );
                 })}
@@ -580,14 +603,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                             {s.levelLabel}
                           </span>
                         </div>
-                        <ul className="space-y-2">
-                          {RECOMMENDATIONS[s.scaleId].map((rec, i) => (
-                            <li key={i} className="flex gap-2 text-sm md:text-base text-muted-foreground leading-relaxed">
-                              <span className="text-primary mt-0.5">•</span>
-                              <span>{rec}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                          {RECOMMENDATIONS[s.scaleId][s.level]}
+                        </p>
                       </div>
                     ))}
                   </div>
