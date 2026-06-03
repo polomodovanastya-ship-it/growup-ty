@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Link as LinkIcon } from "lucide-react";
 import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -9,6 +9,55 @@ import logo from "@/assets/logo.png";
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
   "стресс", "мотивация", "одиночество", "выгорание",
+];
+
+type HelpLink = {
+  title: string;
+  description: string;
+  url: string;
+  tags: string[];
+  emergency?: boolean;
+};
+
+const helpLinks: HelpLink[] = [
+  {
+    title: "112 — единый номер экстренных служб",
+    description: "Бесплатно, с любого телефона, даже без сим-карты.",
+    url: "tel:112",
+    tags: ["тревога", "стресс", "одиночество", "выгорание"],
+    emergency: true,
+  },
+  {
+    title: "Телефон доверия для детей и подростков",
+    description: "8-800-2000-122 — анонимно, бесплатно, круглосуточно по всей России.",
+    url: "tel:88002000122",
+    tags: ["тревога", "стресс", "одиночество", "выгорание", "отношения", "самооценка"],
+    emergency: true,
+  },
+  {
+    title: "Помощь рядом",
+    description: "Психологическая поддержка для подростков онлайн — чат с психологом.",
+    url: "https://pomoschryadom.ru/",
+    tags: ["тревога", "стресс", "самооценка", "одиночество", "выгорание", "отношения", "прокрастинация", "мотивация"],
+  },
+  {
+    title: "Твоя территория (1221.chat)",
+    description: "Онлайн-консультации психологов в чате — анонимно и бесплатно.",
+    url: "https://1221.chat/",
+    tags: ["тревога", "стресс", "самооценка", "одиночество", "выгорание", "отношения", "прокрастинация"],
+  },
+  {
+    title: "Подростковая гостиная",
+    description: "Безопасное пространство, где можно поговорить и встретить других.",
+    url: "https://podrostkovaya-gostinaya.ru/",
+    tags: ["одиночество", "отношения", "самооценка", "мотивация"],
+  },
+  {
+    title: "Classgames",
+    description: "Игры и активности про общение, эмоции и взаимодействие в группе.",
+    url: "https://classgames.ru/",
+    tags: ["отношения", "одиночество", "мотивация", "самооценка"],
+  },
 ];
 
 const podcasts = [
