@@ -1,13 +1,17 @@
-import { ArrowLeft, Heart, Sparkles } from "lucide-react";
+import { ArrowLeft, Heart, Sparkles, Send, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
+import anastasiaPhoto from "@/assets/anastasia.jpg.asset.json";
 
 type Creator = {
   name: string;
   role: string;
   bio: string;
   initials: string;
+  photo?: string;
+  telegram?: string;
+  phone?: string;
 };
 
 const creators: Creator[] = [
@@ -16,6 +20,9 @@ const creators: Creator[] = [
     role: "Со-основательница проекта",
     bio: "Верит, что подросткам нужен честный разговор без морали и осуждения. Помогает разбираться с эмоциями простыми словами.",
     initials: "АП",
+    photo: anastasiaPhoto.url,
+    telegram: "AnastasiaPolomodova",
+    phone: "+7-926-900-9260",
   },
   {
     name: "Наталья Сухова",
@@ -85,9 +92,17 @@ const About = () => {
             <ScrollReveal key={c.name} delay={i * 80}>
               <div className="group h-full rounded-2xl border bg-card p-6 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-primary/80 to-secondary/80 text-primary-foreground flex items-center justify-center font-bold text-lg">
-                    {c.initials}
-                  </div>
+                  {c.photo ? (
+                    <img
+                      src={c.photo}
+                      alt={c.name}
+                      className="shrink-0 w-14 h-14 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-primary/80 to-secondary/80 text-primary-foreground flex items-center justify-center font-bold text-lg">
+                      {c.initials}
+                    </div>
+                  )}
                   <div className="min-w-0">
                     <h3 className="font-semibold text-foreground text-lg leading-tight">
                       {c.name}
@@ -100,6 +115,28 @@ const About = () => {
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   {c.bio}
                 </p>
+                {(c.telegram || c.phone) && (
+                  <div className="mt-4 flex flex-col gap-2 text-sm">
+                    {c.telegram && (
+                      <a
+                        href={`https://t.me/${c.telegram}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
+                      >
+                        <Send size={14} /> @{c.telegram}
+                      </a>
+                    )}
+                    {c.phone && (
+                      <a
+                        href={`tel:${c.phone.replace(/-/g, "")}`}
+                        className="inline-flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors"
+                      >
+                        <Phone size={14} /> {c.phone}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </ScrollReveal>
           ))}
