@@ -299,7 +299,7 @@ const Index = () => {
 
 
       {/* Podcasts */}
-      <section className="px-4 pt-2 pb-12 md:pb-16 max-w-5xl mx-auto">
+      <section id="podcasts" className="px-4 pt-2 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
