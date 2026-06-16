@@ -2,6 +2,13 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon, User } from "lucide-react";
 import heroTeens from "@/assets/hero-teens.jpg";
+import emojiRelieved from "@/assets/emoji/1f60c.svg";
+import emojiSteam from "@/assets/emoji/1f624.svg";
+import emojiPleading from "@/assets/emoji/1f97a.svg";
+import emojiHearts from "@/assets/emoji/1f970.svg";
+import emojiAnxious from "@/assets/emoji/1f630.svg";
+import emojiNeutral from "@/assets/emoji/1f610.svg";
+
 
 
 const faviconFor = (url: string) => {
@@ -276,12 +283,12 @@ const Index = () => {
           </p>
           <div className="mt-6 md:mt-8 grid grid-cols-3 md:grid-cols-6 gap-4 md:gap-2 max-w-4xl mx-auto">
             {[
-              { emoji: "😌", label: "спокойно" },
-              { emoji: "😤", label: "злюсь,\nкак черт" },
-              { emoji: "🥺", label: "плачу" },
-              { emoji: "🥰", label: "любовь\nокрыляет" },
-              { emoji: "😰", label: "боюсь" },
-              { emoji: "😐", label: "не чувствую\nничего" },
+              { emoji: emojiRelieved, label: "спокойно" },
+              { emoji: emojiSteam, label: "злюсь,\nкак черт" },
+              { emoji: emojiPleading, label: "плачу" },
+              { emoji: emojiHearts, label: "любовь\nокрыляет" },
+              { emoji: emojiAnxious, label: "боюсь" },
+              { emoji: emojiNeutral, label: "не чувствую\nничего" },
             ].map((f) => (
               <button
                 key={f.label}
@@ -289,11 +296,18 @@ const Index = () => {
                 onClick={() => setKidscreenOpen(true)}
                 className="flex flex-col items-center gap-2 group"
               >
-                <span className="text-4xl md:text-5xl transition-transform group-hover:scale-110">{f.emoji}</span>
+                <img
+                  src={f.emoji}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:scale-110"
+                  loading="lazy"
+                />
                 <span className="text-xs md:text-sm text-foreground whitespace-pre-line leading-tight">{f.label}</span>
               </button>
             ))}
           </div>
+
         </div>
       </section>
 
