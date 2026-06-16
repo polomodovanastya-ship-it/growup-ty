@@ -249,31 +249,6 @@ const Index = () => {
           </button>
         </div>
 
-        {/* Topics pill bar */}
-        <div className="mt-3 md:mt-4 rounded-full bg-accent/60 px-4 md:px-6 py-3 flex items-center gap-3 md:gap-5 overflow-x-auto">
-          <span className="text-foreground/60 font-semibold shrink-0">?</span>
-          {topics.slice(0, 7).map((t) => {
-            const isActive = activeTags.includes(t);
-            return (
-              <button
-                key={t}
-                type="button"
-                onClick={() => {
-                  toggleTag(t);
-                  setTimeout(() => {
-                    document.getElementById("help-links")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }, 50);
-                }}
-                className={`shrink-0 text-sm md:text-[15px] lowercase transition-colors ${
-                  isActive ? "text-primary font-semibold" : "text-foreground hover:text-primary"
-                }`}
-              >
-                {t}
-              </button>
-            );
-          })}
-          <span className="text-foreground/60 font-semibold shrink-0 ml-auto">?</span>
-        </div>
 
         {/* Feelings */}
         <div className="mt-8 md:mt-10 text-center">
