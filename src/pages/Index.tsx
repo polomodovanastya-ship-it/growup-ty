@@ -276,12 +276,12 @@ const Index = () => {
           </p>
           <div className="mt-6 md:mt-8 grid grid-cols-3 md:grid-cols-6 gap-4 md:gap-2 max-w-4xl mx-auto">
             {[
-              { emoji: "😌", label: "спокойно" },
-              { emoji: "😤", label: "злюсь,\nкак черт" },
-              { emoji: "🥺", label: "плачу" },
-              { emoji: "🥰", label: "любовь\nокрыляет" },
-              { emoji: "😰", label: "боюсь" },
-              { emoji: "😐", label: "не чувствую\nничего" },
+              { emoji: emojiRelieved, label: "спокойно" },
+              { emoji: emojiSteam, label: "злюсь,\nкак черт" },
+              { emoji: emojiPleading, label: "плачу" },
+              { emoji: emojiHearts, label: "любовь\nокрыляет" },
+              { emoji: emojiAnxious, label: "боюсь" },
+              { emoji: emojiNeutral, label: "не чувствую\nничего" },
             ].map((f) => (
               <button
                 key={f.label}
@@ -289,11 +289,18 @@ const Index = () => {
                 onClick={() => setKidscreenOpen(true)}
                 className="flex flex-col items-center gap-2 group"
               >
-                <span className="text-4xl md:text-5xl transition-transform group-hover:scale-110">{f.emoji}</span>
+                <img
+                  src={f.emoji}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:scale-110"
+                  loading="lazy"
+                />
                 <span className="text-xs md:text-sm text-foreground whitespace-pre-line leading-tight">{f.label}</span>
               </button>
             ))}
           </div>
+
         </div>
       </section>
 
