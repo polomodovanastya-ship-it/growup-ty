@@ -196,76 +196,107 @@ const Index = () => {
     <div className="min-h-screen overflow-hidden">
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/40">
-        <div className="max-w-5xl mx-auto px-4 h-14 md:h-16 flex items-center">
-          <a href="/" aria-label="как ты — на главную" className="flex items-center">
-            <img
-              src={logo}
-              alt="как ты"
-              className="h-7 md:h-9 w-auto select-none"
-              draggable={false}
-            />
+        <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
+          <nav className="flex items-center gap-6 text-sm font-semibold lowercase">
+            <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
+            <a href="#help-links" className="text-foreground hover:text-primary transition-colors">помощь рядом</a>
+          </nav>
+          <a href="#" aria-label="Профиль" className="rounded-full p-2 hover:bg-muted transition-colors">
+            <User size={20} className="text-foreground" />
           </a>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative px-4 pt-8 pb-10 md:pt-14 md:pb-16 flex flex-col items-center text-center">
-        {/* Blobs */}
-        <div className="blob w-48 h-48 md:w-72 md:h-72 bg-primary/30 -top-10 -left-10 md:-left-20" />
-        <div className="blob w-40 h-40 md:w-64 md:h-64 bg-secondary/30 top-20 -right-8 md:-right-16" style={{ animationDelay: "2s" }} />
-        <div className="blob blob-sm w-32 h-32 bg-accent/40 bottom-0 left-1/3 hidden md:block" style={{ animationDelay: "4s" }} />
-
-        <ScrollReveal>
-          <h1 className="relative text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
-            Привет, как ты?
-          </h1>
-        </ScrollReveal>
-
-        <ScrollReveal delay={100}>
-          <p className="relative mt-4 max-w-md text-base md:text-lg text-muted-foreground">
-            Здесь можно разобраться в себе, послушать что-то полезное и сделать первый шаг — в своём темпе.
-          </p>
-        </ScrollReveal>
-
-        <ScrollReveal delay={200}>
-          <div className="relative mt-6 flex flex-wrap justify-center gap-2">
-            {topics.map((t, i) => {
-              const isActive = activeTags.includes(t);
-              return (
-                <ScrollReveal key={t} delay={300 + i * 80}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      toggleTag(t);
-                      setTimeout(() => {
-                        document.getElementById("help-links")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }, 50);
-                    }}
-                    aria-pressed={isActive}
-                    className={`inline-block rounded-full px-3.5 py-1.5 text-sm transition-colors ${
-                      isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                    }`}
-                  >
-                    {t}
-                  </button>
-                </ScrollReveal>
-              );
-            })}
+      <section className="px-4 pt-4 pb-6 md:pt-6 md:pb-8 max-w-6xl mx-auto">
+        <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] shadow-xl">
+          <img
+            src={heroTeens}
+            alt="Подростки"
+            className="w-full h-[420px] md:h-[560px] object-cover object-center"
+            width={1600}
+            height={896}
+          />
+          {/* Top-left logo */}
+          <div className="absolute top-5 left-5 md:top-8 md:left-10 flex items-center gap-2">
+            <span className="text-white text-2xl md:text-3xl font-semibold lowercase tracking-tight drop-shadow">
+              как ты?
+            </span>
+            <svg width="48" height="14" viewBox="0 0 48 14" fill="none" className="text-white">
+              <path d="M1 9 C 12 2, 28 2, 47 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
+            </svg>
           </div>
-        </ScrollReveal>
-
-        <ScrollReveal delay={300}>
-          <Button
-            size="lg"
-            className="relative mt-8 rounded-full px-8 text-base gap-2"
+          {/* Top-right headline */}
+          <div className="absolute top-5 right-5 md:top-8 md:right-10 max-w-[58%] md:max-w-sm text-right">
+            <h1 className="text-white text-base md:text-2xl font-bold leading-snug drop-shadow-md">
+              Здесь можно избавиться от тревоги и разобраться в себе
+            </h1>
+          </div>
+          {/* Bottom-right CTA */}
+          <button
+            type="button"
             onClick={() => setKidscreenOpen(true)}
+            className="absolute bottom-5 right-5 md:bottom-8 md:right-10 inline-flex items-center gap-2 rounded-full bg-white text-foreground px-6 md:px-8 py-3 md:py-3.5 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
           >
             Начать <ArrowRight size={18} />
-          </Button>
-        </ScrollReveal>
+          </button>
+        </div>
+
+        {/* Topics pill bar */}
+        <div className="mt-3 md:mt-4 rounded-full bg-accent/60 px-4 md:px-6 py-3 flex items-center gap-3 md:gap-5 overflow-x-auto">
+          <span className="text-foreground/60 font-semibold shrink-0">?</span>
+          {topics.slice(0, 7).map((t) => {
+            const isActive = activeTags.includes(t);
+            return (
+              <button
+                key={t}
+                type="button"
+                onClick={() => {
+                  toggleTag(t);
+                  setTimeout(() => {
+                    document.getElementById("help-links")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 50);
+                }}
+                className={`shrink-0 text-sm md:text-[15px] lowercase transition-colors ${
+                  isActive ? "text-primary font-semibold" : "text-foreground hover:text-primary"
+                }`}
+              >
+                {t}
+              </button>
+            );
+          })}
+          <span className="text-foreground/60 font-semibold shrink-0 ml-auto">?</span>
+        </div>
+
+        {/* Feelings */}
+        <div className="mt-8 md:mt-10 text-center">
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Как ты себя чувствуешь прямо сейчас?</h2>
+          <p className="mt-2 text-sm md:text-base text-muted-foreground">
+            Выбери то, что больше всего подходит. Неправильного ответа не бывает
+          </p>
+          <div className="mt-6 md:mt-8 grid grid-cols-3 md:grid-cols-6 gap-4 md:gap-2 max-w-4xl mx-auto">
+            {[
+              { emoji: "😌", label: "спокойно" },
+              { emoji: "😤", label: "злюсь,\nкак черт" },
+              { emoji: "🥺", label: "плачу" },
+              { emoji: "🥰", label: "любовь\nокрыляет" },
+              { emoji: "😰", label: "боюсь" },
+              { emoji: "😐", label: "не чувствую\nничего" },
+            ].map((f) => (
+              <button
+                key={f.label}
+                type="button"
+                onClick={() => setKidscreenOpen(true)}
+                className="flex flex-col items-center gap-2 group"
+              >
+                <span className="text-4xl md:text-5xl transition-transform group-hover:scale-110">{f.emoji}</span>
+                <span className="text-xs md:text-sm text-foreground whitespace-pre-line leading-tight">{f.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </section>
+
 
       {/* Podcasts */}
       <section className="px-4 pt-2 pb-12 md:pb-16 max-w-5xl mx-auto">
