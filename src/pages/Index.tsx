@@ -188,10 +188,7 @@ const Index = () => {
     setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
   };
 
-  const filteredLinks =
-    activeTags.length === 0
-      ? helpLinks
-      : helpLinks.filter((l) => activeTags.every((t) => l.tags.includes(t)));
+  const filteredLinks = helpLinks;
 
   const filteredPodcasts =
     activeTags.length === 0
@@ -446,12 +443,7 @@ const Index = () => {
           </div>
         </ScrollReveal>
 
-        {filteredLinks.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            По выбранным тегам ничего не нашли. Попробуй убрать часть фильтров.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {filteredLinks.map((l, i) => {
               const favicon = l.url.startsWith("http") ? faviconFor(l.url) : null;
               return (
@@ -485,34 +477,10 @@ const Index = () => {
                       className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 mt-1"
                     />
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-1 pl-12">
-                    {l.tags.map((t) => {
-                      const isActive = activeTags.includes(t);
-                      return (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toggleTag(t);
-                          }}
-                          className={`inline-block rounded-full px-2 py-0.5 text-[10px] transition-colors ${
-                            isActive
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      );
-                    })}
-                  </div>
                 </a>
               </ScrollReveal>
             );})}
           </div>
-        )}
       </section>
 
       {/* Footer */}
