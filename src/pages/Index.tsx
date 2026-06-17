@@ -181,20 +181,10 @@ const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
-  const [activeTags, setActiveTags] = useState<string[]>([]);
-  
-
-  const toggleTag = (tag: string) => {
-    setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
-  };
 
   const filteredLinks = helpLinks;
 
-  const filteredPodcasts =
-    activeTags.length === 0
-      ? podcasts
-      : podcasts.filter((p) => activeTags.every((t) => p.tags.includes(t)));
-  const visiblePodcasts = showAllPodcasts ? filteredPodcasts : filteredPodcasts.slice(0, INITIAL_VISIBLE);
+  const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -290,15 +280,10 @@ const Index = () => {
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">Послушай</h2>
-            <span className="ml-1 text-sm text-muted-foreground">· {filteredPodcasts.length} из {podcasts.length}</span>
+            <span className="ml-1 text-sm text-muted-foreground">· {podcasts.length}</span>
           </div>
         </ScrollReveal>
 
-        {filteredPodcasts.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            По выбранным тегам подкастов не нашли. Попробуй убрать часть фильтров.
-          </p>
-        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visiblePodcasts.map((p, i) => {
             const url = (p as any).url as string | undefined;
@@ -312,34 +297,11 @@ const Index = () => {
                     <p.icon className="text-primary" size={20} />
                   </div>
                   <span className="rounded-full bg-muted text-muted-foreground px-2.5 py-0.5 text-xs font-medium">
-                    {i + 1}/{filteredPodcasts.length}
+                    {i + 1}/{podcasts.length}
                   </span>
                 </div>
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{p.title}</h3>
                 <p className="text-sm text-muted-foreground">{p.description}</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => {
-                    const isActive = activeTags.includes(t);
-                    return (
-                      <button
-                        key={t}
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          toggleTag(t);
-                        }}
-                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] transition-colors ${
-                          isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                        }`}
-                      >
-                        {t}
-                      </button>
-                    );
-                  })}
-                </div>
                 <div className="mt-auto">
                   {audio && (
                     <audio
@@ -372,9 +334,8 @@ const Index = () => {
             );
           })}
         </div>
-        )}
 
-        {filteredPodcasts.length > INITIAL_VISIBLE && (
+        {podcasts.length > INITIAL_VISIBLE && (
           <div className="flex justify-center mt-6">
             <Button
               variant="ghost"
@@ -384,7 +345,7 @@ const Index = () => {
               {showAllPodcasts ? (
                 <>Свернуть <ChevronUp size={16} /></>
               ) : (
-                <>Ещё {filteredPodcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
+                <>Ещё {podcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
               )}
             </Button>
           </div>
