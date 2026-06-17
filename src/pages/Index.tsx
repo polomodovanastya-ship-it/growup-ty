@@ -181,20 +181,10 @@ const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
-  const [activeTags, setActiveTags] = useState<string[]>([]);
-  
-
-  const toggleTag = (tag: string) => {
-    setActiveTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
-  };
 
   const filteredLinks = helpLinks;
 
-  const filteredPodcasts =
-    activeTags.length === 0
-      ? podcasts
-      : podcasts.filter((p) => activeTags.every((t) => p.tags.includes(t)));
-  const visiblePodcasts = showAllPodcasts ? filteredPodcasts : filteredPodcasts.slice(0, INITIAL_VISIBLE);
+  const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -344,7 +334,6 @@ const Index = () => {
             );
           })}
         </div>
-        )}
 
         {podcasts.length > INITIAL_VISIBLE && (
           <div className="flex justify-center mt-6">
