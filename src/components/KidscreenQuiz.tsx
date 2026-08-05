@@ -196,6 +196,13 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
+  const [schoolSkipped, setSchoolSkipped] = useState(false);
+
+  const isAdult = age === "18 и старше";
+  const sections = useMemo(() => buildSections(isAdult), [isAdult]);
+  const scaleNameOverrides = isAdult
+    ? { school: { name: "Институт и учёба", short: "Учёба" } }
+    : undefined;
 
   const handleDownloadPdf = async () => {
     if (!profile) return;
@@ -205,7 +212,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
       await generateReportPdf({
         profile,
         answers,
-        sections,
+        sections: schoolSkipped
+          ? sections.filter((s) => s.questions[0]?.id !== "sc1")
+          : sections,
         age,
         sex: sexLabel,
       });
@@ -228,6 +237,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     setSex("");
     setProfile(null);
     setSubmitError(null);
+    setSchoolSkipped(false);
   };
 
   const handleClose = (val: boolean) => {
@@ -236,6 +246,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   };
 
   const allCurrentAnswered = currentSection?.questions.every((q) => answers[q.id]);
+
 
   const submit = async () => {
     setScreen("loading");
