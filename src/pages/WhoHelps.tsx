@@ -73,11 +73,18 @@ const specialists: Specialist[] = [
   },
 ];
 
+type Branch = {
+  icon: typeof UserCheck;
+  area: string;
+  answer: string;
+};
+
 type FlowStep = {
   icon: typeof UserCheck;
   condition: string;
   detail: string;
-  answer: string;
+  answer?: string;
+  branches?: Branch[];
   tone: "soft" | "mid" | "alert";
 };
 
@@ -86,8 +93,24 @@ const flow: FlowStep[] = [
     icon: Target,
     condition: "Тяжело время от времени",
     detail:
-      "Накрыло после ссоры, контрольной, расставания. Через несколько дней отпускает, спать и есть получается.",
-    answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам",
+      "Накрыло после ссоры, контрольной, расставания. Через несколько дней отпускает, спать и есть получается. Тут важно, в какой сфере затык:",
+    branches: [
+      {
+        icon: HeartHandshake,
+        area: "Эмоции и отношения",
+        answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам",
+      },
+      {
+        icon: Compass,
+        area: "Цели, привычки, организация времени",
+        answer: "Коуч — помогает превратить «надо бы» в конкретные шаги",
+      },
+      {
+        icon: Briefcase,
+        area: "Профессия, поступление, что дальше",
+        answer: "Карьерный консультант — разбирает интересы, профессии и маршрут",
+      },
+    ],
     tone: "soft",
   },
   {
@@ -107,6 +130,7 @@ const flow: FlowStep[] = [
     tone: "alert",
   },
 ];
+
 
 const toneClass: Record<FlowStep["tone"], string> = {
   soft: "border-secondary/40 bg-secondary/5",
