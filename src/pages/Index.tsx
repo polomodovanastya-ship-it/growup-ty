@@ -267,9 +267,9 @@ const Index = () => {
                   url.searchParams.set("utm_campaign", "mood_checkin");
                   url.searchParams.set("utm_content", f.slug);
                   window.history.replaceState({}, "", url.toString());
+                  setKidscreenOpen(true);
                 }}
-                className={`flex flex-col items-center gap-2 group rounded-xl p-2 transition-all ${selectedMood === f.slug ? "bg-primary/10 ring-2 ring-primary" : "hover:bg-muted/50"}`}
-                aria-pressed={selectedMood === f.slug}
+                className="flex flex-col items-center gap-2 group"
               >
                 <img
                   src={f.emoji}
@@ -283,17 +283,6 @@ const Index = () => {
             ))}
           </div>
 
-          {selectedMood && (
-            <div className="mt-6 md:mt-8">
-              <button
-                type="button"
-                onClick={() => setKidscreenOpen(true)}
-                className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 md:px-8 py-3 md:py-3.5 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
-              >
-                Пройти тест <ArrowRight size={18} />
-              </button>
-            </div>
-          )}
         </div>
       </section>
 
