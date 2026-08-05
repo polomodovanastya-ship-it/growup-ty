@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -32,10 +32,13 @@ interface Section {
   title: string;
   intro?: string;
   questions: Question[];
+  /** Секцию можно пропустить */
+  optional?: boolean;
 }
 
 // Based on KIDSCREEN-52, Child and Adolescent Version (Russian)
-const sections: Section[] = [
+const baseSections: Section[] = [
+
   {
     title: "1. Физическая активность и здоровье",
     intro: "Вспоминая последнюю неделю…",
@@ -128,18 +131,6 @@ const sections: Section[] = [
     ],
   },
   {
-    title: "9. Школа и учёба",
-    intro: "Вспоминая последнюю неделю…",
-    questions: [
-      { id: "sc1", text: "Был(а) ли ты счастлив(а) в школе?", scale: SCALE_INTENSITY },
-      { id: "sc2", text: "Хорошая ли была у тебя успеваемость в школе?", scale: SCALE_INTENSITY },
-      { id: "sc3", text: "Был(а) ли ты доволен(а) своими учителями?", scale: SCALE_INTENSITY },
-      { id: "sc4", text: "Мог(ла) ли ты хорошо концентрироваться?", scale: SCALE_FREQUENCY },
-      { id: "sc5", text: "Нравилось ли тебе ходить в школу?", scale: SCALE_FREQUENCY },
-      { id: "sc6", text: "Был(а) ли ты в хороших отношениях со своими учителями?", scale: SCALE_FREQUENCY },
-    ],
-  },
-  {
     title: "10. Твои отношения с окружающими",
     intro: "Вспоминая последнюю неделю…",
     questions: [
@@ -150,12 +141,50 @@ const sections: Section[] = [
   },
 ];
 
+const SCHOOL_QUESTION_IDS = ["sc1", "sc2", "sc3", "sc4", "sc5", "sc6"];
+
+const schoolSection = (isAdult: boolean): Section =>
+  isAdult
+    ? {
+        title: "9. Институт и учёба",
+        intro: "Вспоминая последнюю неделю…",
+        optional: true,
+        questions: [
+          { id: "sc1", text: "Был(а) ли ты счастлив(а) в институте?", scale: SCALE_INTENSITY },
+          { id: "sc2", text: "Хорошая ли была у тебя успеваемость в учёбе?", scale: SCALE_INTENSITY },
+          { id: "sc3", text: "Был(а) ли ты доволен(а) своими преподавателями?", scale: SCALE_INTENSITY },
+          { id: "sc4", text: "Мог(ла) ли ты хорошо концентрироваться?", scale: SCALE_FREQUENCY },
+          { id: "sc5", text: "Нравилось ли тебе ходить на занятия?", scale: SCALE_FREQUENCY },
+          { id: "sc6", text: "Был(а) ли ты в хороших отношениях с преподавателями?", scale: SCALE_FREQUENCY },
+        ],
+      }
+    : {
+        title: "9. Школа и учёба",
+        intro: "Вспоминая последнюю неделю…",
+        optional: true,
+        questions: [
+          { id: "sc1", text: "Был(а) ли ты счастлив(а) в школе?", scale: SCALE_INTENSITY },
+          { id: "sc2", text: "Хорошая ли была у тебя успеваемость в школе?", scale: SCALE_INTENSITY },
+          { id: "sc3", text: "Был(а) ли ты доволен(а) своими учителями?", scale: SCALE_INTENSITY },
+          { id: "sc4", text: "Мог(ла) ли ты хорошо концентрироваться?", scale: SCALE_FREQUENCY },
+          { id: "sc5", text: "Нравилось ли тебе ходить в школу?", scale: SCALE_FREQUENCY },
+          { id: "sc6", text: "Был(а) ли ты в хороших отношениях со своими учителями?", scale: SCALE_FREQUENCY },
+        ],
+      };
+
+const buildSections = (isAdult: boolean): Section[] => [
+  ...baseSections.slice(0, 8),
+  schoolSection(isAdult),
+  ...baseSections.slice(8),
+];
+
 const AGE_OPTIONS = ["до 12", "12–14", "15–17", "18 и старше"];
 const SEX_OPTIONS = [
   { value: "female", label: "девушка" },
   { value: "male", label: "парень" },
   { value: "other", label: "другое / не хочу указывать" },
 ];
+
 
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done" | "recommendations">("intro");
@@ -167,6 +196,13 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
+  const [schoolSkipped, setSchoolSkipped] = useState(false);
+
+  const isAdult = age === "18 и старше";
+  const sections = useMemo(() => buildSections(isAdult), [isAdult]);
+  const scaleNameOverrides = isAdult
+    ? { school: { name: "Институт и учёба", short: "Учёба" } }
+    : undefined;
 
   const handleDownloadPdf = async () => {
     if (!profile) return;
@@ -176,7 +212,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
       await generateReportPdf({
         profile,
         answers,
-        sections,
+        sections: schoolSkipped
+          ? sections.filter((s) => s.questions[0]?.id !== "sc1")
+          : sections,
         age,
         sex: sexLabel,
       });
@@ -199,6 +237,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     setSex("");
     setProfile(null);
     setSubmitError(null);
+    setSchoolSkipped(false);
   };
 
   const handleClose = (val: boolean) => {
@@ -208,6 +247,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
   const allCurrentAnswered = currentSection?.questions.every((q) => answers[q.id]);
 
+
   const submit = async () => {
     setScreen("loading");
     setSubmitError(null);
@@ -216,14 +256,19 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     const numeric: Record<string, number> = {};
     for (const sec of sections) {
       for (const q of sec.questions) {
+        if (schoolSkipped && SCHOOL_QUESTION_IDS.includes(q.id)) continue;
         const ans = answers[q.id];
         if (ans) numeric[q.id] = answerToValue(ans, q.scale);
       }
     }
 
     // Локальный профиль (как fallback, чтобы UX был мгновенным)
-    const local = computeProfile(numeric);
+    const local = computeProfile(numeric, {
+      skipScaleIds: schoolSkipped ? ["school"] : [],
+      nameOverrides: scaleNameOverrides,
+    });
     setProfile(local);
+
 
     // session_token
     let token = localStorage.getItem("kidscreen_session");
@@ -245,7 +290,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     setScreen("done");
   };
 
-  const handleNext = () => {
+  const goForward = () => {
     if (sectionIndex < totalSections - 1) {
       setSectionIndex(sectionIndex + 1);
       requestAnimationFrame(() => {
@@ -256,6 +301,22 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
       submit();
     }
   };
+
+  const handleNext = () => {
+    if (currentSection?.optional) setSchoolSkipped(false);
+    goForward();
+  };
+
+  const handleSkipSection = () => {
+    setAnswers((prev) => {
+      const next = { ...prev };
+      for (const q of currentSection.questions) delete next[q.id];
+      return next;
+    });
+    setSchoolSkipped(true);
+    goForward();
+  };
+
 
   const handleBack = () => {
     if (sectionIndex > 0) {
@@ -446,19 +507,33 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 >
                   <ArrowLeft size={16} /> Назад
                 </Button>
-                <Button
-                  className="rounded-full gap-2 px-5"
-                  onClick={handleNext}
-                  disabled={!allCurrentAnswered}
-                >
-                  {sectionIndex === totalSections - 1 ? "Завершить" : "Далее"} <ArrowRight size={16} />
-                </Button>
+                <div className="flex items-center gap-2">
+                  {currentSection.optional && (
+                    <Button
+                      variant="ghost"
+                      className="rounded-full text-muted-foreground"
+                      onClick={handleSkipSection}
+                    >
+                      Пропустить
+                    </Button>
+                  )}
+                  <Button
+                    className="rounded-full gap-2 px-5"
+                    onClick={handleNext}
+                    disabled={!allCurrentAnswered}
+                  >
+                    {sectionIndex === totalSections - 1 ? "Завершить" : "Далее"} <ArrowRight size={16} />
+                  </Button>
+                </div>
               </div>
               {!allCurrentAnswered && (
                 <p className="text-xs text-muted-foreground text-center">
-                  Ответь на все вопросы, чтобы перейти дальше
+                  {currentSection.optional
+                    ? "Этот блок необязательный — можно ответить или пропустить"
+                    : "Ответь на все вопросы, чтобы перейти дальше"}
                 </p>
               )}
+
             </div>
           )}
 

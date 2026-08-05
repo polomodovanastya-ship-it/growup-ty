@@ -55,11 +55,29 @@ export function computeScale(
   };
 }
 
-export function computeProfile(answers: Record<string, number>): ProfileReport {
-  const scales = SCALES.map((s) => computeScale(s, answers));
-  const overall = Math.round(scales.reduce((a, s) => a + s.tValue, 0) / scales.length);
+export interface ProfileOptions {
+  /** Шкалы, которые пользователь пропустил — исключаются из профиля */
+  skipScaleIds?: ScaleId[];
+  /** Переопределение названий шкал (например, «Институт и учёба» для 18+) */
+  nameOverrides?: Partial<Record<ScaleId, { name?: string; short?: string }>>;
+}
+
+export function computeProfile(
+  answers: Record<string, number>,
+  options: ProfileOptions = {},
+): ProfileReport {
+  const { skipScaleIds = [], nameOverrides = {} } = options;
+  const scales = SCALES.filter((s) => !skipScaleIds.includes(s.id)).map((s) => {
+    const res = computeScale(s, answers);
+    const ov = nameOverrides[s.id];
+    return ov ? { ...res, name: ov.name ?? res.name, short: ov.short ?? res.short } : res;
+  });
+  const overall = scales.length
+    ? Math.round(scales.reduce((a, s) => a + s.tValue, 0) / scales.length)
+    : 0;
   const overallLevel = levelFromT(overall);
   const supportAreas = scales.filter((s) => s.supportFlag).map((s) => s.name);
+
 
   let summary: string;
   if (overallLevel === "high") {
