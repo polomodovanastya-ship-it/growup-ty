@@ -132,7 +132,6 @@ const baseSections: Section[] = [
   },
   {
     title: "10. Твои отношения с окружающими",
-
     intro: "Вспоминая последнюю неделю…",
     questions: [
       { id: "b1", text: "Боялся(ась) ли ты других мальчиков и девочек?", scale: SCALE_FREQUENCY },
@@ -142,12 +141,50 @@ const baseSections: Section[] = [
   },
 ];
 
+const SCHOOL_QUESTION_IDS = ["sc1", "sc2", "sc3", "sc4", "sc5", "sc6"];
+
+const schoolSection = (isAdult: boolean): Section =>
+  isAdult
+    ? {
+        title: "9. Институт и учёба",
+        intro: "Вспоминая последнюю неделю…",
+        optional: true,
+        questions: [
+          { id: "sc1", text: "Был(а) ли ты счастлив(а) в институте?", scale: SCALE_INTENSITY },
+          { id: "sc2", text: "Хорошая ли была у тебя успеваемость в учёбе?", scale: SCALE_INTENSITY },
+          { id: "sc3", text: "Был(а) ли ты доволен(а) своими преподавателями?", scale: SCALE_INTENSITY },
+          { id: "sc4", text: "Мог(ла) ли ты хорошо концентрироваться?", scale: SCALE_FREQUENCY },
+          { id: "sc5", text: "Нравилось ли тебе ходить на занятия?", scale: SCALE_FREQUENCY },
+          { id: "sc6", text: "Был(а) ли ты в хороших отношениях с преподавателями?", scale: SCALE_FREQUENCY },
+        ],
+      }
+    : {
+        title: "9. Школа и учёба",
+        intro: "Вспоминая последнюю неделю…",
+        optional: true,
+        questions: [
+          { id: "sc1", text: "Был(а) ли ты счастлив(а) в школе?", scale: SCALE_INTENSITY },
+          { id: "sc2", text: "Хорошая ли была у тебя успеваемость в школе?", scale: SCALE_INTENSITY },
+          { id: "sc3", text: "Был(а) ли ты доволен(а) своими учителями?", scale: SCALE_INTENSITY },
+          { id: "sc4", text: "Мог(ла) ли ты хорошо концентрироваться?", scale: SCALE_FREQUENCY },
+          { id: "sc5", text: "Нравилось ли тебе ходить в школу?", scale: SCALE_FREQUENCY },
+          { id: "sc6", text: "Был(а) ли ты в хороших отношениях со своими учителями?", scale: SCALE_FREQUENCY },
+        ],
+      };
+
+const buildSections = (isAdult: boolean): Section[] => [
+  ...baseSections.slice(0, 8),
+  schoolSection(isAdult),
+  ...baseSections.slice(8),
+];
+
 const AGE_OPTIONS = ["до 12", "12–14", "15–17", "18 и старше"];
 const SEX_OPTIONS = [
   { value: "female", label: "девушка" },
   { value: "male", label: "парень" },
   { value: "other", label: "другое / не хочу указывать" },
 ];
+
 
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done" | "recommendations">("intro");
