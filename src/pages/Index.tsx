@@ -364,8 +364,12 @@ const Index = () => {
         )}
       </section>
 
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="border-t border-border/40" />
+      </div>
+
       {/* Checkups */}
-      <section className="px-4 pb-12 md:pb-16 max-w-5xl mx-auto">
+      <section id="checkups" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
           <div className="flex items-center gap-2 mb-2">
             <ClipboardCheck className="text-primary" size={24} />
