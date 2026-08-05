@@ -23,7 +23,6 @@ import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
 
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
