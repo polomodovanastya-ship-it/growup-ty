@@ -179,6 +179,7 @@ const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
 
   const filteredLinks = helpLinks;
 
@@ -238,23 +239,36 @@ const Index = () => {
 
         {/* Feelings */}
         <div className="mt-8 md:mt-10 text-center">
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Как ты себя чувствуешь прямо сейчас?</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">
+            {selectedMood ? "Спасибо, что поделился" : "Как ты себя чувствуешь прямо сейчас?"}
+          </h2>
           <p className="mt-2 text-sm md:text-base text-muted-foreground">
-            Выбери то, что больше всего подходит. Неправильного ответа не бывает
+            {selectedMood
+              ? "Хочешь разобраться подробнее? Пройди короткий тест — это займёт меньше минуты."
+              : "Выбери то, что больше всего подходит. Неправильного ответа не бывает"}
           </p>
           <div className="mt-6 md:mt-8 grid grid-cols-3 md:grid-cols-6 gap-4 md:gap-2 max-w-4xl mx-auto">
             {[
-              { emoji: emojiRelieved, label: "спокойно" },
-              { emoji: emojiSteam, label: "злюсь,\nкак черт" },
-              { emoji: emojiPleading, label: "плачу" },
-              { emoji: emojiHearts, label: "любовь\nокрыляет" },
-              { emoji: emojiAnxious, label: "боюсь" },
-              { emoji: emojiNeutral, label: "не чувствую\nничего" },
+              { emoji: emojiRelieved, label: "спокойно", slug: "spokoyno" },
+              { emoji: emojiSteam, label: "злюсь,\nкак черт", slug: "zlyus" },
+              { emoji: emojiPleading, label: "плачу", slug: "plachu" },
+              { emoji: emojiHearts, label: "любовь\nокрыляет", slug: "lyubov" },
+              { emoji: emojiAnxious, label: "боюсь", slug: "boyus" },
+              { emoji: emojiNeutral, label: "не чувствую\nничего", slug: "nichego" },
             ].map((f) => (
               <button
                 key={f.label}
                 type="button"
-                onClick={() => setKidscreenOpen(true)}
+                onClick={() => {
+                  setSelectedMood(f.slug);
+                  const url = new URL(window.location.href);
+                  url.searchParams.set("utm_source", "kakty");
+                  url.searchParams.set("utm_medium", "emoji");
+                  url.searchParams.set("utm_campaign", "mood_checkin");
+                  url.searchParams.set("utm_content", f.slug);
+                  window.history.replaceState({}, "", url.toString());
+                  setKidscreenOpen(true);
+                }}
                 className="flex flex-col items-center gap-2 group"
               >
                 <img
