@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon, User } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
 import heroTeens from "@/assets/hero-teens.jpg";
 import emojiRelieved from "@/assets/emoji/1f60c.svg";
 import emojiSteam from "@/assets/emoji/1f624.svg";
@@ -206,9 +206,6 @@ const Index = () => {
           <a href="#" className="flex items-center gap-2 text-sm font-semibold lowercase">
             <img src={logo} alt="" className="h-6 w-auto" />
             <span className="text-foreground">как ты?</span>
-          </a>
-          <a href="#" aria-label="Профиль" className="rounded-full p-2 hover:bg-muted transition-colors">
-            <User size={20} className="text-foreground" />
           </a>
         </div>
       </header>
