@@ -95,12 +95,6 @@ const podcasts = [
     tags: ["самооценка", "мотивация", "тревога"],
   },
   {
-    title: "Кто чем помогает?",
-    description: "Психолог, психиатр, коуч, тьютор — в чём разница и к кому идти",
-    icon: UserCheck,
-    tags: ["тревога", "стресс", "мотивация"],
-  },
-  {
     title: "Чего я хочу на самом деле?",
     description: "А чего от меня просто ждут — и как это различить",
     icon: Brain,
@@ -171,6 +165,7 @@ const podcasts = [
 const checkups = [
   { title: "Давай познакомимся", icon: HandHeart, action: "kidscreen" },
   { title: "Задумался о выборе профессии", icon: Compass, action: "career-quiz" },
+  { title: "Кто чем помогает? Статья", icon: UserCheck, href: "/articles/who-helps" },
 ];
 
 const checklists = [
@@ -368,6 +363,25 @@ const Index = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {checkups.map((c, i) => (
             <ScrollReveal key={c.title} delay={i * 60}>
+              {(c as any).href ? (
+              <Link
+                to={(c as any).href}
+                className="group w-full text-left h-full rounded-xl border bg-card p-3 transition-all duration-300 hover:shadow-md hover:scale-[1.01] block"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-primary/10 p-1.5 shrink-0 flex items-center justify-center w-9 h-9">
+                    <c.icon className="text-primary" size={18} />
+                  </div>
+                  <span className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug flex-1 min-w-0">
+                    {c.title}
+                  </span>
+                  <ArrowRight
+                    size={16}
+                    className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0"
+                  />
+                </div>
+              </Link>
+              ) : (
               <button
                 type="button"
                 onClick={() => {
@@ -390,6 +404,7 @@ const Index = () => {
                   />
                 </div>
               </button>
+              )}
             </ScrollReveal>
           ))}
         </div>
