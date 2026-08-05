@@ -230,10 +230,26 @@ const WhoHelps = () => (
                     <div className="min-w-0">
                       <p className="font-semibold text-foreground">{step.condition}</p>
                       <p className="text-sm text-muted-foreground mt-1">{step.detail}</p>
-                      <p className="text-sm font-medium text-foreground mt-3 flex items-start gap-2">
-                        <span className="text-muted-foreground">→</span>
-                        <span>{step.answer}</span>
-                      </p>
+                      {step.answer && (
+                        <p className="text-sm font-medium text-foreground mt-3 flex items-start gap-2">
+                          <span className="text-muted-foreground">→</span>
+                          <span>{step.answer}</span>
+                        </p>
+                      )}
+                      {step.branches && (
+                        <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                          {step.branches.map((b) => (
+                            <div key={b.area} className="rounded-lg border bg-card p-3">
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <b.icon className="text-primary shrink-0" size={16} />
+                                <p className="text-xs font-semibold text-foreground leading-tight">{b.area}</p>
+                              </div>
+                              <p className="text-xs text-muted-foreground">{b.answer}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
                     </div>
                   </div>
                 </div>
