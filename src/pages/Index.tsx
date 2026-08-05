@@ -23,7 +23,6 @@ import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
 
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
@@ -200,15 +199,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/40">
-        <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2 text-sm font-semibold lowercase">
-            <img src={logo} alt="" className="h-6 w-auto" />
-            <span className="text-foreground">как ты?</span>
-          </a>
-        </div>
-      </header>
 
       {/* Hero */}
       <section className="px-4 pt-4 pb-6 md:pt-6 md:pb-8 max-w-6xl mx-auto">
