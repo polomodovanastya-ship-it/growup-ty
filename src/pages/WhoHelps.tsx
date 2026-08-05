@@ -8,6 +8,9 @@ import {
   HelpCircle,
   HeartHandshake,
   Briefcase,
+  Search,
+  ArrowRight,
+
 
   CalendarClock,
   AlertTriangle,
