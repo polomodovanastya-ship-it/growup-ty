@@ -101,6 +101,14 @@ const podcasts = [
     tags: ["тревога", "стресс", "мотивация"],
   },
   {
+    title: "Чего я хочу на самом деле?",
+    description: "А чего от меня просто ждут — и как это различить",
+    icon: Brain,
+    url: "https://mave.stream/e/F55kiTfaEB",
+    audio: "/audio/episode-3.mp3",
+    tags: ["мотивация", "самооценка", "прокрастинация"],
+  },
+  {
     title: "Первая сессия",
     description: "Что происходит на первой встрече и что значит конфиденциальность",
     icon: Shield,
@@ -113,12 +121,6 @@ const podcasts = [
     url: "https://mave.stream/e/q2en9dlbty",
     audio: "/audio/episode-4.mp3",
     tags: ["выгорание", "стресс"],
-  },
-  {
-    title: "Чего я хочу на самом деле?",
-    description: "А чего от меня просто ждут — и как это различить",
-    icon: Brain,
-    tags: ["мотивация", "самооценка", "прокрастинация"],
   },
   {
     title: "Стыд и прокрастинация",
