@@ -7,6 +7,8 @@ import {
   GraduationCap,
   HelpCircle,
   HeartHandshake,
+  Briefcase,
+
   CalendarClock,
   AlertTriangle,
   Target,
