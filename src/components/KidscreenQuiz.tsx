@@ -491,19 +491,33 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 >
                   <ArrowLeft size={16} /> Назад
                 </Button>
-                <Button
-                  className="rounded-full gap-2 px-5"
-                  onClick={handleNext}
-                  disabled={!allCurrentAnswered}
-                >
-                  {sectionIndex === totalSections - 1 ? "Завершить" : "Далее"} <ArrowRight size={16} />
-                </Button>
+                <div className="flex items-center gap-2">
+                  {currentSection.optional && (
+                    <Button
+                      variant="ghost"
+                      className="rounded-full text-muted-foreground"
+                      onClick={handleSkipSection}
+                    >
+                      Пропустить
+                    </Button>
+                  )}
+                  <Button
+                    className="rounded-full gap-2 px-5"
+                    onClick={handleNext}
+                    disabled={!allCurrentAnswered}
+                  >
+                    {sectionIndex === totalSections - 1 ? "Завершить" : "Далее"} <ArrowRight size={16} />
+                  </Button>
+                </div>
               </div>
               {!allCurrentAnswered && (
                 <p className="text-xs text-muted-foreground text-center">
-                  Ответь на все вопросы, чтобы перейти дальше
+                  {currentSection.optional
+                    ? "Этот блок необязательный — можно ответить или пропустить"
+                    : "Ответь на все вопросы, чтобы перейти дальше"}
                 </p>
               )}
+
             </div>
           )}
 
