@@ -256,14 +256,19 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     const numeric: Record<string, number> = {};
     for (const sec of sections) {
       for (const q of sec.questions) {
+        if (schoolSkipped && SCHOOL_QUESTION_IDS.includes(q.id)) continue;
         const ans = answers[q.id];
         if (ans) numeric[q.id] = answerToValue(ans, q.scale);
       }
     }
 
     // Локальный профиль (как fallback, чтобы UX был мгновенным)
-    const local = computeProfile(numeric);
+    const local = computeProfile(numeric, {
+      skipScaleIds: schoolSkipped ? ["school"] : [],
+      nameOverrides: scaleNameOverrides,
+    });
     setProfile(local);
+
 
     // session_token
     let token = localStorage.getItem("kidscreen_session");
