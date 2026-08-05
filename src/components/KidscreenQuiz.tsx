@@ -32,10 +32,13 @@ interface Section {
   title: string;
   intro?: string;
   questions: Question[];
+  /** Секцию можно пропустить */
+  optional?: boolean;
 }
 
 // Based on KIDSCREEN-52, Child and Adolescent Version (Russian)
-const sections: Section[] = [
+const baseSections: Section[] = [
+
   {
     title: "1. Физическая активность и здоровье",
     intro: "Вспоминая последнюю неделю…",
