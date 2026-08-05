@@ -179,6 +179,7 @@ const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
 
   const filteredLinks = helpLinks;
 
