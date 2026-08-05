@@ -270,6 +270,10 @@ const WhoHelps = () => (
             Если сомневаешься между психологом и психотерапевтом — иди к психологу.
             Он сам скажет, если нужен другой формат. Ошибиться на первом шаге невозможно.
           </p>
+          <p className="text-xs text-muted-foreground mt-3">
+            Психотерапевт и психиатр не отменяют друг друга: часто они работают в паре.
+            Один помогает разобраться в причинах, другой — стабилизировать состояние.
+          </p>
           <Link
             to="/articles/how-to-choose"
             className="mt-4 inline-flex items-center gap-2 rounded-xl border bg-muted/40 px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 transition-colors"
