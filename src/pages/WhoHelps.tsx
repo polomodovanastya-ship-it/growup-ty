@@ -268,8 +268,17 @@ const WhoHelps = () => (
             Если сомневаешься между психологом и психотерапевтом — иди к психологу.
             Он сам скажет, если нужен другой формат. Ошибиться на первом шаге невозможно.
           </p>
+          <Link
+            to="/articles/how-to-choose"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl border bg-muted/40 px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 transition-colors"
+          >
+            <Search className="text-primary" size={16} />
+            Как выбрать специалиста и не ошибиться
+            <ArrowRight size={15} className="text-muted-foreground" />
+          </Link>
         </div>
       </ScrollReveal>
+
 
       {/* Comparison */}
       <ScrollReveal>
