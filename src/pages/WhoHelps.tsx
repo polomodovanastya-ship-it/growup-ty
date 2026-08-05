@@ -7,6 +7,11 @@ import {
   GraduationCap,
   HelpCircle,
   HeartHandshake,
+  Briefcase,
+  Search,
+  ArrowRight,
+
+
   CalendarClock,
   AlertTriangle,
   Target,
@@ -73,11 +78,18 @@ const specialists: Specialist[] = [
   },
 ];
 
+type Branch = {
+  icon: typeof UserCheck;
+  area: string;
+  answer: string;
+};
+
 type FlowStep = {
   icon: typeof UserCheck;
   condition: string;
   detail: string;
-  answer: string;
+  answer?: string;
+  branches?: Branch[];
   tone: "soft" | "mid" | "alert";
 };
 
@@ -86,8 +98,24 @@ const flow: FlowStep[] = [
     icon: Target,
     condition: "Тяжело время от времени",
     detail:
-      "Накрыло после ссоры, контрольной, расставания. Через несколько дней отпускает, спать и есть получается.",
-    answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам",
+      "Накрыло после ссоры, контрольной, расставания. Через несколько дней отпускает, спать и есть получается. Тут важно, в какой сфере затык:",
+    branches: [
+      {
+        icon: HeartHandshake,
+        area: "Эмоции и отношения",
+        answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам",
+      },
+      {
+        icon: Compass,
+        area: "Цели, привычки, организация времени",
+        answer: "Коуч — помогает превратить «надо бы» в конкретные шаги",
+      },
+      {
+        icon: Briefcase,
+        area: "Профессия, поступление, что дальше",
+        answer: "Карьерный консультант — разбирает интересы, профессии и маршрут",
+      },
+    ],
     tone: "soft",
   },
   {
@@ -107,6 +135,7 @@ const flow: FlowStep[] = [
     tone: "alert",
   },
 ];
+
 
 const toneClass: Record<FlowStep["tone"], string> = {
   soft: "border-secondary/40 bg-secondary/5",
@@ -206,10 +235,26 @@ const WhoHelps = () => (
                     <div className="min-w-0">
                       <p className="font-semibold text-foreground">{step.condition}</p>
                       <p className="text-sm text-muted-foreground mt-1">{step.detail}</p>
-                      <p className="text-sm font-medium text-foreground mt-3 flex items-start gap-2">
-                        <span className="text-muted-foreground">→</span>
-                        <span>{step.answer}</span>
-                      </p>
+                      {step.answer && (
+                        <p className="text-sm font-medium text-foreground mt-3 flex items-start gap-2">
+                          <span className="text-muted-foreground">→</span>
+                          <span>{step.answer}</span>
+                        </p>
+                      )}
+                      {step.branches && (
+                        <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                          {step.branches.map((b) => (
+                            <div key={b.area} className="rounded-lg border bg-card p-3">
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <b.icon className="text-primary shrink-0" size={16} />
+                                <p className="text-xs font-semibold text-foreground leading-tight">{b.area}</p>
+                              </div>
+                              <p className="text-xs text-muted-foreground">{b.answer}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
                     </div>
                   </div>
                 </div>
@@ -226,8 +271,17 @@ const WhoHelps = () => (
             Если сомневаешься между психологом и психотерапевтом — иди к психологу.
             Он сам скажет, если нужен другой формат. Ошибиться на первом шаге невозможно.
           </p>
+          <Link
+            to="/articles/how-to-choose"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl border bg-muted/40 px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 transition-colors"
+          >
+            <Search className="text-primary" size={16} />
+            Как выбрать специалиста и не ошибиться
+            <ArrowRight size={15} className="text-muted-foreground" />
+          </Link>
         </div>
       </ScrollReveal>
+
 
       {/* Comparison */}
       <ScrollReveal>

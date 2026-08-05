@@ -10,6 +10,8 @@ import AdminLogin from "./pages/AdminLogin.tsx";
 import UsefulLinks from "./pages/UsefulLinks.tsx";
 import About from "./pages/About.tsx";
 import WhoHelps from "./pages/WhoHelps.tsx";
+import HowToChoose from "./pages/HowToChoose.tsx";
+
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/links" element={<UsefulLinks />} />
           <Route path="/about" element={<About />} />
           <Route path="/articles/who-helps" element={<WhoHelps />} />
+          <Route path="/articles/how-to-choose" element={<HowToChoose />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
