@@ -10,6 +10,8 @@ import AdminLogin from "./pages/AdminLogin.tsx";
 import UsefulLinks from "./pages/UsefulLinks.tsx";
 import About from "./pages/About.tsx";
 import WhoHelps from "./pages/WhoHelps.tsx";
+import HowToChoose from "./pages/HowToChoose.tsx";
+
 
 const queryClient = new QueryClient();
 
