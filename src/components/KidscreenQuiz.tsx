@@ -292,7 +292,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 <span className="text-xs font-bold tracking-wider text-primary uppercase">Как ты сейчас?</span>
               </div>
               <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
-                Спасибо, что поделились
+                Спасибо за твой ответ
               </DialogTitle>
               <DialogDescription className="text-base md:text-lg text-muted-foreground leading-relaxed">
                 Если хочешь детальнее понять себя, предлагаем пройти опросник о твоём самочувствии — про семью, друзей, школу и деньги.
