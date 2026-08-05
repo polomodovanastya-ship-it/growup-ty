@@ -187,13 +187,26 @@ const Index = () => {
 
   return (
     <div className="min-h-screen overflow-hidden">
+      {/* Top menu */}
+      <div className="bg-muted/40 border-b border-border/40">
+        <div className="max-w-6xl mx-auto px-4 h-10 flex items-center">
+          <nav className="flex items-center gap-5 text-sm font-medium lowercase">
+            <a href="#checkups" className="text-foreground hover:text-primary transition-colors">С чего начать</a>
+            <span className="h-4 w-px bg-border" />
+            <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
+            <span className="h-4 w-px bg-border" />
+            <a href="#help-links" className="text-foreground hover:text-primary transition-colors">помощь рядом</a>
+          </nav>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-background/75 border-b border-border/40">
         <div className="max-w-6xl mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
-          <nav className="flex items-center gap-6 text-sm font-semibold lowercase">
-            <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
-            <a href="#help-links" className="text-foreground hover:text-primary transition-colors">помощь рядом</a>
-          </nav>
+          <a href="#" className="flex items-center gap-2 text-sm font-semibold lowercase">
+            <img src={logo} alt="" className="h-6 w-auto" />
+            <span className="text-foreground">как ты?</span>
+          </a>
           <a href="#" aria-label="Профиль" className="rounded-full p-2 hover:bg-muted transition-colors">
             <User size={20} className="text-foreground" />
           </a>
@@ -351,8 +364,12 @@ const Index = () => {
         )}
       </section>
 
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="border-t border-border/40" />
+      </div>
+
       {/* Checkups */}
-      <section className="px-4 pb-12 md:pb-16 max-w-5xl mx-auto">
+      <section id="checkups" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
           <div className="flex items-center gap-2 mb-2">
             <ClipboardCheck className="text-primary" size={24} />
@@ -410,12 +427,15 @@ const Index = () => {
         </div>
       </section>
 
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="border-t border-border/40" />
+      </div>
 
       <CareerQuiz open={careerQuizOpen} onOpenChange={setCareerQuizOpen} />
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
       {/* Useful links & emergency help */}
-      <section id="help-links" className="px-4 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
+      <section id="help-links" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
           <div className="flex items-center gap-2 mb-2">
             <LifeBuoy className="text-primary" size={24} />
