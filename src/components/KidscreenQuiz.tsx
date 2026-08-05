@@ -290,7 +290,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     setScreen("done");
   };
 
-  const handleNext = () => {
+  const goForward = () => {
     if (sectionIndex < totalSections - 1) {
       setSectionIndex(sectionIndex + 1);
       requestAnimationFrame(() => {
@@ -301,6 +301,22 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
       submit();
     }
   };
+
+  const handleNext = () => {
+    if (currentSection?.optional) setSchoolSkipped(false);
+    goForward();
+  };
+
+  const handleSkipSection = () => {
+    setAnswers((prev) => {
+      const next = { ...prev };
+      for (const q of currentSection.questions) delete next[q.id];
+      return next;
+    });
+    setSchoolSkipped(true);
+    goForward();
+  };
+
 
   const handleBack = () => {
     if (sectionIndex > 0) {
