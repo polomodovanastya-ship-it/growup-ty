@@ -131,19 +131,8 @@ const baseSections: Section[] = [
     ],
   },
   {
-    title: "9. Школа и учёба",
-    intro: "Вспоминая последнюю неделю…",
-    questions: [
-      { id: "sc1", text: "Был(а) ли ты счастлив(а) в школе?", scale: SCALE_INTENSITY },
-      { id: "sc2", text: "Хорошая ли была у тебя успеваемость в школе?", scale: SCALE_INTENSITY },
-      { id: "sc3", text: "Был(а) ли ты доволен(а) своими учителями?", scale: SCALE_INTENSITY },
-      { id: "sc4", text: "Мог(ла) ли ты хорошо концентрироваться?", scale: SCALE_FREQUENCY },
-      { id: "sc5", text: "Нравилось ли тебе ходить в школу?", scale: SCALE_FREQUENCY },
-      { id: "sc6", text: "Был(а) ли ты в хороших отношениях со своими учителями?", scale: SCALE_FREQUENCY },
-    ],
-  },
-  {
     title: "10. Твои отношения с окружающими",
+
     intro: "Вспоминая последнюю неделю…",
     questions: [
       { id: "b1", text: "Боялся(ась) ли ты других мальчиков и девочек?", scale: SCALE_FREQUENCY },
