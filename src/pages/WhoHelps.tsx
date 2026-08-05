@@ -242,17 +242,16 @@ const WhoHelps = () => (
                         </p>
                       )}
                       {step.branches && (
-                        <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                        <ul className="mt-3 space-y-2">
                           {step.branches.map((b) => (
-                            <div key={b.area} className="rounded-lg border bg-card p-3">
-                              <div className="flex items-center gap-2 mb-1.5">
-                                <b.icon className="text-primary shrink-0" size={16} />
-                                <p className="text-xs font-semibold text-foreground leading-tight">{b.area}</p>
-                              </div>
-                              <p className="text-xs text-muted-foreground">{b.answer}</p>
-                            </div>
+                            <li key={b.area} className="flex items-start gap-2 text-sm text-foreground">
+                              <b.icon className="text-primary shrink-0 mt-0.5" size={16} />
+                              <span>
+                                <span className="font-medium">{b.area}</span>{" — "}{b.answer}
+                              </span>
+                            </li>
                           ))}
-                        </div>
+                        </ul>
                       )}
 
                     </div>
