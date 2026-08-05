@@ -207,9 +207,6 @@ const Index = () => {
             <img src={logo} alt="" className="h-6 w-auto" />
             <span className="text-foreground">как ты?</span>
           </a>
-          <a href="#" aria-label="Профиль" className="rounded-full p-2 hover:bg-muted transition-colors">
-            <User size={20} className="text-foreground" />
-          </a>
         </div>
       </header>
 
