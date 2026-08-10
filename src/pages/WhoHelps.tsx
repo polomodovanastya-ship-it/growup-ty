@@ -299,41 +299,6 @@ const WhoHelps = () => (
     <section className="px-4 pb-16 max-w-4xl mx-auto">
 
 
-      {/* Comparison */}
-      <ScrollReveal>
-        <div id="compare" className="scroll-mt-20">
-        <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mt-12 mb-1">
-          Психолог, психотерапевт, психиатр — в чём разница
-        </h2>
-        <p className="text-center text-sm text-muted-foreground mb-6">
-          Разница не в том, «насколько всё плохо», а в задаче и инструментах.
-        </p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            { title: "Психолог", icon: UserCheck, tint: "teal" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.psy })) },
-            { title: "Психотерапевт", icon: HeartHandshake, tint: "coral" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.therapy })) },
-            { title: "Психиатр", icon: Stethoscope, tint: "violet" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.psychiatry })) },
-          ].map((c) => (
-            <article key={c.title} className={`h-full rounded-3xl border p-5 ${tintBg[c.tint]}`}>
-              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
-                <c.icon className={tintInk[c.tint]} size={22} />
-              </div>
-              <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[c.tint]}`}>{c.title}</h3>
-              <dl className="space-y-2.5">
-                {c.cell.map((row) => (
-                  <div key={row.k}>
-                    <dt className="text-xs font-medium text-muted-foreground">{row.k}</dt>
-                    <dd className="text-sm text-foreground leading-relaxed">{row.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </article>
-          ))}
-        </div>
-        </div>
-      </ScrollReveal>
-
-
       <ScrollReveal>
         <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-2">
           <HelpCircle className="text-primary" size={22} />
