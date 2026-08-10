@@ -1,5 +1,4 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import type jsPDFType from "jspdf";
 import type { ProfileReport } from "./scoring";
 
 interface QuestionLite {
@@ -136,40 +135,56 @@ export async function generateReportPdf(args: BuildArgs): Promise<void> {
     const MARGIN = 12;
     const CONTENT_W = A4_W - MARGIN * 2;
     const CONTENT_H = A4_H - MARGIN * 2;
-    const GAP = 3;
 
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
-    const sections = Array.from(el.querySelectorAll<HTMLElement>("[data-pdf-section]"));
+    // Библиотеки грузим только по клику — страница остаётся лёгкой.
+    const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+      import("jspdf"),
+      import("html2canvas"),
+    ]);
 
-    let currentY = MARGIN;
+    const pdf: jsPDFType = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
-    for (const section of sections) {
-      const canvas = await html2canvas(section, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true,
-      });
+    // Один общий рендер вместо десятков — на порядок быстрее.
+    const SCALE = 1.5;
+    const canvas = await html2canvas(el, {
+      scale: SCALE,
+      backgroundColor: "#ffffff",
+      useCORS: true,
+      logging: false,
+      removeContainer: true,
+      imageTimeout: 0,
+    });
 
-      const scaleFactor = CONTENT_W / (canvas.width / 2);
-      let heightMM = (canvas.height / 2) * scaleFactor;
+    const pxPerMM = canvas.width / CONTENT_W;
+    const pageHeightPx = Math.floor(CONTENT_H * pxPerMM);
 
-      // If section by itself is taller than a full page, scale it down to fit.
-      let widthMM = CONTENT_W;
-      if (heightMM > CONTENT_H) {
-        const shrink = CONTENT_H / heightMM;
-        heightMM = CONTENT_H;
-        widthMM = CONTENT_W * shrink;
+    const slice = document.createElement("canvas");
+    const ctx = slice.getContext("2d");
+    slice.width = canvas.width;
+
+    let offset = 0;
+    let first = true;
+    while (offset < canvas.height) {
+      const h = Math.min(pageHeightPx, canvas.height - offset);
+      slice.height = h;
+      if (ctx) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, slice.width, h);
+        ctx.drawImage(canvas, 0, offset, canvas.width, h, 0, 0, canvas.width, h);
       }
-
-      const remaining = A4_H - MARGIN - currentY;
-      if (heightMM > remaining && currentY > MARGIN) {
-        pdf.addPage();
-        currentY = MARGIN;
-      }
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.92);
-      pdf.addImage(imgData, "JPEG", MARGIN, currentY, widthMM, heightMM);
-      currentY += heightMM + GAP;
+      if (!first) pdf.addPage();
+      first = false;
+      pdf.addImage(
+        slice.toDataURL("image/jpeg", 0.8),
+        "JPEG",
+        MARGIN,
+        MARGIN,
+        CONTENT_W,
+        h / pxPerMM,
+        undefined,
+        "FAST",
+      );
+      offset += h;
     }
 
     pdf.save(`kidscreen-report-${new Date().toISOString().slice(0, 10)}.pdf`);
