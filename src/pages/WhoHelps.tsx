@@ -221,7 +221,21 @@ const WhoHelps = () => (
               <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
                 <s.icon className={tintInk[s.tint]} size={22} />
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.short}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">{s.short}</p>
+              <dl className="space-y-2.5 text-sm">
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Кто ведёт</dt>
+                  <dd className="text-foreground leading-relaxed">{s.who}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Сколько длится</dt>
+                  <dd className="text-foreground leading-relaxed">{s.duration}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Лекарства</dt>
+                  <dd className="text-foreground leading-relaxed">{s.meds}</dd>
+                </div>
+              </dl>
             </article>
           </ScrollReveal>
         ))}
