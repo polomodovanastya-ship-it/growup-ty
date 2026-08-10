@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "reset">("login");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -29,6 +29,16 @@ const AdminLogin = () => {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         navigate("/admin", { replace: true });
+      } else if (mode === "reset") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        toast({
+          title: "Письмо отправлено",
+          description: "Проверь почту и перейди по ссылке, чтобы задать новый пароль.",
+        });
+        setMode("login");
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -45,6 +55,7 @@ const AdminLogin = () => {
       setBusy(false);
     }
   };
+
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 bg-background">
