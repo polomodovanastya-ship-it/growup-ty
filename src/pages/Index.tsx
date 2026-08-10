@@ -575,38 +575,27 @@ const Index = () => {
                   href={l.url}
                   target={l.url.startsWith("http") ? "_blank" : undefined}
                   rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className={`group rounded-2xl border bg-card p-5 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col ${
+                  className={`group rounded-2xl border bg-card p-4 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col ${
                     l.emergency ? "border-destructive/40" : ""
                   }`}
                 >
-                  <div className={`-mx-5 mb-4 aspect-[16/9] overflow-hidden flex items-center justify-center ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
+                  <div className={`-mx-4 mb-3 h-16 overflow-hidden flex items-center justify-center ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
                     {l.emergency ? (
-                      <Phone className="text-destructive transition-transform duration-500 group-hover:scale-110" size={40} strokeWidth={1.5} />
+                      <Phone className="text-destructive transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
                     ) : favicon ? (
-                      <img src={favicon} alt="" className="w-12 h-12 rounded-lg transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+                      <img src={favicon} alt="" className="w-8 h-8 rounded-lg transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
                     ) : (
-                      <LinkIcon className="text-primary transition-transform duration-500 group-hover:scale-110" size={40} strokeWidth={1.5} />
+                      <LinkIcon className="text-primary transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
                     )}
                   </div>
-                  <div className="flex items-start justify-between mb-3">
-                    <div className={`rounded-xl p-2.5 ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
-                      {l.emergency ? (
-                        <Phone className="text-destructive" size={20} />
-                      ) : (
-                        <LinkIcon className="text-primary" size={20} />
-                      )}
-                    </div>
-                    <span className="rounded-full bg-muted text-muted-foreground px-2.5 py-0.5 text-xs font-medium">
-                      {i + 1}/{filteredLinks.length}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{l.title}</h3>
-                  <p className="text-sm text-muted-foreground">{l.description}</p>
+                  <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">{l.title}</h3>
+                  <p className="text-xs text-muted-foreground">{l.description}</p>
                   <div className="mt-auto">
-                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
                       {l.url.startsWith("http") ? "Открыть сайт" : "Позвонить"} <ArrowRight size={12} />
                     </span>
                   </div>
+
                 </a>
               </ScrollReveal>
             );})}
