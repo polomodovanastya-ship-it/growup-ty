@@ -311,65 +311,7 @@ const WhoHelps = () => (
     </section>
 
     <section className="px-4 pb-16 max-w-4xl mx-auto">
-      {/* Decision flow */}
-      <ScrollReveal>
-        <div id="flow" className="rounded-3xl border bg-card p-5 md:p-7 scroll-mt-20">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Схема выбора</p>
-          <h2 className="font-bold text-lg md:text-xl text-foreground mb-5">Как часто тебе тяжело?</h2>
 
-          <div className="space-y-3">
-            {flow.map((step, i) => (
-              <div key={step.condition}>
-                <div className={`rounded-2xl border p-4 ${tintBg[step.tint]}`}>
-                  <div className="flex items-start gap-3">
-                    <div className="rounded-xl w-9 h-9 shrink-0 flex items-center justify-center bg-card/70">
-                      <step.icon className={tintInk[step.tint]} size={18} />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-semibold text-foreground">{step.condition}</p>
-                      <p className="text-sm text-muted-foreground mt-1">{step.detail}</p>
-                      {step.answer && (
-                        <p className="text-sm font-medium text-foreground mt-3 flex items-start gap-2">
-                          <span className="text-muted-foreground">→</span>
-                          <span>{step.answer}</span>
-                        </p>
-                      )}
-                      {step.branches && (
-                        <ul className="mt-3 space-y-2">
-                          {step.branches.map((b) => (
-                            <li key={b.area} className="flex items-start gap-2 text-sm text-foreground">
-                              <b.icon className={`${tintInk[step.tint]} shrink-0 mt-0.5`} size={16} />
-                              <span>
-                                <span className="font-medium">{b.area}</span>
-                                {" — "}
-                                {b.answer}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {i < flow.length - 1 && (
-                  <div className="flex justify-center py-1.5 text-muted-foreground/50">
-                    <ArrowDown size={16} />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-muted-foreground mt-5">
-            Если сомневаешься между психологом и психотерапевтом — иди к психологу.
-            Он сам скажет, если нужен другой формат. Ошибиться на первом шаге невозможно.
-          </p>
-          <p className="text-xs text-muted-foreground mt-3">
-            Психотерапевт и психиатр не отменяют друг друга: часто они работают в паре.
-            Один помогает разобраться в причинах, другой — стабилизировать состояние.
-          </p>
-        </div>
-      </ScrollReveal>
 
       {/* Comparison */}
       <ScrollReveal>
