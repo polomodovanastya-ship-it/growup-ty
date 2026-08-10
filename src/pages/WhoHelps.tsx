@@ -48,6 +48,7 @@ type Specialist = {
   when: string;
   how: string;
   meds: string;
+  duration: string;
 };
 
 const specialists: Specialist[] = [
