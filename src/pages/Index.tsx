@@ -267,7 +267,7 @@ const Index = () => {
         <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-stretch">
           {/* Left: rotating block */}
           <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] bg-muted/50 border border-border/50 p-6 md:p-10 min-h-[320px] md:min-h-[520px] flex flex-col justify-between">
-            <img src={logo} alt="как ты" className="h-8 md:h-10 w-auto select-none" draggable={false} />
+            <img src={logo} alt="как ты" className="h-8 md:h-10 w-auto self-start select-none" draggable={false} />
 
             <div className="relative mt-6 flex-1">
               {heroSlides.map((s, i) => {
