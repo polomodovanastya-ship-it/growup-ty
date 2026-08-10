@@ -204,6 +204,24 @@ export type Database = {
           },
         ]
       }
+      mood_clicks: {
+        Row: {
+          created_at: string
+          id: string
+          mood: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string

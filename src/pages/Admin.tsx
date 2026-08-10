@@ -8,6 +8,7 @@ import {
 import { ArrowLeft, LogOut } from "lucide-react";
 import { SCALES } from "@/kidscreen/scales";
 import { INTERPRETATION } from "@/kidscreen/interpretation";
+import AdminDashboard from "@/components/AdminDashboard";
 
 interface Assessment {
   id: string;
@@ -119,6 +120,8 @@ const Admin = () => {
         </header>
 
         {!selected ? (
+          <>
+          <AdminDashboard totalAssessments={assessments.length} />
           <div className="rounded-2xl border border-border/60 bg-card overflow-hidden">
             <Table>
               <TableHeader>
@@ -146,6 +149,7 @@ const Admin = () => {
               </TableBody>
             </Table>
           </div>
+          </>
         ) : (
           <div className="space-y-6">
             <Button variant="ghost" size="sm" onClick={() => setSelected(null)}>

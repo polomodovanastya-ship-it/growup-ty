@@ -43,6 +43,7 @@ import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
@@ -398,6 +399,7 @@ const Index = () => {
                 type="button"
                 onClick={() => {
                   setSelectedMood(f.slug);
+                  void supabase.from("mood_clicks").insert({ mood: f.slug });
                   const url = new URL(window.location.href);
                   url.searchParams.set("utm_source", "kakty");
                   url.searchParams.set("utm_medium", "emoji");
