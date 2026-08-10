@@ -281,35 +281,33 @@ const WhoHelps = () => (
       {/* Comparison */}
       <ScrollReveal>
         <div id="compare" className="scroll-mt-20">
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-1">
+        <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mt-12 mb-1">
           Психолог, психотерапевт, психиатр — в чём разница
         </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        <p className="text-center text-sm text-muted-foreground mb-6">
           Разница не в том, «насколько всё плохо», а в задаче и инструментах.
         </p>
-        <div className="rounded-3xl border bg-card overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[560px]">
-              <thead>
-                <tr className="bg-muted/60">
-                  <th className="text-left font-medium text-muted-foreground p-3 w-32">&nbsp;</th>
-                  <th className="text-left font-semibold text-foreground p-3">Психолог</th>
-                  <th className="text-left font-semibold text-foreground p-3">Психотерапевт</th>
-                  <th className="text-left font-semibold text-foreground p-3">Психиатр</th>
-                </tr>
-              </thead>
-              <tbody>
-                {compare.map((row) => (
-                  <tr key={row.label} className="border-t align-top">
-                    <td className="p-3 font-medium text-foreground">{row.label}</td>
-                    <td className="p-3 text-muted-foreground">{row.psy}</td>
-                    <td className="p-3 text-muted-foreground">{row.therapy}</td>
-                    <td className="p-3 text-muted-foreground">{row.psychiatry}</td>
-                  </tr>
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            { title: "Психолог", icon: UserCheck, tint: "teal" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.psy })) },
+            { title: "Психотерапевт", icon: HeartHandshake, tint: "coral" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.therapy })) },
+            { title: "Психиатр", icon: Stethoscope, tint: "violet" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.psychiatry })) },
+          ].map((c) => (
+            <article key={c.title} className={`h-full rounded-3xl border p-5 ${tintBg[c.tint]}`}>
+              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
+                <c.icon className={tintInk[c.tint]} size={22} />
+              </div>
+              <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[c.tint]}`}>{c.title}</h3>
+              <dl className="space-y-2.5">
+                {c.cell.map((row) => (
+                  <div key={row.k}>
+                    <dt className="text-xs font-medium text-muted-foreground">{row.k}</dt>
+                    <dd className="text-sm text-foreground leading-relaxed">{row.v}</dd>
+                  </div>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </dl>
+            </article>
+          ))}
         </div>
         </div>
       </ScrollReveal>
