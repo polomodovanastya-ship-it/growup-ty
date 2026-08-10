@@ -113,7 +113,7 @@ const specialists: Specialist[] = [
     duration: "По необходимости",
   },
   {
-    title: "Выбор профессии",
+    title: "Карьерный консультант",
     icon: Signpost,
     tint: "violet",
     short: "Если не знаешь, чем хочешь заниматься и как выбрать свой путь в будущем.",
