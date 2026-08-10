@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -100,9 +100,18 @@ const Admin = () => {
     <main className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <header className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground">KIDSCREEN — внутренний отчёт</h1>
-            <p className="text-sm text-muted-foreground mt-1">{userEmail}</p>
+          <div className="flex items-center gap-6">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <ArrowLeft size={16} />
+              На главную
+            </Link>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground">KIDSCREEN — внутренний отчёт</h1>
+              <p className="text-sm text-muted-foreground mt-1">{userEmail}</p>
+            </div>
           </div>
           <Button variant="outline" size="sm" onClick={logout} className="rounded-full">
             <LogOut size={14} className="mr-2" />Выйти

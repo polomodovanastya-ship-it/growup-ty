@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,14 @@ const AdminLogin = () => {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 bg-background">
+      <div className="w-full max-w-sm">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-4"
+        >
+          <ArrowLeft size={16} />
+          На главную
+        </Link>
       <form onSubmit={submit} className="w-full max-w-sm space-y-5 rounded-2xl border border-border/60 p-6 md:p-8 bg-card">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Админ-панель</h1>
