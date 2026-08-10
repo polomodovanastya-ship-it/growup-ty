@@ -8,6 +8,7 @@ import {
 import { ArrowLeft, LogOut } from "lucide-react";
 import { SCALES } from "@/kidscreen/scales";
 import { INTERPRETATION } from "@/kidscreen/interpretation";
+import AdminDashboard from "@/components/AdminDashboard";
 
 interface Assessment {
   id: string;
