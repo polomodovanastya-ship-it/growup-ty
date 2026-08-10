@@ -136,7 +136,13 @@ export async function generateReportPdf(args: BuildArgs): Promise<void> {
     const CONTENT_W = A4_W - MARGIN * 2;
     const CONTENT_H = A4_H - MARGIN * 2;
 
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+    // Библиотеки грузим только по клику — страница остаётся лёгкой.
+    const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+      import("jspdf"),
+      import("html2canvas"),
+    ]);
+
+    const pdf: jsPDFType = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
 
     // Один общий рендер вместо десятков — на порядок быстрее.
     const SCALE = 1.5;
