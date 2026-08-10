@@ -174,7 +174,11 @@ const faq = [
   },
 ];
 
-const WhoHelps = () => (
+const WhoHelps = () => {
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const filtered = activeTag ? specialists.filter((s) => s.tags.includes(activeTag)) : specialists;
+
+  return (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-6xl mx-auto flex items-center justify-between">
       <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -218,7 +222,7 @@ const WhoHelps = () => (
         </h2>
       </ScrollReveal>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {specialists.map((s, i) => (
+        {filtered.map((s, i) => (
           <ScrollReveal key={s.title} delay={i * 50}>
             <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]} transition-transform hover:-translate-y-1`}>
               <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[s.tint]}`}>{s.title}</h3>
@@ -254,15 +258,25 @@ const WhoHelps = () => (
             Если тебе трудно понять,<br className="hidden md:block" /> с чего начать…
           </p>
           {tags.map((t) => (
-            <a
+            <button
               key={t.label}
-              href="#details"
-              className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
+              type="button"
+              onClick={() => setActiveTag(activeTag === t.label ? null : t.label)}
+              className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors ${activeTag === t.label ? "border-primary" : ""}`}
             >
               <t.icon className={tintInk[t.tint]} size={16} />
               {t.label}
-            </a>
+            </button>
           ))}
+          {activeTag && (
+            <button
+              type="button"
+              onClick={() => setActiveTag(null)}
+              className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              сбросить
+            </button>
+          )}
         </div>
       </ScrollReveal>
     </section>
@@ -328,6 +342,7 @@ const WhoHelps = () => (
       </ScrollReveal>
     </section>
   </main>
-);
+  );
+};
 
 export default WhoHelps;
