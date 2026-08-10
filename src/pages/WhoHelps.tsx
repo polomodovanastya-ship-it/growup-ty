@@ -1,6 +1,7 @@
 import {
   ArrowLeft,
   ArrowDown,
+  ArrowRight,
   UserCheck,
   Stethoscope,
   Compass,
@@ -9,9 +10,10 @@ import {
   HeartHandshake,
   Briefcase,
   Search,
-  ArrowRight,
-
-
+  Signpost,
+  Phone,
+  MessageCircle,
+  Star,
   CalendarClock,
   AlertTriangle,
   Target,
@@ -19,10 +21,28 @@ import {
 import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
+import heroImg from "@/assets/who-helps-hero.jpg";
+
+type Tint = "teal" | "coral" | "violet" | "amber";
+
+const tintBg: Record<Tint, string> = {
+  teal: "tint-teal",
+  coral: "tint-coral",
+  violet: "tint-violet",
+  amber: "tint-amber",
+};
+const tintInk: Record<Tint, string> = {
+  teal: "tint-teal-ink",
+  coral: "tint-coral-ink",
+  violet: "tint-violet-ink",
+  amber: "tint-amber-ink",
+};
 
 type Specialist = {
   title: string;
   icon: typeof UserCheck;
+  tint: Tint;
+  short: string;
   tagline: string;
   who: string;
   when: string;
@@ -34,6 +54,8 @@ const specialists: Specialist[] = [
   {
     title: "Психолог",
     icon: HeartHandshake,
+    tint: "teal",
+    short: "Если тебе тревожно, сложно справляться с эмоциями, не ладятся отношения или не хватает поддержки.",
     tagline: "Разговор про то, что происходит прямо сейчас",
     who: "Специалист с образованием в психологии. Не врач: не ставит диагнозы и не выписывает лекарства.",
     when: "Тревога, ссоры с родителями, самооценка, отношения, одиночество, страх будущего, сложные эмоции.",
@@ -43,6 +65,8 @@ const specialists: Specialist[] = [
   {
     title: "Психотерапевт",
     icon: UserCheck,
+    tint: "coral",
+    short: "Если трудности продолжаются долго и мешают жить, важно разобраться глубже и найти решения.",
     tagline: "Та же беседа, но курсом и по методике",
     who: "Психолог или врач с дополнительным обучением в конкретном методе (например, КПТ — когнитивно-поведенческая терапия).",
     when: "Когда состояние держится долго: подавленность неделями, панические приступы, навязчивые мысли, последствия тяжёлых событий.",
@@ -52,7 +76,9 @@ const specialists: Specialist[] = [
   {
     title: "Психиатр",
     icon: Stethoscope,
-    tagline: "Врач, если тело и психика уже не справляются",
+    tint: "violet",
+    short: "Если сильная тревога, апатия, проблемы со сном или настроением — поможет разобраться возможная медицинская поддержка.",
+    tagline: "Врач, который помогает стабилизировать состояние",
     who: "Врач. Единственный, кто может поставить диагноз и назначить лекарства.",
     when: "Долгая бессонница, сильная апатия, резкие перепады состояния, мысли о причинении себе вреда, паника, которая мешает жить.",
     how: "Приём как у любого врача: расспрашивает, оценивает состояние, при необходимости назначает лечение. Обращение к психиатру — это не «клеймо», а обычная медицинская помощь.",
@@ -61,6 +87,8 @@ const specialists: Specialist[] = [
   {
     title: "Коуч",
     icon: Compass,
+    tint: "amber",
+    short: "Если хочешь лучше понять себя, поставить цели и найти мотивацию двигаться к ним.",
     tagline: "Когда силы есть, а плана нет",
     who: "Специалист по целям и действиям. Не работает с психическим состоянием и травмами.",
     when: "Есть силы и понятная задача: разобраться с планами, привычками, организацией времени.",
@@ -70,19 +98,36 @@ const specialists: Specialist[] = [
   {
     title: "Тьютор",
     icon: GraduationCap,
+    tint: "teal",
+    short: "Если нужны поддержка в учёбе, организация времени и развитие навыков обучения.",
     tagline: "Про учёбу и образовательный маршрут",
     who: "Наставник в учёбе и образовательном маршруте.",
     when: "Не понятно, куда поступать, как выстроить подготовку, что выбрать из предметов и курсов.",
     how: "Помогает собрать образовательный план и найти ресурсы под твои интересы.",
     meds: "Не медицинская помощь",
   },
+  {
+    title: "Выбор профессии",
+    icon: Signpost,
+    tint: "violet",
+    short: "Если не знаешь, чем хочешь заниматься и как выбрать свой путь в будущем.",
+    tagline: "Карьерный консультант — про интересы и маршрут",
+    who: "Специалист, который помогает разобраться в интересах, сильных сторонах и вариантах профессий.",
+    when: "Не понятно, куда поступать и что делать после школы, всё кажется одинаково непонятным.",
+    how: "Разбираете интересы и ценности, смотрите на реальные профессии и строите план шагов.",
+    meds: "Не медицинская помощь",
+  },
 ];
 
-type Branch = {
-  icon: typeof UserCheck;
-  area: string;
-  answer: string;
-};
+const tags = [
+  { label: "тревога", icon: HeartHandshake, tint: "teal" as Tint },
+  { label: "отношения", icon: HeartHandshake, tint: "coral" as Tint },
+  { label: "учёба", icon: GraduationCap, tint: "amber" as Tint },
+  { label: "выбор профессии", icon: Signpost, tint: "violet" as Tint },
+  { label: "самооценка", icon: Star, tint: "teal" as Tint },
+];
+
+type Branch = { icon: typeof UserCheck; area: string; answer: string };
 
 type FlowStep = {
   icon: typeof UserCheck;
@@ -90,33 +135,20 @@ type FlowStep = {
   detail: string;
   answer?: string;
   branches?: Branch[];
-  tone: "soft" | "mid" | "alert";
+  tint: Tint;
 };
 
 const flow: FlowStep[] = [
   {
     icon: Target,
     condition: "Тяжело время от времени",
-    detail:
-      "Накрыло после ссоры, контрольной, расставания. Смотри, в какой сфере сложнее всего:",
+    detail: "Накрыло после ссоры, контрольной, расставания. Смотри, в какой сфере сложнее всего:",
     branches: [
-      {
-        icon: HeartHandshake,
-        area: "Эмоции и отношения",
-        answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам",
-      },
-      {
-        icon: Compass,
-        area: "Цели, привычки, организация времени",
-        answer: "Коуч — помогает превратить «надо бы» в конкретные шаги",
-      },
-      {
-        icon: Briefcase,
-        area: "Профессия, поступление, что дальше",
-        answer: "Карьерный консультант — разбирает интересы, профессии и маршрут",
-      },
+      { icon: HeartHandshake, area: "Эмоции и отношения", answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам" },
+      { icon: Compass, area: "Цели, привычки, организация времени", answer: "Коуч — помогает превратить «надо бы» в конкретные шаги" },
+      { icon: Briefcase, area: "Профессия, поступление, что дальше", answer: "Карьерный консультант — разбирает интересы, профессии и маршрут" },
     ],
-    tone: "soft",
+    tint: "teal",
   },
   {
     icon: CalendarClock,
@@ -124,7 +156,7 @@ const flow: FlowStep[] = [
     detail:
       "Хочешь разобраться, почему это происходит, и измениться внутренне: как ты относишься к себе, к другим и к сложным ситуациям.",
     answer: "Психотерапевт — работа курсом по методике, разбирает причины и помогает изменить привычные реакции",
-    tone: "mid",
+    tint: "coral",
   },
   {
     icon: AlertTriangle,
@@ -132,48 +164,15 @@ const flow: FlowStep[] = [
     detail:
       "Нарушения сна или аппетита, сильная тревога, паника или мысли навредить себе мешают учёбе, общению и привычным делам.",
     answer: "Психиатр — сначала врач, чтобы оценить состояние и помочь стабилизироваться",
-    tone: "alert",
+    tint: "violet",
   },
 ];
 
-
-const toneClass: Record<FlowStep["tone"], string> = {
-  soft: "border-secondary/40 bg-secondary/5",
-  mid: "border-primary/40 bg-primary/5",
-  alert: "border-destructive/40 bg-destructive/5",
-};
-
-const toneIcon: Record<FlowStep["tone"], string> = {
-  soft: "bg-secondary/15 text-secondary",
-  mid: "bg-primary/15 text-primary",
-  alert: "bg-destructive/15 text-destructive",
-};
-
 const compare = [
-  {
-    label: "Кто ведёт",
-    psy: "Психолог без медицинского образования",
-    therapy: "Психолог или врач с обучением в методе",
-    psychiatry: "Врач",
-  },
-  {
-    label: "Сколько длится",
-    psy: "От одной встречи до нескольких",
-    therapy: "Курс: обычно от 8–10 встреч",
-    psychiatry: "Приёмы + наблюдение",
-  },
-  {
-    label: "Что делает",
-    psy: "Помогает понять и назвать происходящее",
-    therapy: "Меняет устойчивые реакции и мысли по методике",
-    psychiatry: "Оценивает состояние, лечит",
-  },
-  {
-    label: "Лекарства",
-    psy: "Нет",
-    therapy: "Нет (кроме врача-психотерапевта)",
-    psychiatry: "Да",
-  },
+  { label: "Кто ведёт", psy: "Психолог без медицинского образования", therapy: "Психолог или врач с обучением в методе", psychiatry: "Врач" },
+  { label: "Сколько длится", psy: "От одной встречи до нескольких", therapy: "Курс: обычно от 8–10 встреч", psychiatry: "Приёмы + наблюдение" },
+  { label: "Что делает", psy: "Помогает понять и назвать происходящее", therapy: "Меняет устойчивые реакции и мысли по методике", psychiatry: "Оценивает состояние, лечит" },
+  { label: "Лекарства", psy: "Нет", therapy: "Нет (кроме врача-психотерапевта)", psychiatry: "Да" },
 ];
 
 const faq = [
@@ -201,7 +200,7 @@ const faq = [
 
 const WhoHelps = () => (
   <main className="min-h-screen bg-background">
-    <header className="px-4 pt-6 pb-2 max-w-3xl mx-auto flex items-center justify-between">
+    <header className="px-4 pt-6 pb-2 max-w-6xl mx-auto flex items-center justify-between">
       <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
         <ArrowLeft size={16} />
         На главную
@@ -209,28 +208,122 @@ const WhoHelps = () => (
       <img src={logo} alt="Как ты" className="h-8 w-auto" />
     </header>
 
-    <section className="px-4 pt-4 pb-12 max-w-3xl mx-auto">
+    {/* Hero */}
+    <section className="px-4 pt-4 pb-10 max-w-6xl mx-auto">
       <ScrollReveal>
-        <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-2">Кто чем помогает?</h1>
-        <p className="text-muted-foreground mb-8">
-          Психолог, психотерапевт, психиатр, коуч, тьютор — в чём разница и к кому идти.
-          Ниже — простая схема: сначала смотрим, как часто и как долго тебе тяжело.
-        </p>
+        <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center">
+          <div>
+            <h1 className="text-3xl md:text-5xl font-bold text-foreground leading-[1.05] mb-4">
+              К кому<br />обратиться
+            </h1>
+            <p className="text-muted-foreground text-base md:text-lg max-w-md">
+              Каждый специалист помогает по-своему. Выбери, что подходит именно тебе,
+              и чувствуй себя увереннее на пути к помощи.
+            </p>
+          </div>
+          <div className="rounded-[2rem] overflow-hidden border bg-card shadow-sm">
+            <img
+              src={heroImg}
+              alt="Подросток разговаривает со специалистом"
+              width={1280}
+              height={864}
+              className="w-full h-56 md:h-80 object-cover"
+            />
+          </div>
+        </div>
       </ScrollReveal>
+    </section>
 
+    {/* Specialist cards */}
+    <section id="details" className="px-4 pb-4 max-w-6xl mx-auto scroll-mt-20">
+      <ScrollReveal>
+        <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mb-6">
+          Виды помощи и кому они могут подойти
+        </h2>
+      </ScrollReveal>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {specialists.map((s, i) => (
+          <ScrollReveal key={s.title} delay={i * 50}>
+            <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]} transition-transform hover:-translate-y-1`}>
+              <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[s.tint]}`}>{s.title}</h3>
+              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
+                <s.icon className={tintInk[s.tint]} size={22} />
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.short}</p>
+            </article>
+          </ScrollReveal>
+        ))}
+      </div>
+    </section>
+
+    {/* Tags */}
+    <section className="px-4 py-6 max-w-6xl mx-auto">
+      <ScrollReveal>
+        <div className="rounded-3xl border bg-card p-4 md:p-5 flex flex-wrap items-center gap-3">
+          <p className="font-semibold text-foreground text-sm md:text-base mr-2">
+            Если тебе трудно понять,<br className="hidden md:block" /> с чего начать…
+          </p>
+          {tags.map((t) => (
+            <a
+              key={t.label}
+              href="#flow"
+              className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
+            >
+              <t.icon className={tintInk[t.tint]} size={16} />
+              {t.label}
+            </a>
+          ))}
+        </div>
+      </ScrollReveal>
+    </section>
+
+    {/* CTA banners */}
+    <section className="px-4 pb-10 max-w-6xl mx-auto grid gap-4 md:grid-cols-2">
+      <ScrollReveal>
+        <div className="h-full rounded-3xl bg-primary text-primary-foreground p-6">
+          <h3 className="text-xl md:text-2xl font-bold mb-1">Помощь рядом</h3>
+          <p className="text-sm opacity-90 mb-5">Бесплатные проверенные ресурсы и поддержка, когда это нужно.</p>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/#help-links" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
+              <Phone size={15} className="text-primary" /> Телефоны доверия
+            </Link>
+            <Link to="/#help-links" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
+              <MessageCircle size={15} className="text-primary" /> Чаты поддержки
+            </Link>
+            <Link to="/#help-links" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
+              <Star size={15} className="text-primary" /> Полезные сервисы
+            </Link>
+          </div>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={80}>
+        <div className="h-full rounded-3xl tint-coral border p-6">
+          <h3 className="text-xl md:text-2xl font-bold mb-1 tint-coral-ink">Как выбрать специалиста</h3>
+          <p className="text-sm text-muted-foreground mb-5">На что смотреть, о чём спросить и как понять, что вам подходит.</p>
+          <Link
+            to="/articles/how-to-choose"
+            className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+          >
+            <Search size={15} /> Посмотреть варианты <ArrowRight size={15} />
+          </Link>
+        </div>
+      </ScrollReveal>
+    </section>
+
+    <section className="px-4 pb-16 max-w-4xl mx-auto">
       {/* Decision flow */}
       <ScrollReveal>
-        <div className="rounded-2xl border bg-card p-4 md:p-6">
+        <div id="flow" className="rounded-3xl border bg-card p-5 md:p-7 scroll-mt-20">
           <p className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Схема выбора</p>
-          <h2 className="font-semibold text-lg text-foreground mb-5">Как часто тебе тяжело?</h2>
+          <h2 className="font-bold text-lg md:text-xl text-foreground mb-5">Как часто тебе тяжело?</h2>
 
           <div className="space-y-3">
             {flow.map((step, i) => (
               <div key={step.condition}>
-                <div className={`rounded-xl border p-4 ${toneClass[step.tone]}`}>
+                <div className={`rounded-2xl border p-4 ${tintBg[step.tint]}`}>
                   <div className="flex items-start gap-3">
-                    <div className={`rounded-lg w-9 h-9 shrink-0 flex items-center justify-center ${toneIcon[step.tone]}`}>
-                      <step.icon size={18} />
+                    <div className="rounded-xl w-9 h-9 shrink-0 flex items-center justify-center bg-card/70">
+                      <step.icon className={tintInk[step.tint]} size={18} />
                     </div>
                     <div className="min-w-0">
                       <p className="font-semibold text-foreground">{step.condition}</p>
@@ -245,15 +338,16 @@ const WhoHelps = () => (
                         <ul className="mt-3 space-y-2">
                           {step.branches.map((b) => (
                             <li key={b.area} className="flex items-start gap-2 text-sm text-foreground">
-                              <b.icon className="text-primary shrink-0 mt-0.5" size={16} />
+                              <b.icon className={`${tintInk[step.tint]} shrink-0 mt-0.5`} size={16} />
                               <span>
-                                <span className="font-medium">{b.area}</span>{" — "}{b.answer}
+                                <span className="font-medium">{b.area}</span>
+                                {" — "}
+                                {b.answer}
                               </span>
                             </li>
                           ))}
                         </ul>
                       )}
-
                     </div>
                   </div>
                 </div>
@@ -274,17 +368,8 @@ const WhoHelps = () => (
             Психотерапевт и психиатр не отменяют друг друга: часто они работают в паре.
             Один помогает разобраться в причинах, другой — стабилизировать состояние.
           </p>
-          <Link
-            to="/articles/how-to-choose"
-            className="mt-4 inline-flex items-center gap-2 rounded-xl border bg-muted/40 px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 transition-colors"
-          >
-            <Search className="text-primary" size={16} />
-            Как выбрать специалиста и не ошибиться
-            <ArrowRight size={15} className="text-muted-foreground" />
-          </Link>
         </div>
       </ScrollReveal>
-
 
       {/* Comparison */}
       <ScrollReveal>
@@ -294,7 +379,7 @@ const WhoHelps = () => (
         <p className="text-sm text-muted-foreground mb-4">
           Разница не в том, «насколько всё плохо», а в задаче и инструментах.
         </p>
-        <div className="rounded-2xl border bg-card overflow-hidden">
+        <div className="rounded-3xl border bg-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[560px]">
               <thead>
@@ -320,17 +405,17 @@ const WhoHelps = () => (
         </div>
       </ScrollReveal>
 
-      {/* Cards */}
+      {/* Details */}
       <ScrollReveal>
         <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-4">Подробно про каждого</h2>
       </ScrollReveal>
       <div className="space-y-3">
         {specialists.map((s, i) => (
-          <ScrollReveal key={s.title} delay={i * 60}>
-            <article className="rounded-2xl border bg-card p-4 md:p-5 hover:border-primary/40 transition-colors">
+          <ScrollReveal key={s.title} delay={i * 50}>
+            <article className="rounded-3xl border bg-card p-4 md:p-5 hover:border-primary/40 transition-colors">
               <div className="flex items-start gap-3 mb-3">
-                <div className="rounded-lg bg-primary/10 flex items-center justify-center w-10 h-10 shrink-0">
-                  <s.icon className="text-primary" size={19} />
+                <div className={`rounded-2xl ${tintBg[s.tint]} flex items-center justify-center w-10 h-10 shrink-0`}>
+                  <s.icon className={tintInk[s.tint]} size={19} />
                 </div>
                 <div className="min-w-0">
                   <h3 className="font-semibold text-lg text-foreground leading-tight">{s.title}</h3>
@@ -367,8 +452,8 @@ const WhoHelps = () => (
       </ScrollReveal>
       <div className="space-y-3">
         {faq.map((f, i) => (
-          <ScrollReveal key={f.q} delay={i * 60}>
-            <div className="rounded-xl border bg-card p-4">
+          <ScrollReveal key={f.q} delay={i * 50}>
+            <div className="rounded-2xl border bg-card p-4">
               <p className="font-medium text-foreground text-sm mb-1">{f.q}</p>
               <p className="text-sm text-muted-foreground">{f.a}</p>
             </div>
@@ -377,13 +462,7 @@ const WhoHelps = () => (
       </div>
 
       <ScrollReveal>
-        <p className="mt-8 text-sm text-muted-foreground">
-          Если сейчас очень тяжело — загляни в блок{" "}
-          <Link to="/#help-links" className="text-primary underline underline-offset-4">
-            «Помощь рядом»
-          </Link>
-          : там телефоны доверия и бесплатные чаты поддержки.
-        </p>
+        <p className="mt-10 text-center text-base text-muted-foreground">Мы рядом, когда тебе нужно.</p>
       </ScrollReveal>
     </section>
   </main>

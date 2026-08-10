@@ -190,7 +190,7 @@ const podcasts = [
 const checkups = [
   { title: "Давай познакомимся", icon: HandHeart, action: "kidscreen" },
   { title: "Задумался о выборе профессии", icon: Compass, action: "career-quiz" },
-  { title: "Кто чем помогает?", icon: UserCheck, href: "/articles/who-helps" },
+  { title: "К кому обратиться", icon: UserCheck, href: "/articles/who-helps" },
 ];
 
 const checklists = [
