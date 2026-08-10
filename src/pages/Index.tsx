@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
 import logo from "@/assets/logo.png";
@@ -230,6 +230,7 @@ const heroSlides = [
 ] as const;
 
 const Index = () => {
+  const location = useLocation();
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
@@ -240,6 +241,18 @@ const Index = () => {
     const id = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 5000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+      }
+    } else {
+      window.scrollTo({ top: 0 });
+    }
+  }, [location]);
+
 
 
   const filteredLinks = helpLinks;
@@ -257,6 +270,10 @@ const Index = () => {
             <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
             <span className="h-4 w-px bg-border" />
             <a href="#help-links" className="text-foreground hover:text-primary transition-colors">помощь рядом</a>
+            <span className="h-4 w-px bg-border" />
+            <Link to="/articles/who-helps" className="text-foreground hover:text-primary transition-colors">к кому обратиться</Link>
+            <span className="h-4 w-px bg-border" />
+            <Link to="/about" className="text-foreground hover:text-primary transition-colors">о нас</Link>
           </nav>
         </div>
       </div>

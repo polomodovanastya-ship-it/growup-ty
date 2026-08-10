@@ -19,6 +19,7 @@ import {
   Target,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
 import heroImg from "@/assets/who-helps-hero.jpg";
@@ -49,6 +50,7 @@ type Specialist = {
   how: string;
   meds: string;
   duration: string;
+  tags: string[];
 };
 
 const specialists: Specialist[] = [
@@ -63,6 +65,7 @@ const specialists: Specialist[] = [
     how: "Разговор один на один или онлайн. Вместе разбираете, что происходит, и ищете способы, которые подходят именно тебе.",
     meds: "Без лекарств",
     duration: "От одной встречи до нескольких",
+    tags: ["тревога", "отношения", "самооценка"],
   },
   {
     title: "Психотерапевт",
@@ -75,6 +78,7 @@ const specialists: Specialist[] = [
     how: "Регулярные встречи по определённой методике, часто курсом в несколько месяцев. Между встречами бывают небольшие задания.",
     meds: "Без лекарств (если это не врач-психотерапевт)",
     duration: "Курс: обычно от 8–10 встреч",
+    tags: ["тревога", "отношения", "самооценка"],
   },
   {
     title: "Психиатр",
@@ -87,6 +91,7 @@ const specialists: Specialist[] = [
     how: "Приём как у любого врача: расспрашивает, оценивает состояние, при необходимости назначает лечение. Обращение к психиатру — это не «клеймо», а обычная медицинская помощь.",
     meds: "Может назначать лекарства",
     duration: "Приёмы + наблюдение",
+    tags: ["тревога", "самооценка"],
   },
   {
     title: "Коуч",
@@ -99,6 +104,7 @@ const specialists: Specialist[] = [
     how: "Ставите цель, разбиваете её на шаги, отслеживаете прогресс.",
     meds: "Не медицинская помощь",
     duration: "От нескольких встреч",
+    tags: ["самооценка"],
   },
   {
     title: "Тьютор",
@@ -111,6 +117,7 @@ const specialists: Specialist[] = [
     how: "Помогает собрать образовательный план и найти ресурсы под твои интересы.",
     meds: "Не медицинская помощь",
     duration: "По необходимости",
+    tags: ["учёба"],
   },
   {
     title: "Карьерный консультант",
@@ -123,6 +130,7 @@ const specialists: Specialist[] = [
     how: "Разбираете интересы и ценности, смотрите на реальные профессии и строите план шагов.",
     meds: "Не медицинская помощь",
     duration: "От 1–3 встреч",
+    tags: ["выбор профессии", "учёба"],
   },
 ];
 
@@ -166,7 +174,11 @@ const faq = [
   },
 ];
 
-const WhoHelps = () => (
+const WhoHelps = () => {
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const filtered = activeTag ? specialists.filter((s) => s.tags.includes(activeTag)) : specialists;
+
+  return (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-6xl mx-auto flex items-center justify-between">
       <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -210,7 +222,7 @@ const WhoHelps = () => (
         </h2>
       </ScrollReveal>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {specialists.map((s, i) => (
+        {filtered.map((s, i) => (
           <ScrollReveal key={s.title} delay={i * 50}>
             <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]} transition-transform hover:-translate-y-1`}>
               <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[s.tint]}`}>{s.title}</h3>
@@ -246,15 +258,25 @@ const WhoHelps = () => (
             Если тебе трудно понять,<br className="hidden md:block" /> с чего начать…
           </p>
           {tags.map((t) => (
-            <a
+            <button
               key={t.label}
-              href="#details"
-              className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
+              type="button"
+              onClick={() => setActiveTag(activeTag === t.label ? null : t.label)}
+              className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors ${activeTag === t.label ? "border-primary" : ""}`}
             >
               <t.icon className={tintInk[t.tint]} size={16} />
               {t.label}
-            </a>
+            </button>
           ))}
+          {activeTag && (
+            <button
+              type="button"
+              onClick={() => setActiveTag(null)}
+              className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              сбросить
+            </button>
+          )}
         </div>
       </ScrollReveal>
     </section>
@@ -320,6 +342,7 @@ const WhoHelps = () => (
       </ScrollReveal>
     </section>
   </main>
-);
+  );
+};
 
 export default WhoHelps;
