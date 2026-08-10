@@ -292,7 +292,7 @@ const WhoHelps = () => (
       </ScrollReveal>
     </section>
 
-    <section className="px-4 pb-16 max-w-4xl mx-auto">
+    <section className="px-4 pb-16 max-w-6xl mx-auto">
 
 
       <ScrollReveal>
