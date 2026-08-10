@@ -306,6 +306,7 @@ const WhoHelps = () => (
             </table>
           </div>
         </div>
+        </div>
       </ScrollReveal>
 
       {/* Details */}
