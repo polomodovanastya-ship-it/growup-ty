@@ -43,13 +43,23 @@ const redFlags = [
 const HowToChoose = () => (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-3xl mx-auto flex items-center justify-between">
-      <Link
-        to="/articles/who-helps"
-        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-      >
-        <ArrowLeft size={16} />
-        К кому обратиться
-      </Link>
+      <div className="flex items-center gap-4">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          <ArrowLeft size={16} />
+          На главную
+        </Link>
+        <span className="text-border">·</span>
+        <Link
+          to="/articles/who-helps"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          <ArrowLeft size={16} />
+          К кому обратиться
+        </Link>
+      </div>
       <img src={logo} alt="как ты" className="h-8 w-auto select-none" draggable={false} />
     </header>
 
