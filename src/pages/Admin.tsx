@@ -119,6 +119,8 @@ const Admin = () => {
         </header>
 
         {!selected ? (
+          <>
+          <AdminDashboard totalAssessments={assessments.length} />
           <div className="rounded-2xl border border-border/60 bg-card overflow-hidden">
             <Table>
               <TableHeader>
