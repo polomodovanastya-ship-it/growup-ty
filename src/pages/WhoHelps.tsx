@@ -22,7 +22,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
-import heroImg from "@/assets/who-helps-hero.jpg";
+import heroImgAsset from "@/assets/who-helps-hero.jpg.asset.json";
+const heroImg = heroImgAsset.url;
 
 type Tint = "teal" | "coral" | "violet" | "amber";
 
