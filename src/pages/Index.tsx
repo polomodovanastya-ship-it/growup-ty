@@ -399,7 +399,9 @@ const Index = () => {
                 type="button"
                 onClick={() => {
                   setSelectedMood(f.slug);
-                  void supabase.from("mood_clicks").insert({ mood: f.slug });
+                  supabase.from("mood_clicks").insert({ mood: f.slug }).then(
+                    ({ error }) => { if (error) console.error("mood click", error); },
+                  );
                   const url = new URL(window.location.href);
                   url.searchParams.set("utm_source", "kakty");
                   url.searchParams.set("utm_medium", "emoji");
