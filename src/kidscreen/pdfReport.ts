@@ -1,5 +1,4 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import type jsPDFType from "jspdf";
 import type { ProfileReport } from "./scoring";
 
 interface QuestionLite {
