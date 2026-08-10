@@ -71,20 +71,35 @@ const AdminLogin = () => {
         <div>
           <h1 className="text-2xl font-bold text-foreground">Админ-панель</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {mode === "login" ? "Войди, чтобы видеть результаты" : "Создай аккаунт"}
+            {mode === "login"
+              ? "Войди, чтобы видеть результаты"
+              : mode === "signup"
+                ? "Создай аккаунт"
+                : "Укажи почту — пришлём ссылку для смены пароля"}
           </p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Пароль</Label>
-          <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
+        {mode !== "reset" && (
+          <div className="space-y-2">
+            <Label htmlFor="password">Пароль</Label>
+            <Input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+        )}
         <Button type="submit" className="w-full rounded-full" disabled={busy}>
-          {busy ? "..." : mode === "login" ? "Войти" : "Зарегистрироваться"}
+          {busy ? "..." : mode === "login" ? "Войти" : mode === "signup" ? "Зарегистрироваться" : "Отправить ссылку"}
         </Button>
+        {mode === "login" && (
+          <button
+            type="button"
+            className="text-sm text-muted-foreground hover:text-foreground w-full text-center"
+            onClick={() => setMode("reset")}
+          >
+            Забыли пароль?
+          </button>
+        )}
         <button
           type="button"
           className="text-sm text-muted-foreground hover:text-foreground w-full text-center"
@@ -92,6 +107,7 @@ const AdminLogin = () => {
         >
           {mode === "login" ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти"}
         </button>
+
       </form>
       </div>
     </main>
