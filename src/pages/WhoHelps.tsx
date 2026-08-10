@@ -139,22 +139,27 @@ const faq = [
   {
     q: "С чего начать, если непонятно, к кому идти?",
     a: "Начни с психолога. Если он увидит, что нужна медицинская помощь, он подскажет и направит к психиатру.",
+    tint: "teal" as Tint,
   },
   {
     q: "Это дорого?",
     a: "Есть бесплатные варианты: школьный психолог, психолог в поликлинике, бесплатные чаты и телефоны доверия — они собраны в блоке «Помощь рядом».",
+    tint: "coral" as Tint,
   },
   {
     q: "Расскажут ли родителям?",
     a: "Специалист обязан соблюдать конфиденциальность. Исключение — угроза жизни и здоровью. Об этом можно спросить прямо на первой встрече.",
+    tint: "violet" as Tint,
   },
   {
     q: "А если не подошёл специалист?",
     a: "Это нормально. Можно сменить его без объяснений. Подходящий контакт — часть работы, а не твоя вина.",
+    tint: "amber" as Tint,
   },
   {
     q: "Меня поставят «на учёт», если пойти к психиатру?",
     a: "Обращение к психиатру само по себе не ограничивает жизнь. Учитывается только тяжёлое состояние, требующее постоянного наблюдения, — это редкие случаи.",
+    tint: "teal" as Tint,
   },
 ];
 
@@ -311,18 +316,21 @@ const WhoHelps = () => (
 
 
       <ScrollReveal>
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-3 flex items-center gap-2">
+        <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-2">
           <HelpCircle className="text-primary" size={22} />
           Частые вопросы
         </h2>
       </ScrollReveal>
-      <div className="space-y-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {faq.map((f, i) => (
           <ScrollReveal key={f.q} delay={i * 50}>
-            <div className="rounded-2xl border bg-card p-4">
-              <p className="font-medium text-foreground text-sm mb-1">{f.q}</p>
-              <p className="text-sm text-muted-foreground">{f.a}</p>
-            </div>
+            <article className={`h-full rounded-3xl border p-5 ${tintBg[f.tint]}`}>
+              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
+                <HelpCircle className={tintInk[f.tint]} size={22} />
+              </div>
+              <p className={`font-bold text-base leading-tight mb-3 ${tintInk[f.tint]}`}>{f.q}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{f.a}</p>
+            </article>
           </ScrollReveal>
         ))}
       </div>
