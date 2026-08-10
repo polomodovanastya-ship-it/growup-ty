@@ -4,6 +4,17 @@ import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Spark
 import heroTeensAsset from "@/assets/hero-teens.jpg.asset.json";
 const heroTeens = heroTeensAsset.url;
 import episode6Audio from "@/assets/episode-6.mp3.asset.json";
+import pod1 from "@/assets/pod-1.jpg";
+import pod2 from "@/assets/pod-2.jpg";
+import pod3 from "@/assets/pod-3.jpg";
+import pod4 from "@/assets/pod-4.jpg";
+import pod5 from "@/assets/pod-5.jpg";
+import pod6 from "@/assets/pod-6.jpg";
+import pod7 from "@/assets/pod-7.jpg";
+import pod8 from "@/assets/pod-8.jpg";
+import pod9 from "@/assets/pod-9.jpg";
+import pod10 from "@/assets/pod-10.jpg";
+import pod11 from "@/assets/pod-11.jpg";
 import emojiRelieved from "@/assets/emoji/calm.png";
 import emojiSteam from "@/assets/emoji/angry.png";
 import emojiPleading from "@/assets/emoji/crying.png";
