@@ -309,44 +309,6 @@ const WhoHelps = () => (
         </div>
       </ScrollReveal>
 
-      {/* Details */}
-      <ScrollReveal>
-        <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-4">Подробно про каждого</h2>
-      </ScrollReveal>
-      <div className="space-y-3">
-        {specialists.map((s, i) => (
-          <ScrollReveal key={s.title} delay={i * 50}>
-            <article className="rounded-3xl border bg-card p-4 md:p-5 hover:border-primary/40 transition-colors">
-              <div className="flex items-start gap-3 mb-3">
-                <div className={`rounded-2xl ${tintBg[s.tint]} flex items-center justify-center w-10 h-10 shrink-0`}>
-                  <s.icon className={tintInk[s.tint]} size={19} />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-semibold text-lg text-foreground leading-tight">{s.title}</h3>
-                  <p className="text-sm text-muted-foreground">{s.tagline}</p>
-                </div>
-              </div>
-              <dl className="space-y-1.5 text-sm">
-                <div>
-                  <dt className="inline font-medium text-foreground">Кто это. </dt>
-                  <dd className="inline text-muted-foreground">{s.who}</dd>
-                </div>
-                <div>
-                  <dt className="inline font-medium text-foreground">Когда идти. </dt>
-                  <dd className="inline text-muted-foreground">{s.when}</dd>
-                </div>
-                <div>
-                  <dt className="inline font-medium text-foreground">Как проходит. </dt>
-                  <dd className="inline text-muted-foreground">{s.how}</dd>
-                </div>
-              </dl>
-              <span className="inline-block mt-3 text-xs rounded-full border bg-muted/60 text-muted-foreground px-2.5 py-1">
-                {s.meds}
-              </span>
-            </article>
-          </ScrollReveal>
-        ))}
-      </div>
 
       <ScrollReveal>
         <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-3 flex items-center gap-2">
