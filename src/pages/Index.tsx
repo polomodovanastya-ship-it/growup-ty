@@ -4,6 +4,17 @@ import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Spark
 import heroTeensAsset from "@/assets/hero-teens.jpg.asset.json";
 const heroTeens = heroTeensAsset.url;
 import episode6Audio from "@/assets/episode-6.mp3.asset.json";
+import pod1 from "@/assets/pod-1.jpg";
+import pod2 from "@/assets/pod-2.jpg";
+import pod3 from "@/assets/pod-3.jpg";
+import pod4 from "@/assets/pod-4.jpg";
+import pod5 from "@/assets/pod-5.jpg";
+import pod6 from "@/assets/pod-6.jpg";
+import pod7 from "@/assets/pod-7.jpg";
+import pod8 from "@/assets/pod-8.jpg";
+import pod9 from "@/assets/pod-9.jpg";
+import pod10 from "@/assets/pod-10.jpg";
+import pod11 from "@/assets/pod-11.jpg";
 import emojiRelieved from "@/assets/emoji/calm.png";
 import emojiSteam from "@/assets/emoji/angry.png";
 import emojiPleading from "@/assets/emoji/crying.png";
@@ -91,6 +102,7 @@ const podcasts = [
     title: "Зачем вообще психолог?",
     description: "Мне ведь не так уж плохо — или всё-таки стоит попробовать?",
     icon: Search,
+    image: pod1,
     url: "https://mave.stream/e/Ng8tfd3aZI",
     audio: "/audio/episode-1.mp3",
     tags: ["самооценка", "мотивация", "тревога"],
@@ -99,6 +111,7 @@ const podcasts = [
     title: "Чего я хочу на самом деле?",
     description: "А чего от меня просто ждут — и как это различить",
     icon: Brain,
+    image: pod2,
     url: "https://mave.stream/e/F55kiTfaEB",
     audio: "/audio/episode-3.mp3",
     tags: ["мотивация", "самооценка", "прокрастинация"],
@@ -107,6 +120,7 @@ const podcasts = [
     title: "Родители и границы",
     description: "Сепарация без войны — возможно ли это?",
     icon: Home,
+    image: pod3,
     url: "https://mave.stream/e/XnMGRhw4tX",
     audio: "/audio/episode-5.mp3",
     tags: ["отношения", "стресс"],
@@ -115,6 +129,7 @@ const podcasts = [
     title: "Первая сессия",
     description: "Что происходит на первой встрече и что значит конфиденциальность",
     icon: Shield,
+    image: pod4,
     url: "https://mave.stream/e/Yykg2hB0r1",
     audio: episode6Audio.url,
     tags: ["тревога", "самооценка"],
@@ -123,6 +138,7 @@ const podcasts = [
     title: "Что делать, если сильно устал? Часть 1. Про сон",
     description: "Почему недосып — не наша вина, и как бережно вернуть себе силы.",
     icon: Flame,
+    image: pod5,
     url: "https://mave.stream/e/q2en9dlbty",
     audio: "/audio/episode-4.mp3",
     tags: ["выгорание", "стресс"],
@@ -131,36 +147,42 @@ const podcasts = [
     title: "Стыд и прокрастинация",
     description: "Перфекционизм, откладывание и что за этим стоит",
     icon: Sparkles,
+    image: pod6,
     tags: ["прокрастинация", "самооценка", "стресс"],
   },
   {
     title: "Повторяющиеся отношения",
     description: "Почему я снова и снова выбираю одно и то же",
     icon: Repeat,
+    image: pod7,
     tags: ["отношения", "самооценка"],
   },
   {
     title: "Парням тоже можно",
     description: "Просить помощи — это не слабость",
     icon: HandHeart,
+    image: pod8,
     tags: ["самооценка", "одиночество", "стресс"],
   },
   {
     title: "Соцсети и сравнение",
     description: "Инстадивы, одиночество и digital well-being",
     icon: Smartphone,
+    image: pod9,
     tags: ["одиночество", "самооценка", "тревога"],
   },
   {
     title: "Онлайн-терапия",
     description: "Как она работает и почему раз в неделю лучше, чем каждый день",
     icon: MessageCircle,
+    image: pod10,
     tags: ["тревога", "выгорание", "мотивация"],
   },
   {
     title: "Свой или чужой?",
     description: "С кем я дружу и почему друзей приходится выбирать",
     icon: Users,
+    image: pod11,
     tags: ["отношения", "одиночество"],
   },
 ];
@@ -379,9 +401,19 @@ const Index = () => {
             const url = (p as any).url as string | undefined;
             const audio = (p as any).audio as string | undefined;
             const cardClasses =
-              "group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col";
+              "group rounded-2xl border bg-card p-5 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col";
             const cardInner = (
               <>
+                <div className="-mx-5 mb-4 aspect-[16/9] overflow-hidden bg-muted">
+                  <img
+                    src={(p as any).image}
+                    alt={p.title}
+                    loading="lazy"
+                    width={896}
+                    height={512}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <div className="flex items-start justify-between mb-3">
                   <div className="rounded-xl bg-primary/10 p-2.5">
                     <p.icon className="text-primary" size={20} />
