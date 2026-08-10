@@ -148,6 +148,7 @@ const Admin = () => {
               </TableBody>
             </Table>
           </div>
+          </>
         ) : (
           <div className="space-y-6">
             <Button variant="ghost" size="sm" onClick={() => setSelected(null)}>
