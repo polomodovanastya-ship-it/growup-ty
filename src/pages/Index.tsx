@@ -401,9 +401,19 @@ const Index = () => {
             const url = (p as any).url as string | undefined;
             const audio = (p as any).audio as string | undefined;
             const cardClasses =
-              "group rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col";
+              "group rounded-2xl border bg-card p-5 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col";
             const cardInner = (
               <>
+                <div className="-mx-5 mb-4 aspect-[16/9] overflow-hidden bg-muted">
+                  <img
+                    src={(p as any).image}
+                    alt={p.title}
+                    loading="lazy"
+                    width={896}
+                    height={512}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <div className="flex items-start justify-between mb-3">
                   <div className="rounded-xl bg-primary/10 p-2.5">
                     <p.icon className="text-primary" size={20} />
