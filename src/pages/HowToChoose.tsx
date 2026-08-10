@@ -48,7 +48,7 @@ const HowToChoose = () => (
         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
       >
         <ArrowLeft size={16} />
-        Кто чем помогает
+        К кому обратиться
       </Link>
       <img src={logo} alt="Как ты" className="h-8 w-auto" />
     </header>
