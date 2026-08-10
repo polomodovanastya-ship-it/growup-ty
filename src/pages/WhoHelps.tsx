@@ -1,6 +1,6 @@
 import {
   ArrowLeft,
-  ArrowDown,
+  
   ArrowRight,
   UserCheck,
   Stethoscope,
@@ -127,46 +127,6 @@ const tags = [
   { label: "самооценка", icon: Star, tint: "teal" as Tint },
 ];
 
-type Branch = { icon: typeof UserCheck; area: string; answer: string };
-
-type FlowStep = {
-  icon: typeof UserCheck;
-  condition: string;
-  detail: string;
-  answer?: string;
-  branches?: Branch[];
-  tint: Tint;
-};
-
-const flow: FlowStep[] = [
-  {
-    icon: Target,
-    condition: "Тяжело время от времени",
-    detail: "Накрыло после ссоры, контрольной, расставания. Смотри, в какой сфере сложнее всего:",
-    branches: [
-      { icon: HeartHandshake, area: "Эмоции и отношения", answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам" },
-      { icon: Compass, area: "Цели, привычки, организация времени", answer: "Коуч — помогает превратить «надо бы» в конкретные шаги" },
-      { icon: Briefcase, area: "Профессия, поступление, что дальше", answer: "Карьерный консультант — разбирает интересы, профессии и маршрут" },
-    ],
-    tint: "teal",
-  },
-  {
-    icon: CalendarClock,
-    condition: "Тяжело систематически — дольше 2–4 недель",
-    detail:
-      "Хочешь разобраться, почему это происходит, и измениться внутренне: как ты относишься к себе, к другим и к сложным ситуациям.",
-    answer: "Психотерапевт — работа курсом по методике, разбирает причины и помогает изменить привычные реакции",
-    tint: "coral",
-  },
-  {
-    icon: AlertTriangle,
-    condition: "Сон, аппетит или перепады настроения мешают жить",
-    detail:
-      "Нарушения сна или аппетита, сильная тревога, паника или мысли навредить себе мешают учёбе, общению и привычным делам.",
-    answer: "Психиатр — сначала врач, чтобы оценить состояние и помочь стабилизироваться",
-    tint: "violet",
-  },
-];
 
 const compare = [
   { label: "Кто ведёт", psy: "Психолог без медицинского образования", therapy: "Психолог или врач с обучением в методе", psychiatry: "Врач" },
@@ -266,7 +226,7 @@ const WhoHelps = () => (
           {tags.map((t) => (
             <a
               key={t.label}
-              href="#flow"
+              href="#compare"
               className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
             >
               <t.icon className={tintInk[t.tint]} size={16} />
@@ -315,6 +275,7 @@ const WhoHelps = () => (
 
       {/* Comparison */}
       <ScrollReveal>
+        <div id="compare" className="scroll-mt-20">
         <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-1">
           Психолог, психотерапевт, психиатр — в чём разница
         </h2>
