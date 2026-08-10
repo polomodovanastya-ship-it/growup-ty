@@ -248,7 +248,7 @@ const WhoHelps = () => (
           {tags.map((t) => (
             <a
               key={t.label}
-              href="#compare"
+              href="#details"
               className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
             >
               <t.icon className={tintInk[t.tint]} size={16} />
