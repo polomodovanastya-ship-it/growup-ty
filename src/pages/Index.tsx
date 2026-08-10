@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
+import logo from "@/assets/logo.png";
 import heroTeensAsset from "@/assets/hero-teens.jpg.asset.json";
 const heroTeens = heroTeensAsset.url;
 import episode6Audio from "@/assets/episode-6.mp3.asset.json";
@@ -266,12 +267,7 @@ const Index = () => {
         <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-stretch">
           {/* Left: rotating block */}
           <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] bg-muted/50 border border-border/50 p-6 md:p-10 min-h-[320px] md:min-h-[520px] flex flex-col justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl md:text-3xl font-semibold lowercase tracking-tight text-foreground">как ты?</span>
-              <svg width="44" height="12" viewBox="0 0 48 14" fill="none" className="text-primary">
-                <path d="M1 9 C 12 2, 28 2, 47 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
-              </svg>
-            </div>
+            <img src={logo} alt="как ты" className="h-8 md:h-10 w-auto select-none" draggable={false} />
 
             <div className="relative mt-6 flex-1">
               {heroSlides.map((s, i) => {

@@ -170,7 +170,7 @@ const WhoHelps = () => (
         <ArrowLeft size={16} />
         На главную
       </Link>
-      <img src={logo} alt="Как ты" className="h-8 w-auto" />
+      <img src={logo} alt="как ты" className="h-8 w-auto select-none" draggable={false} />
     </header>
 
     {/* Hero */}

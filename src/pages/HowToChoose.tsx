@@ -50,7 +50,7 @@ const HowToChoose = () => (
         <ArrowLeft size={16} />
         К кому обратиться
       </Link>
-      <img src={logo} alt="Как ты" className="h-8 w-auto" />
+      <img src={logo} alt="как ты" className="h-8 w-auto select-none" draggable={false} />
     </header>
 
     <section className="px-4 pt-4 pb-12 max-w-3xl mx-auto">
