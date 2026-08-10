@@ -179,11 +179,45 @@ const checklists = [
 
 const INITIAL_VISIBLE = 3;
 
+const heroSlides = [
+  {
+    key: "listen",
+    icon: Headphones,
+    title: "Послушать",
+    text: "Подкасты о важном: отношения, тревога, самооценка и многое другое.",
+    cta: "К подкастам",
+    href: "#podcasts",
+  },
+  {
+    key: "help",
+    icon: HandHeart,
+    title: "Помощь рядом",
+    text: "Проверенные ресурсы и поддержка — бесплатно и конфиденциально.",
+    cta: "Смотреть",
+    href: "#help-links",
+  },
+  {
+    key: "start",
+    icon: Sparkles,
+    title: "Разобраться в том, что с тобой происходит",
+    text: "Короткий опросник о самочувствии — меньше минуты.",
+    cta: "Начать",
+    href: "#",
+  },
+] as const;
+
 const Index = () => {
   const [showAllPodcasts, setShowAllPodcasts] = useState(false);
   const [careerQuizOpen, setCareerQuizOpen] = useState(false);
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 5000);
+    return () => clearInterval(id);
+  }, []);
+
 
   const filteredLinks = helpLinks;
 
