@@ -131,3 +131,37 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
+
+@layer base {
+  :root {
+    --tint-teal: 178 45% 94%;
+    --tint-teal-ink: 178 71% 25%;
+    --tint-coral: 9 80% 95%;
+    --tint-coral-ink: 9 70% 50%;
+    --tint-violet: 262 55% 95%;
+    --tint-violet-ink: 262 45% 48%;
+    --tint-amber: 38 85% 94%;
+    --tint-amber-ink: 32 70% 45%;
+  }
+  .dark {
+    --tint-teal: 178 30% 16%;
+    --tint-teal-ink: 178 55% 62%;
+    --tint-coral: 9 35% 18%;
+    --tint-coral-ink: 9 70% 68%;
+    --tint-violet: 262 30% 18%;
+    --tint-violet-ink: 262 55% 75%;
+    --tint-amber: 32 35% 17%;
+    --tint-amber-ink: 38 75% 65%;
+  }
+}
+
+@layer utilities {
+  .tint-teal { background-color: hsl(var(--tint-teal)); }
+  .tint-teal-ink { color: hsl(var(--tint-teal-ink)); }
+  .tint-coral { background-color: hsl(var(--tint-coral)); }
+  .tint-coral-ink { color: hsl(var(--tint-coral-ink)); }
+  .tint-violet { background-color: hsl(var(--tint-violet)); }
+  .tint-violet-ink { color: hsl(var(--tint-violet-ink)); }
+  .tint-amber { background-color: hsl(var(--tint-amber)); }
+  .tint-amber-ink { color: hsl(var(--tint-amber-ink)); }
+}
