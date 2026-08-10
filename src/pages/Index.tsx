@@ -195,10 +195,29 @@ const podcasts = [
 ];
 
 const checkups = [
-  { title: "Давай познакомимся", icon: HandHeart, action: "kidscreen" },
-  { title: "Задумался о выборе профессии", icon: Compass, action: "career-quiz" },
-  { title: "К кому обратиться", icon: UserCheck, href: "/articles/who-helps" },
+  {
+    title: "Давай познакомимся",
+    description: "Короткий опросник о самочувствии — 3–5 минут.",
+    cta: "Пройти опросник",
+    icon: HandHeart,
+    action: "kidscreen",
+  },
+  {
+    title: "Задумался о выборе профессии",
+    description: "Разберись, что тебе ближе и с чего начать поиск.",
+    cta: "Пройти тест",
+    icon: Compass,
+    action: "career-quiz",
+  },
+  {
+    title: "К кому обратиться",
+    description: "Психолог, психотерапевт, психиатр — кто чем помогает.",
+    cta: "Читать статью",
+    icon: UserCheck,
+    href: "/articles/who-helps",
+  },
 ];
+
 
 const checklists = [
   { title: "Утренняя рутина для энергии", icon: Sparkles },
