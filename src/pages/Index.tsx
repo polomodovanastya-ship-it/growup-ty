@@ -43,6 +43,7 @@ import CareerQuiz from "@/components/CareerQuiz";
 import KidscreenQuiz from "@/components/KidscreenQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const topics = [
   "тревога", "прокрастинация", "отношения", "самооценка",
