@@ -48,6 +48,7 @@ type Specialist = {
   when: string;
   how: string;
   meds: string;
+  duration: string;
 };
 
 const specialists: Specialist[] = [
@@ -61,6 +62,7 @@ const specialists: Specialist[] = [
     when: "Тревога, ссоры с родителями, самооценка, отношения, одиночество, страх будущего, сложные эмоции.",
     how: "Разговор один на один или онлайн. Вместе разбираете, что происходит, и ищете способы, которые подходят именно тебе.",
     meds: "Без лекарств",
+    duration: "От одной встречи до нескольких",
   },
   {
     title: "Психотерапевт",
@@ -72,6 +74,7 @@ const specialists: Specialist[] = [
     when: "Когда состояние держится долго: подавленность неделями, панические приступы, навязчивые мысли, последствия тяжёлых событий.",
     how: "Регулярные встречи по определённой методике, часто курсом в несколько месяцев. Между встречами бывают небольшие задания.",
     meds: "Без лекарств (если это не врач-психотерапевт)",
+    duration: "Курс: обычно от 8–10 встреч",
   },
   {
     title: "Психиатр",
@@ -83,6 +86,7 @@ const specialists: Specialist[] = [
     when: "Долгая бессонница, сильная апатия, резкие перепады состояния, мысли о причинении себе вреда, паника, которая мешает жить.",
     how: "Приём как у любого врача: расспрашивает, оценивает состояние, при необходимости назначает лечение. Обращение к психиатру — это не «клеймо», а обычная медицинская помощь.",
     meds: "Может назначать лекарства",
+    duration: "Приёмы + наблюдение",
   },
   {
     title: "Коуч",
@@ -94,6 +98,7 @@ const specialists: Specialist[] = [
     when: "Есть силы и понятная задача: разобраться с планами, привычками, организацией времени.",
     how: "Ставите цель, разбиваете её на шаги, отслеживаете прогресс.",
     meds: "Не медицинская помощь",
+    duration: "От нескольких встреч",
   },
   {
     title: "Тьютор",
@@ -105,6 +110,7 @@ const specialists: Specialist[] = [
     when: "Не понятно, куда поступать, как выстроить подготовку, что выбрать из предметов и курсов.",
     how: "Помогает собрать образовательный план и найти ресурсы под твои интересы.",
     meds: "Не медицинская помощь",
+    duration: "По необходимости",
   },
   {
     title: "Выбор профессии",
@@ -116,6 +122,7 @@ const specialists: Specialist[] = [
     when: "Не понятно, куда поступать и что делать после школы, всё кажется одинаково непонятным.",
     how: "Разбираете интересы и ценности, смотрите на реальные профессии и строите план шагов.",
     meds: "Не медицинская помощь",
+    duration: "От 1–3 встреч",
   },
 ];
 
@@ -128,12 +135,8 @@ const tags = [
 ];
 
 
-const compare = [
-  { label: "Кто ведёт", psy: "Психолог без медицинского образования", therapy: "Психолог или врач с обучением в методе", psychiatry: "Врач" },
-  { label: "Сколько длится", psy: "От одной встречи до нескольких", therapy: "Курс: обычно от 8–10 встреч", psychiatry: "Приёмы + наблюдение" },
-  { label: "Что делает", psy: "Помогает понять и назвать происходящее", therapy: "Меняет устойчивые реакции и мысли по методике", psychiatry: "Оценивает состояние, лечит" },
-  { label: "Лекарства", psy: "Нет", therapy: "Нет (кроме врача-психотерапевта)", psychiatry: "Да" },
-];
+
+
 
 const faq = [
   {
@@ -214,7 +217,21 @@ const WhoHelps = () => (
               <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
                 <s.icon className={tintInk[s.tint]} size={22} />
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.short}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">{s.short}</p>
+              <dl className="space-y-2.5 text-sm">
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Кто ведёт</dt>
+                  <dd className="text-foreground leading-relaxed">{s.who}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Сколько длится</dt>
+                  <dd className="text-foreground leading-relaxed">{s.duration}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium text-muted-foreground">Лекарства</dt>
+                  <dd className="text-foreground leading-relaxed">{s.meds}</dd>
+                </div>
+              </dl>
             </article>
           </ScrollReveal>
         ))}
@@ -231,7 +248,7 @@ const WhoHelps = () => (
           {tags.map((t) => (
             <a
               key={t.label}
-              href="#compare"
+              href="#details"
               className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
             >
               <t.icon className={tintInk[t.tint]} size={16} />
@@ -276,41 +293,6 @@ const WhoHelps = () => (
     </section>
 
     <section className="px-4 pb-16 max-w-4xl mx-auto">
-
-
-      {/* Comparison */}
-      <ScrollReveal>
-        <div id="compare" className="scroll-mt-20">
-        <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mt-12 mb-1">
-          Психолог, психотерапевт, психиатр — в чём разница
-        </h2>
-        <p className="text-center text-sm text-muted-foreground mb-6">
-          Разница не в том, «насколько всё плохо», а в задаче и инструментах.
-        </p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            { title: "Психолог", icon: UserCheck, tint: "teal" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.psy })) },
-            { title: "Психотерапевт", icon: HeartHandshake, tint: "coral" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.therapy })) },
-            { title: "Психиатр", icon: Stethoscope, tint: "violet" as Tint, cell: compare.map((r) => ({ k: r.label, v: r.psychiatry })) },
-          ].map((c) => (
-            <article key={c.title} className={`h-full rounded-3xl border p-5 ${tintBg[c.tint]}`}>
-              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
-                <c.icon className={tintInk[c.tint]} size={22} />
-              </div>
-              <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[c.tint]}`}>{c.title}</h3>
-              <dl className="space-y-2.5">
-                {c.cell.map((row) => (
-                  <div key={row.k}>
-                    <dt className="text-xs font-medium text-muted-foreground">{row.k}</dt>
-                    <dd className="text-sm text-foreground leading-relaxed">{row.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </article>
-          ))}
-        </div>
-        </div>
-      </ScrollReveal>
 
 
       <ScrollReveal>
