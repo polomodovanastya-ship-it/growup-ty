@@ -1,6 +1,6 @@
 import {
   ArrowLeft,
-  ArrowDown,
+  
   ArrowRight,
   UserCheck,
   Stethoscope,
@@ -127,46 +127,6 @@ const tags = [
   { label: "самооценка", icon: Star, tint: "teal" as Tint },
 ];
 
-type Branch = { icon: typeof UserCheck; area: string; answer: string };
-
-type FlowStep = {
-  icon: typeof UserCheck;
-  condition: string;
-  detail: string;
-  answer?: string;
-  branches?: Branch[];
-  tint: Tint;
-};
-
-const flow: FlowStep[] = [
-  {
-    icon: Target,
-    condition: "Тяжело время от времени",
-    detail: "Накрыло после ссоры, контрольной, расставания. Смотри, в какой сфере сложнее всего:",
-    branches: [
-      { icon: HeartHandshake, area: "Эмоции и отношения", answer: "Психолог — 1–5 встреч, чтобы разложить ситуацию по полочкам" },
-      { icon: Compass, area: "Цели, привычки, организация времени", answer: "Коуч — помогает превратить «надо бы» в конкретные шаги" },
-      { icon: Briefcase, area: "Профессия, поступление, что дальше", answer: "Карьерный консультант — разбирает интересы, профессии и маршрут" },
-    ],
-    tint: "teal",
-  },
-  {
-    icon: CalendarClock,
-    condition: "Тяжело систематически — дольше 2–4 недель",
-    detail:
-      "Хочешь разобраться, почему это происходит, и измениться внутренне: как ты относишься к себе, к другим и к сложным ситуациям.",
-    answer: "Психотерапевт — работа курсом по методике, разбирает причины и помогает изменить привычные реакции",
-    tint: "coral",
-  },
-  {
-    icon: AlertTriangle,
-    condition: "Сон, аппетит или перепады настроения мешают жить",
-    detail:
-      "Нарушения сна или аппетита, сильная тревога, паника или мысли навредить себе мешают учёбе, общению и привычным делам.",
-    answer: "Психиатр — сначала врач, чтобы оценить состояние и помочь стабилизироваться",
-    tint: "violet",
-  },
-];
 
 const compare = [
   { label: "Кто ведёт", psy: "Психолог без медицинского образования", therapy: "Психолог или врач с обучением в методе", psychiatry: "Врач" },
@@ -266,7 +226,7 @@ const WhoHelps = () => (
           {tags.map((t) => (
             <a
               key={t.label}
-              href="#flow"
+              href="#compare"
               className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors`}
             >
               <t.icon className={tintInk[t.tint]} size={16} />
@@ -311,68 +271,11 @@ const WhoHelps = () => (
     </section>
 
     <section className="px-4 pb-16 max-w-4xl mx-auto">
-      {/* Decision flow */}
-      <ScrollReveal>
-        <div id="flow" className="rounded-3xl border bg-card p-5 md:p-7 scroll-mt-20">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground mb-1">Схема выбора</p>
-          <h2 className="font-bold text-lg md:text-xl text-foreground mb-5">Как часто тебе тяжело?</h2>
 
-          <div className="space-y-3">
-            {flow.map((step, i) => (
-              <div key={step.condition}>
-                <div className={`rounded-2xl border p-4 ${tintBg[step.tint]}`}>
-                  <div className="flex items-start gap-3">
-                    <div className="rounded-xl w-9 h-9 shrink-0 flex items-center justify-center bg-card/70">
-                      <step.icon className={tintInk[step.tint]} size={18} />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-semibold text-foreground">{step.condition}</p>
-                      <p className="text-sm text-muted-foreground mt-1">{step.detail}</p>
-                      {step.answer && (
-                        <p className="text-sm font-medium text-foreground mt-3 flex items-start gap-2">
-                          <span className="text-muted-foreground">→</span>
-                          <span>{step.answer}</span>
-                        </p>
-                      )}
-                      {step.branches && (
-                        <ul className="mt-3 space-y-2">
-                          {step.branches.map((b) => (
-                            <li key={b.area} className="flex items-start gap-2 text-sm text-foreground">
-                              <b.icon className={`${tintInk[step.tint]} shrink-0 mt-0.5`} size={16} />
-                              <span>
-                                <span className="font-medium">{b.area}</span>
-                                {" — "}
-                                {b.answer}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {i < flow.length - 1 && (
-                  <div className="flex justify-center py-1.5 text-muted-foreground/50">
-                    <ArrowDown size={16} />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-muted-foreground mt-5">
-            Если сомневаешься между психологом и психотерапевтом — иди к психологу.
-            Он сам скажет, если нужен другой формат. Ошибиться на первом шаге невозможно.
-          </p>
-          <p className="text-xs text-muted-foreground mt-3">
-            Психотерапевт и психиатр не отменяют друг друга: часто они работают в паре.
-            Один помогает разобраться в причинах, другой — стабилизировать состояние.
-          </p>
-        </div>
-      </ScrollReveal>
 
       {/* Comparison */}
       <ScrollReveal>
+        <div id="compare" className="scroll-mt-20">
         <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-1">
           Психолог, психотерапевт, психиатр — в чём разница
         </h2>
@@ -402,6 +305,7 @@ const WhoHelps = () => (
               </tbody>
             </table>
           </div>
+        </div>
         </div>
       </ScrollReveal>
 
