@@ -207,38 +207,77 @@ const Index = () => {
 
       {/* Hero */}
       <section className="px-4 pt-4 pb-6 md:pt-6 md:pb-8 max-w-6xl mx-auto">
-        <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] shadow-xl">
-          <img
-            src={heroTeens}
-            alt="Подростки"
-            className="w-full h-[420px] md:h-[560px] object-cover object-center"
-            width={1600}
-            height={896}
-          />
-          {/* Top-left logo */}
-          <div className="absolute top-5 left-5 md:top-8 md:left-10 flex items-center gap-2">
-            <span className="text-white text-2xl md:text-3xl font-semibold lowercase tracking-tight drop-shadow">
-              как ты?
-            </span>
-            <svg width="48" height="14" viewBox="0 0 48 14" fill="none" className="text-white">
-              <path d="M1 9 C 12 2, 28 2, 47 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
-            </svg>
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-stretch">
+          {/* Left: rotating block */}
+          <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] bg-muted/50 border border-border/50 p-6 md:p-10 min-h-[320px] md:min-h-[520px] flex flex-col justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl md:text-3xl font-semibold lowercase tracking-tight text-foreground">как ты?</span>
+              <svg width="44" height="12" viewBox="0 0 48 14" fill="none" className="text-primary">
+                <path d="M1 9 C 12 2, 28 2, 47 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
+              </svg>
+            </div>
+
+            <div className="relative mt-6 flex-1">
+              {heroSlides.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <div
+                    key={s.key}
+                    className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ${
+                      i === heroSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
+                    }`}
+                  >
+                    <Icon className="text-primary mb-3" size={28} />
+                    <h1 className="text-2xl md:text-4xl font-bold leading-tight text-foreground">{s.title}</h1>
+                    <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-sm">{s.text}</p>
+                    <div className="mt-6">
+                      {s.key === "start" ? (
+                        <button
+                          type="button"
+                          onClick={() => setKidscreenOpen(true)}
+                          className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
+                        >
+                          {s.cta} <ArrowRight size={18} />
+                        </button>
+                      ) : (
+                        <a
+                          href={s.href}
+                          className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
+                        >
+                          {s.cta} <ArrowRight size={18} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center gap-2 mt-6">
+              {heroSlides.map((s, i) => (
+                <button
+                  key={s.key}
+                  type="button"
+                  aria-label={s.title}
+                  onClick={() => setHeroSlide(i)}
+                  className={`h-1.5 rounded-full transition-all ${i === heroSlide ? "w-8 bg-primary" : "w-3 bg-border"}`}
+                />
+              ))}
+            </div>
           </div>
-          {/* Top-right headline */}
-          <div className="absolute top-5 right-5 md:top-8 md:right-10 max-w-[58%] md:max-w-sm text-right">
-            <h1 className="text-white text-base md:text-2xl font-bold leading-snug drop-shadow-md">
-              Здесь можно избавиться от тревоги и разобраться в себе
-            </h1>
+
+          {/* Right: image */}
+          <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] shadow-xl">
+            <img
+              src={heroTeens}
+              alt="Подростки разговаривают на диване"
+              className="w-full h-[260px] md:h-full md:min-h-[520px] object-cover object-center"
+              width={1600}
+              height={896}
+            />
           </div>
-          {/* Bottom-right CTA */}
-          <button
-            type="button"
-            onClick={() => setKidscreenOpen(true)}
-            className="absolute bottom-5 right-5 md:bottom-8 md:right-10 inline-flex items-center gap-2 rounded-full bg-white text-foreground px-6 md:px-8 py-3 md:py-3.5 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
-          >
-            Начать <ArrowRight size={18} />
-          </button>
         </div>
+
 
 
         {/* Feelings */}
