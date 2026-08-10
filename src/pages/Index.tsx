@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
-import heroTeensAsset from "@/assets/hero-teens.jpg.asset.json";
-const heroTeens = heroTeensAsset.url;
+import heroTeens from "@/assets/hero-illustration.jpg";
 import episode6Audio from "@/assets/episode-6.mp3.asset.json";
-import emojiRelieved from "@/assets/emoji/1f60c.svg";
-import emojiSteam from "@/assets/emoji/1f624.svg";
-import emojiPleading from "@/assets/emoji/1f97a.svg";
-import emojiHearts from "@/assets/emoji/1f970.svg";
-import emojiAnxious from "@/assets/emoji/1f630.svg";
-import emojiNeutral from "@/assets/emoji/1f610.svg";
+import emojiRelieved from "@/assets/emoji/calm.png";
+import emojiSteam from "@/assets/emoji/angry.png";
+import emojiPleading from "@/assets/emoji/crying.png";
+import emojiHearts from "@/assets/emoji/love.png";
+import emojiAnxious from "@/assets/emoji/anxious.png";
+import emojiNeutral from "@/assets/emoji/numb.png";
 
 
 
