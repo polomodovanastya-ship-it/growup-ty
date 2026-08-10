@@ -195,10 +195,29 @@ const podcasts = [
 ];
 
 const checkups = [
-  { title: "Давай познакомимся", icon: HandHeart, action: "kidscreen" },
-  { title: "Задумался о выборе профессии", icon: Compass, action: "career-quiz" },
-  { title: "К кому обратиться", icon: UserCheck, href: "/articles/who-helps" },
+  {
+    title: "Давай познакомимся",
+    description: "Короткий опросник о самочувствии — 3–5 минут.",
+    cta: "Пройти опросник",
+    icon: HandHeart,
+    action: "kidscreen",
+  },
+  {
+    title: "Задумался о выборе профессии",
+    description: "Разберись, что тебе ближе и с чего начать поиск.",
+    cta: "Пройти тест",
+    icon: Compass,
+    action: "career-quiz",
+  },
+  {
+    title: "К кому обратиться",
+    description: "Психолог, психотерапевт, психиатр — кто чем помогает.",
+    cta: "Читать статью",
+    icon: UserCheck,
+    href: "/articles/who-helps",
+  },
 ];
+
 
 const checklists = [
   { title: "Утренняя рутина для энергии", icon: Sparkles },
@@ -506,54 +525,50 @@ const Index = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {checkups.map((c, i) => (
-            <ScrollReveal key={c.title} delay={i * 60}>
-              {(c as any).href ? (
-              <Link
-                to={(c as any).href}
-                className="group w-full text-left h-full rounded-xl border bg-card p-3 transition-all duration-300 hover:shadow-md hover:scale-[1.01] block"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-primary/10 p-1.5 shrink-0 flex items-center justify-center w-9 h-9">
-                    <c.icon className="text-primary" size={18} />
-                  </div>
-                  <span className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug flex-1 min-w-0">
-                    {c.title}
-                  </span>
-                  <ArrowRight
-                    size={16}
-                    className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0"
-                  />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {checkups.map((c, i) => {
+            const inner = (
+              <>
+                <div className="-mx-4 mb-3 h-16 overflow-hidden flex items-center justify-center bg-primary/10">
+                  <c.icon className="text-primary transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
                 </div>
-              </Link>
-              ) : (
-              <button
-                type="button"
-                onClick={() => {
-                  const action = (c as any).action;
-                  if (action === "career-quiz") setCareerQuizOpen(true);
-                  if (action === "kidscreen") setKidscreenOpen(true);
-                }}
-                className="group w-full text-left h-full rounded-xl border bg-card p-3 transition-all duration-300 hover:shadow-md hover:scale-[1.01]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-primary/10 p-1.5 shrink-0 flex items-center justify-center w-9 h-9">
-                    <c.icon className="text-primary" size={18} />
-                  </div>
-                  <span className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug flex-1 min-w-0">
-                    {c.title}
+                <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">
+                  {c.title}
+                </h3>
+                <p className="text-xs text-muted-foreground">{c.description}</p>
+                <div className="mt-auto">
+                  <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+                    {c.cta} <ArrowRight size={12} />
                   </span>
-                  <ArrowRight
-                    size={16}
-                    className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0"
-                  />
                 </div>
-              </button>
-              )}
-            </ScrollReveal>
-          ))}
+              </>
+            );
+            const cardClasses =
+              "group rounded-2xl border bg-card p-4 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col text-left w-full";
+            return (
+              <ScrollReveal key={c.title} delay={i * 100}>
+                {(c as any).href ? (
+                  <Link to={(c as any).href} className={cardClasses}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const action = (c as any).action;
+                      if (action === "career-quiz") setCareerQuizOpen(true);
+                      if (action === "kidscreen") setKidscreenOpen(true);
+                    }}
+                    className={cardClasses}
+                  >
+                    {inner}
+                  </button>
+                )}
+              </ScrollReveal>
+            );
+          })}
         </div>
+
       </section>
 
       <div className="max-w-5xl mx-auto px-4">
