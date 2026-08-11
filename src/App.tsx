@@ -13,6 +13,7 @@ import ResetPassword from "./pages/ResetPassword.tsx";
 import About from "./pages/About.tsx";
 import WhoHelps from "./pages/WhoHelps.tsx";
 import HowToChoose from "./pages/HowToChoose.tsx";
+import ThreeStages from "./pages/ThreeStages.tsx";
 import HelpNearby from "./pages/HelpNearby.tsx";
 
 
