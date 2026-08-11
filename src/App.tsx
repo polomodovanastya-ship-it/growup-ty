@@ -13,6 +13,7 @@ import ResetPassword from "./pages/ResetPassword.tsx";
 import About from "./pages/About.tsx";
 import WhoHelps from "./pages/WhoHelps.tsx";
 import HowToChoose from "./pages/HowToChoose.tsx";
+import HelpNearby from "./pages/HelpNearby.tsx";
 
 
 const queryClient = new QueryClient();
@@ -33,6 +34,8 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/articles/who-helps" element={<WhoHelps />} />
           <Route path="/articles/how-to-choose" element={<HowToChoose />} />
+          <Route path="/help" element={<HelpNearby />} />
+
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

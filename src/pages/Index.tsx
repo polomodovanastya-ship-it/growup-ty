@@ -295,7 +295,7 @@ const Index = () => {
             <span className="h-4 w-px bg-border" />
             <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
             <span className="h-4 w-px bg-border" />
-            <a href="#help-links" className="text-foreground hover:text-primary transition-colors">помощь рядом</a>
+            <Link to="/help" className="text-foreground hover:text-primary transition-colors">помощь рядом</Link>
             <span className="h-4 w-px bg-border" />
             <Link to="/articles/who-helps" className="text-foreground hover:text-primary transition-colors">к кому обратиться</Link>
             <span className="h-4 w-px bg-border" />
@@ -582,50 +582,35 @@ const Index = () => {
       <CareerQuiz open={careerQuizOpen} onOpenChange={setCareerQuizOpen} />
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
-      {/* Useful links & emergency help */}
+      {/* Emergency help teaser */}
       <section id="help-links" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
-          <div className="flex items-center gap-2 mb-2">
-            <LifeBuoy className="text-primary" size={24} />
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">Помощь рядом</h2>
+          <div className="rounded-[2rem] border bg-card p-6 md:p-10">
+            <div className="flex items-center gap-2 mb-2">
+              <LifeBuoy className="text-primary" size={24} />
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">Помощь рядом</h2>
+            </div>
+            <p className="text-sm md:text-base text-muted-foreground max-w-xl">
+              Экстренные телефоны, чаты с психологом и что делать, если очень тяжело — себе, другу или ребёнку.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to="/help"
+                className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
+              >
+                Открыть раздел <ArrowRight size={18} />
+              </Link>
+              <a
+                href="tel:112"
+                className="inline-flex items-center gap-2 rounded-full border border-destructive/40 bg-destructive/10 text-destructive px-6 py-3 text-sm md:text-base font-semibold hover:scale-105 transition-transform"
+              >
+                <Phone size={18} /> 112 — экстренная помощь
+              </a>
+            </div>
           </div>
         </ScrollReveal>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredLinks.map((l, i) => {
-              const favicon = l.url.startsWith("http") ? faviconFor(l.url) : null;
-              return (
-              <ScrollReveal key={l.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
-                <a
-                  href={l.url}
-                  target={l.url.startsWith("http") ? "_blank" : undefined}
-                  rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className={`group rounded-2xl border bg-card p-4 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col ${
-                    l.emergency ? "border-destructive/40" : ""
-                  }`}
-                >
-                  <div className={`-mx-4 mb-3 h-16 overflow-hidden flex items-center justify-center ${l.emergency ? "bg-destructive/10" : "bg-primary/10"}`}>
-                    {l.emergency ? (
-                      <Phone className="text-destructive transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
-                    ) : favicon ? (
-                      <img src={favicon} alt="" className="w-8 h-8 rounded-lg transition-transform duration-500 group-hover:scale-110" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
-                    ) : (
-                      <LinkIcon className="text-primary transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
-                    )}
-                  </div>
-                  <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">{l.title}</h3>
-                  <p className="text-xs text-muted-foreground">{l.description}</p>
-                  <div className="mt-auto">
-                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                      {l.url.startsWith("http") ? "Открыть сайт" : "Позвонить"} <ArrowRight size={12} />
-                    </span>
-                  </div>
-
-                </a>
-              </ScrollReveal>
-            );})}
-          </div>
       </section>
+
 
       {/* Footer */}
       <footer className="px-4 py-8 text-center space-y-3">
