@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      career_results: {
+        Row: {
+          answers: Json | null
+          created_at: string
+          id: string
+          stage: string
+          used_tiebreaker: boolean
+        }
+        Insert: {
+          answers?: Json | null
+          created_at?: string
+          id?: string
+          stage: string
+          used_tiebreaker?: boolean
+        }
+        Update: {
+          answers?: Json | null
+          created_at?: string
+          id?: string
+          stage?: string
+          used_tiebreaker?: boolean
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
