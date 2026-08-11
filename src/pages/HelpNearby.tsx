@@ -190,7 +190,7 @@ const HelpNearby = () => (
       </ScrollReveal>
       <div className="grid gap-4 md:grid-cols-2">
         <ScrollReveal>
-          <div className="h-full rounded-3xl border bg-card p-6 flex flex-col">
+          <div className="h-full rounded-3xl border bg-card px-6 pt-6 pb-4 flex flex-col">
             <h3 className="font-bold text-lg text-foreground mb-1">Твоя территория</h3>
             <p className="text-sm text-muted-foreground">Психологическая помощь подросткам и молодёжи.</p>
             <p className="mt-2 text-sm font-medium text-foreground">Ежедневно, 15:00–22:00 МСК</p>
@@ -198,14 +198,14 @@ const HelpNearby = () => (
               href="https://www.твоя-территория.онлайн/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-auto pt-5 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+              className="mt-auto inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <MessageCircle size={15} /> Написать психологу
             </a>
           </div>
         </ScrollReveal>
         <ScrollReveal delay={80}>
-          <div className="h-full rounded-3xl border bg-card p-6 flex flex-col">
+          <div className="h-full rounded-3xl border bg-card px-6 pt-6 pb-4 flex flex-col">
             <h3 className="font-bold text-lg text-foreground mb-1">1221.chat</h3>
             <p className="text-sm text-muted-foreground">Психологическая помощь подросткам и молодым людям 12–21 года. Бесплатно. Анонимно.</p>
             <p className="mt-2 text-sm font-medium text-foreground">Ежедневно, 14:00–21:30 МСК</p>
@@ -213,7 +213,7 @@ const HelpNearby = () => (
               href="https://1221.chat/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-auto pt-5 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+              className="mt-auto inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <MessageCircle size={15} /> Написать психологу
             </a>
