@@ -289,13 +289,13 @@ const WhoHelps = () => {
           <h3 className="text-xl md:text-2xl font-bold mb-1">Помощь рядом</h3>
           <p className="text-sm opacity-90 mb-5">Бесплатные проверенные ресурсы и поддержка, когда это нужно.</p>
           <div className="flex flex-wrap gap-2">
-            <Link to="/#help-links" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
+            <Link to="/help" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
               <Phone size={15} className="text-primary" /> Телефоны доверия
             </Link>
-            <Link to="/#help-links" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
+            <Link to="/help" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
               <MessageCircle size={15} className="text-primary" /> Чаты поддержки
             </Link>
-            <Link to="/#help-links" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
+            <Link to="/help" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
               <Star size={15} className="text-primary" /> Полезные сервисы
             </Link>
           </div>

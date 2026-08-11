@@ -111,7 +111,7 @@ const HowToChoose = () => (
       <ScrollReveal>
         <p className="mt-8 text-sm text-muted-foreground">
           Если сейчас очень тяжело — загляни в блок{" "}
-          <Link to="/#help-links" className="text-primary underline underline-offset-4">
+          <Link to="/help" className="text-primary underline underline-offset-4">
             «Помощь рядом»
           </Link>
           : там телефоны доверия и бесплатные чаты поддержки.

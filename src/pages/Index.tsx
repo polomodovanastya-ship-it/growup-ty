@@ -295,7 +295,7 @@ const Index = () => {
             <span className="h-4 w-px bg-border" />
             <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
             <span className="h-4 w-px bg-border" />
-            <a href="#help-links" className="text-foreground hover:text-primary transition-colors">помощь рядом</a>
+            <Link to="/help" className="text-foreground hover:text-primary transition-colors">помощь рядом</Link>
             <span className="h-4 w-px bg-border" />
             <Link to="/articles/who-helps" className="text-foreground hover:text-primary transition-colors">к кому обратиться</Link>
             <span className="h-4 w-px bg-border" />
