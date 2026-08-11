@@ -196,6 +196,21 @@ const podcasts = [
   },
 ];
 
+type Tint = "teal" | "coral" | "violet" | "amber";
+
+const tintBg: Record<Tint, string> = {
+  teal: "tint-teal",
+  coral: "tint-coral",
+  violet: "tint-violet",
+  amber: "tint-amber",
+};
+const tintInk: Record<Tint, string> = {
+  teal: "tint-teal-ink",
+  coral: "tint-coral-ink",
+  violet: "tint-violet-ink",
+  amber: "tint-amber-ink",
+};
+
 const checkups = [
   {
     title: "Давай познакомимся",
@@ -203,6 +218,7 @@ const checkups = [
     cta: "Пройти опросник",
     icon: HandHeart,
     action: "kidscreen",
+    tint: "teal" as Tint,
   },
   {
     title: "Задумался о выборе профессии",
@@ -210,6 +226,7 @@ const checkups = [
     cta: "Пройти тест",
     icon: Compass,
     action: "career-quiz",
+    tint: "amber" as Tint,
   },
   {
     title: "К кому обратиться",
@@ -217,6 +234,7 @@ const checkups = [
     cta: "Читать статью",
     icon: UserCheck,
     href: "/articles/who-helps",
+    tint: "violet" as Tint,
   },
 ];
 
