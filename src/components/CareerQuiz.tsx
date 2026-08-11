@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -154,6 +155,7 @@ const plans: Record<CareerStage, { steps: string[]; motto: string }> = {
 type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan" | "heavy" | "heavy-simple" | "heavy-adult" | "heavy-support";
 
 const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
+  const navigate = useNavigate();
   const [screen, setScreen] = useState<Screen>("intro");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Stage[]>([]);
@@ -265,10 +267,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
                 variant="ghost"
                 size="lg"
                 className="rounded-full text-base text-muted-foreground hover:text-primary"
-                onClick={() => {
-                  setResult("find");
-                  setScreen("result");
-                }}
+                onClick={() => { onOpenChange(false); navigate("/articles/three-stages"); }}
               >
                 Просто прочитать про 3 стадии
               </Button>
