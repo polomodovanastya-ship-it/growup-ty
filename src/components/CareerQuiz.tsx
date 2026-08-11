@@ -4,10 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Compass, Target, Puzzle, Heart, MessageCircle, HandHeart, ExternalLink, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, Target, Puzzle, Search, Sparkles } from "lucide-react";
 
-type Stage = "find" | "take" | "make" | "heavy";
-type CareerStage = "find" | "take" | "make";
+type Stage = "search" | "find" | "take" | "make";
 
 interface CareerQuizProps {
   open: boolean;
@@ -21,7 +20,7 @@ const questions = [
       { label: "Я в основном смотрю, читаю, думаю, но не пробую", stage: "find" as Stage },
       { label: "Уже пробую маленькие задачи, но чувствую себя неуверенно", stage: "take" as Stage },
       { label: "Уже что-то делаю и хочу понять, как делать это по-своему", stage: "make" as Stage },
-      { label: "Вообще ничего не хочется", stage: "heavy" as Stage },
+      { label: "Вообще ничего не хочется", stage: "search" as Stage },
     ],
   },
   {
@@ -30,7 +29,7 @@ const questions = [
       { label: "Ничего не понятно, всё слишком большое", stage: "find" as Stage },
       { label: "Страшно ошибиться и облажаться", stage: "take" as Stage },
       { label: "Не хочу быть копией других", stage: "make" as Stage },
-      { label: "Слишком тревожно, мне сейчас не до работы", stage: "heavy" as Stage },
+      { label: "Слишком тревожно, мне сейчас не до работы", stage: "search" as Stage },
     ],
   },
   {
@@ -39,7 +38,7 @@ const questions = [
       { label: "Интерес к нескольким вариантам", stage: "find" as Stage },
       { label: "Пара проб / мини-кейсов / задач", stage: "take" as Stage },
       { label: "Понимание, что у меня получается по-своему", stage: "make" as Stage },
-      { label: "Ничего особого, не понимаю, зачем это нужно", stage: "find" as Stage },
+      { label: "Ничего особого, не понимаю, зачем это нужно", stage: "search" as Stage },
     ],
   },
   {
@@ -69,7 +68,7 @@ const tiebreakerQuestion = {
   ],
 };
 
-const results: Record<CareerStage, {
+const results: Record<Stage, {
   icon: typeof Compass;
   tag: string;
   title: string;
@@ -77,6 +76,23 @@ const results: Record<CareerStage, {
   signs: string[];
   donts: string[];
 }> = {
+  search: {
+    icon: Search,
+    tag: "SEARCH",
+    title: "Ты сейчас на стадии SEARCH — ещё не понятно, зачем это нужно",
+    short:
+      "С тобой всё ок. Разбираться в себе и пробовать — большая задача, и она требует сил, которых сейчас может не хватать. Твоя задача сейчас — не «выбрать путь», а нащупать, зачем тебе это вообще нужно. Без внутреннего «зачем» любые шаги быстро гаснут.",
+    signs: [
+      "Непонятно, зачем вообще выбирать профессию",
+      "Нет сил вникать в тему",
+      "Кажется, что «это не про меня»",
+    ],
+    donts: [
+      "Не заставлять себя через силу",
+      "Не списывать себя как «ленивого»",
+      "Не закрываться — один маленький шаг уже меняет картину",
+    ],
+  },
   find: {
     icon: Compass,
     tag: "FIND",
@@ -127,7 +143,15 @@ const results: Record<CareerStage, {
   },
 };
 
-const plans: Record<CareerStage, { steps: string[]; motto: string }> = {
+const plans: Record<Stage, { steps: string[]; motto: string }> = {
+  search: {
+    steps: [
+      "Подумай 5 минут: что в твоей жизни тебе по-настоящему важно? Не работа — а вообще.",
+      "Найди одного человека, чья жизнь кажется тебе живой, и узнай, как он к этому пришёл.",
+      "Сделай одну микропробу на 15 минут — просто почувствовать, откликается или нет.",
+    ],
+    motto: "Сначала — зачем. Потом — что и как.",
+  },
   find: {
     steps: [
       "Выбери 2 направления, которые тебе сейчас реально интересны.",
@@ -154,7 +178,7 @@ const plans: Record<CareerStage, { steps: string[]; motto: string }> = {
   },
 };
 
-type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan" | "heavy" | "heavy-simple" | "heavy-adult" | "heavy-support";
+type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan";
 
 const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   const navigate = useNavigate();
@@ -178,11 +202,11 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   };
 
   const computeResult = (ans: Stage[]): Stage | "tie" => {
-    const heavyCount = ans.filter((a) => a === "heavy").length;
-    if (heavyCount >= 2) return "heavy";
+    const searchCount = ans.filter((a) => a === "search").length;
+    if (searchCount >= 2) return "search";
 
     const counts: Record<string, number> = { find: 0, take: 0, make: 0 };
-    ans.forEach((a) => { if (a !== "heavy") counts[a]++; });
+    ans.forEach((a) => { if (a !== "search") counts[a]++; });
     const max = Math.max(counts.find, counts.take, counts.make);
     const winners = (["find", "take", "make"] as Stage[]).filter((k) => counts[k] === max);
     if (winners.length === 1) return winners[0];
@@ -202,11 +226,12 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     const newAnswers = [...answers, stage];
     setAnswers(newAnswers);
 
-    // Early exit to heavy if 2 heavy answers already
-    const heavyCount = newAnswers.filter((a) => a === "heavy").length;
-    if (heavyCount >= 2) {
-      saveResult("heavy", newAnswers, false);
-      setScreen("heavy");
+    // Early exit to search if 2 search answers already
+    const searchCount = newAnswers.filter((a) => a === "search").length;
+    if (searchCount >= 2) {
+      saveResult("search", newAnswers, false);
+      setResult("search");
+      setScreen("result");
       return;
     }
 
@@ -217,12 +242,13 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
       if (res === "tie") {
         setNeedsTiebreaker(true);
         setScreen("tiebreaker");
-      } else if (res === "heavy") {
-        saveResult("heavy", newAnswers, false);
-        setScreen("heavy");
+      } else if (res === "search") {
+        saveResult("search", newAnswers, false);
+        setResult("search");
+        setScreen("result");
       } else {
-        saveResult(res as Stage, newAnswers, false);
-        setResult(res as Stage);
+        saveResult(res, newAnswers, false);
+        setResult(res);
         setScreen("result");
       }
     }
@@ -269,7 +295,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
               Не знаешь, кем хочешь стать? Это нормально.
             </DialogTitle>
             <DialogDescription className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              За 2 минуты поймём, где ты сейчас: ищешь, примеряешь или собираешь своё.
+              За 2 минуты поймём, где ты сейчас: нащупываешь зачем, ищешь, примеряешь или собираешь своё.
             </DialogDescription>
             <ul className="space-y-2 text-base text-muted-foreground">
               <li>• Это <span className="text-foreground font-medium">не тест</span> — здесь нет правильных и неправильных ответов.</li>
@@ -290,7 +316,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
                 className="rounded-full text-base text-muted-foreground hover:text-primary"
                 onClick={() => { onOpenChange(false); navigate("/articles/three-stages"); }}
               >
-                Просто прочитать про 3 стадии
+                Просто прочитать про стадии
               </Button>
             </div>
           </div>
@@ -396,6 +422,17 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
               </ul>
             </div>
 
+            {result === "search" && (
+              <div className="rounded-xl bg-muted/50 border border-border/60 px-4 py-3">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Если сил сейчас совсем нет — это нормально, и помощь рядом.{" "}
+                  <a href="/help" className="text-primary font-medium hover:underline">
+                    Посмотреть, куда обратиться
+                  </a>
+                </p>
+              </div>
+            )}
+
             <div className="flex flex-col gap-2 pt-2">
               <Button size="lg" className="rounded-full gap-2" onClick={() => setScreen("plan")}>
                 Собрать мой план <ArrowRight size={16} />
@@ -456,165 +493,6 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
                 onClick={reset}
               >
                 Пройти заново
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Heavy — support branch */}
-        {screen === "heavy" && (
-          <div className="p-6 space-y-4">
-            <DialogTitle className="sr-only">Поддержка</DialogTitle>
-            <div className="flex items-center gap-2">
-              <Heart size={20} className="text-primary" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground leading-snug">
-              Похоже, тебе сейчас важнее не «выбрать путь», а немного вернуть себе опору.
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Давай начнём с очень маленького шага.
-            </p>
-            <div className="flex flex-col gap-2.5 pt-2">
-              <button
-                onClick={() => setScreen("heavy-simple")}
-                className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
-              >
-                <Target size={18} className="text-primary shrink-0" />
-                Упростить план до 1 шага
-              </button>
-              <button
-                onClick={() => setScreen("heavy-adult")}
-                className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
-              >
-                <MessageCircle size={18} className="text-primary shrink-0" />
-                Поговорить с близким взрослым
-              </button>
-              <button
-                onClick={() => setScreen("heavy-support")}
-                className="flex items-center gap-3 text-left rounded-xl border border-border/60 bg-card px-4 py-3.5 text-sm text-foreground transition-all hover:border-primary/40 hover:bg-primary/5"
-              >
-                <HandHeart size={18} className="text-primary shrink-0" />
-                Найти поддержку
-              </button>
-            </div>
-            <Button
-              variant="ghost"
-              className="text-sm text-muted-foreground"
-              onClick={reset}
-            >
-              Пройти заново
-            </Button>
-          </div>
-        )}
-
-        {/* Heavy — simplified 1 step */}
-        {screen === "heavy-simple" && (
-          <div className="p-6 space-y-4">
-            <DialogTitle className="sr-only">Один шаг</DialogTitle>
-            <div className="flex items-center gap-2">
-              <Target size={20} className="text-primary" />
-              <span className="text-xs font-bold tracking-wider text-primary uppercase">Один шаг</span>
-            </div>
-            <h3 className="text-lg font-bold text-foreground leading-snug">
-              Не нужно планировать всё. Вот один маленький шаг:
-            </h3>
-            <div className="rounded-xl bg-primary/5 border border-primary/20 px-4 py-4">
-              <p className="text-sm text-foreground leading-relaxed">
-                Выбери что-то одно, что тебе хоть немного интересно, и потрать на это 15 минут. Просто посмотри, почитай, попробуй. Без обязательств.
-              </p>
-            </div>
-            <div className="rounded-xl bg-muted/50 px-4 py-3">
-              <p className="text-sm text-muted-foreground italic">
-                «Мне не нужно знать весь путь. Достаточно одного шага.»
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 pt-2">
-              <Button
-                variant="ghost"
-                className="text-sm text-muted-foreground gap-1"
-                onClick={() => setScreen("heavy")}
-              >
-                <ArrowLeft size={14} /> Назад
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Heavy — close adult */}
-        {screen === "heavy-adult" && (
-          <div className="p-6 space-y-4">
-            <DialogTitle className="sr-only">Близкий взрослый</DialogTitle>
-            <div className="flex items-center gap-2">
-              <MessageCircle size={20} className="text-primary" />
-              <span className="text-xs font-bold tracking-wider text-primary uppercase">Близкий взрослый</span>
-            </div>
-            <h3 className="text-lg font-bold text-foreground leading-snug">
-              Кто такой «близкий взрослый»?
-            </h3>
-            <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-              <p>
-                Это не обязательно кто-то из семьи. Это человек, рядом с которым тебе <span className="text-foreground font-medium">спокойно</span>.
-              </p>
-              <p>
-                С ним можно <span className="text-foreground font-medium">помолчать</span> — и это не будет неловко. Можно рассказать что-то — и знать, что тебя <span className="text-foreground font-medium">услышат</span>, а не начнут сразу учить.
-              </p>
-              <p>
-                Это человек, рядом с которым ты чувствуешь себя <span className="text-foreground font-medium">в безопасности</span>. Он не оценивает, не сравнивает, не торопит.
-              </p>
-              <p>
-                Может, это тренер. Может, старший друг. Может, учитель, который когда-то сказал что-то важное. Или кто-то совсем неожиданный.
-              </p>
-            </div>
-            <div className="rounded-xl bg-muted/50 px-4 py-3">
-              <p className="text-sm text-muted-foreground italic">
-                Попробуй вспомнить одного такого человека. Не нужно ничего решать прямо сейчас — просто подумай о нём.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 pt-2">
-              <Button
-                variant="ghost"
-                className="text-sm text-muted-foreground gap-1"
-                onClick={() => setScreen("heavy")}
-              >
-                <ArrowLeft size={14} /> Назад
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Heavy — find support */}
-        {screen === "heavy-support" && (
-          <div className="p-6 space-y-4">
-            <DialogTitle className="sr-only">Найти поддержку</DialogTitle>
-            <div className="flex items-center gap-2">
-              <HandHeart size={20} className="text-primary" />
-              <span className="text-xs font-bold tracking-wider text-primary uppercase">Поддержка</span>
-            </div>
-            <h3 className="text-lg font-bold text-foreground leading-snug">
-              Иногда нужен кто-то, кто поможет разобраться
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Карьерный консультант — это не человек, который скажет «иди туда». Это тот, кто поможет тебе услышать себя и найти свой следующий шаг.
-            </p>
-            <a
-              href="https://t.me/KemjeIstanu_LadoslavaF"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 px-4 py-4 text-sm text-foreground transition-all hover:border-primary/60 hover:bg-primary/10"
-            >
-              <div className="flex-1">
-                <p className="font-medium">Карьерный консультант</p>
-                <p className="text-muted-foreground text-xs mt-0.5">@KemjeIstanu_LadoslavaF · Telegram</p>
-              </div>
-              <ExternalLink size={16} className="text-primary shrink-0" />
-            </a>
-            <div className="flex flex-col gap-2 pt-2">
-              <Button
-                variant="ghost"
-                className="text-sm text-muted-foreground gap-1"
-                onClick={() => setScreen("heavy")}
-              >
-                <ArrowLeft size={14} /> Назад
               </Button>
             </div>
           </div>
