@@ -196,6 +196,21 @@ const podcasts = [
   },
 ];
 
+type Tint = "teal" | "coral" | "violet" | "amber";
+
+const tintBg: Record<Tint, string> = {
+  teal: "tint-teal",
+  coral: "tint-coral",
+  violet: "tint-violet",
+  amber: "tint-amber",
+};
+const tintInk: Record<Tint, string> = {
+  teal: "tint-teal-ink",
+  coral: "tint-coral-ink",
+  violet: "tint-violet-ink",
+  amber: "tint-amber-ink",
+};
+
 const checkups = [
   {
     title: "Давай познакомимся",
@@ -203,6 +218,7 @@ const checkups = [
     cta: "Пройти опросник",
     icon: HandHeart,
     action: "kidscreen",
+    tint: "teal" as Tint,
   },
   {
     title: "Задумался о выборе профессии",
@@ -210,6 +226,7 @@ const checkups = [
     cta: "Пройти тест",
     icon: Compass,
     action: "career-quiz",
+    tint: "amber" as Tint,
   },
   {
     title: "К кому обратиться",
@@ -217,6 +234,7 @@ const checkups = [
     cta: "Читать статью",
     icon: UserCheck,
     href: "/articles/who-helps",
+    tint: "violet" as Tint,
   },
 ];
 
@@ -529,32 +547,31 @@ const Index = () => {
       {/* Checkups */}
       <section id="checkups" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
-          <div className="flex items-center gap-2 mb-2">
-            <ClipboardCheck className="text-primary" size={24} />
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">С чего начать</h2>
-          </div>
+          <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mb-6">
+            С чего начать
+          </h2>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {checkups.map((c, i) => {
             const inner = (
               <>
-                <div className="-mx-4 mb-3 h-16 overflow-hidden flex items-center justify-center bg-primary/10">
-                  <c.icon className="text-primary transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
-                </div>
-                <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">
+                <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[c.tint]}`}>
                   {c.title}
                 </h3>
-                <p className="text-xs text-muted-foreground">{c.description}</p>
+                <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
+                  <c.icon className={tintInk[c.tint]} size={22} />
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{c.description}</p>
                 <div className="mt-auto">
-                  <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                    {c.cta} <ArrowRight size={12} />
+                  <span className="inline-flex items-center gap-1 text-sm font-medium text-foreground hover:gap-2 transition-all">
+                    {c.cta} <ArrowRight size={14} />
                   </span>
                 </div>
               </>
             );
             const cardClasses =
-              "group rounded-2xl border bg-card p-4 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col text-left w-full";
+              `group h-full rounded-3xl border p-5 ${tintBg[c.tint]} transition-transform hover:-translate-y-1 text-left w-full`;
             return (
               <ScrollReveal key={c.title} delay={i * 100}>
                 {(c as any).href ? (
