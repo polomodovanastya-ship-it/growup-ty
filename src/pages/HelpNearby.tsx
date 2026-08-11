@@ -97,15 +97,15 @@ const HelpNearby = () => (
       </ScrollReveal>
 
       <ScrollReveal>
-        <div className="mt-6 rounded-[2rem] border border-destructive/40 bg-destructive/10 p-6 md:p-10 text-center">
-          <p className="text-sm font-medium text-muted-foreground mb-2">Россия и страны ЕС</p>
-          <p className="text-6xl md:text-8xl font-bold text-destructive leading-none">112</p>
-          <p className="mt-2 text-base md:text-lg text-foreground">экстренная помощь</p>
+        <div className="mt-6 rounded-[2rem] border border-destructive/40 bg-destructive/10 p-4 md:p-6 text-center">
+          <p className="text-xs md:text-sm font-medium text-muted-foreground mb-1">Россия и страны ЕС</p>
+          <p className="text-4xl md:text-6xl font-bold text-destructive leading-none">112</p>
+          <p className="mt-1 text-sm md:text-base text-foreground">экстренная помощь</p>
           <a
             href="tel:112"
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-destructive text-destructive-foreground px-8 py-4 text-base md:text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-destructive text-destructive-foreground px-6 py-2.5 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
           >
-            <Phone size={20} /> Позвонить 112
+            <Phone size={18} /> Позвонить 112
           </a>
         </div>
       </ScrollReveal>
