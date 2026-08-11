@@ -15,10 +15,10 @@ const MOOD_LABELS: Record<string, string> = {
 };
 
 const STAGE_LABELS: Record<string, string> = {
+  search: "SEARCH — нащупать зачем",
   find: "FIND — искать",
   take: "TAKE — пробовать",
   make: "MAKE — собирать своё",
-  heavy: "Нужна поддержка",
 };
 
 const COLORS = [
