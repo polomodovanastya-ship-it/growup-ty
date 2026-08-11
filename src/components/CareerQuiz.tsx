@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -160,12 +161,14 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Stage[]>([]);
   const [result, setResult] = useState<Stage | null>(null);
+  const [needsTiebreaker, setNeedsTiebreaker] = useState(false);
 
   const reset = () => {
     setScreen("intro");
     setQuestionIndex(0);
     setAnswers([]);
     setResult(null);
+    setNeedsTiebreaker(false);
   };
 
   const handleClose = (val: boolean) => {
@@ -185,6 +188,15 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     return "tie";
   };
 
+  const saveResult = (stage: Stage, ans: Stage[], tiebreak: boolean) => {
+    void supabase
+      .from("career_results")
+      .insert({ stage, answers: ans, used_tiebreaker: tiebreak })
+      .then(({ error }) => {
+        if (error) console.error("career_results insert failed", error);
+      });
+  };
+
   const handleAnswer = (stage: Stage) => {
     const newAnswers = [...answers, stage];
     setAnswers(newAnswers);
@@ -192,6 +204,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     // Early exit to heavy if 2 heavy answers already
     const heavyCount = newAnswers.filter((a) => a === "heavy").length;
     if (heavyCount >= 2) {
+      saveResult("heavy", newAnswers, false);
       setScreen("heavy");
       return;
     }
@@ -201,10 +214,13 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     } else {
       const res = computeResult(newAnswers);
       if (res === "tie") {
+        setNeedsTiebreaker(true);
         setScreen("tiebreaker");
       } else if (res === "heavy") {
+        saveResult("heavy", newAnswers, false);
         setScreen("heavy");
       } else {
+        saveResult(res as Stage, newAnswers, false);
         setResult(res as Stage);
         setScreen("result");
       }
@@ -212,12 +228,14 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   };
 
   const handleTiebreaker = (stage: Stage) => {
+    saveResult(stage, [...answers, stage], true);
     setResult(stage);
     setScreen("result");
   };
 
-  const totalSteps = questions.length;
-  const progress = screen === "question" ? ((questionIndex + 1) / totalSteps) * 100 : screen === "tiebreaker" ? 100 : 0;
+  const totalSteps = questions.length + (needsTiebreaker ? 1 : 0);
+  const currentStep = screen === "tiebreaker" ? questions.length + 1 : questionIndex + 1;
+  const progress = ((currentStep - 1) / totalSteps) * 100;
   const showHeader = screen === "question" || screen === "tiebreaker";
 
   return (
@@ -228,7 +246,9 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
           <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border/40 bg-background">
             <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
               <span className="font-medium">
-                {screen === "tiebreaker" ? "Дополнительный вопрос" : `Шаг ${questionIndex + 1} из ${totalSteps}`}
+                {screen === "tiebreaker"
+                  ? `Дополнительный вопрос · шаг ${currentStep} из ${totalSteps}`
+                  : `Шаг ${currentStep} из ${totalSteps}`}
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
