@@ -323,7 +323,11 @@ const Index = () => {
                     }`}
                   >
                     <Icon className="text-primary mb-3" size={28} />
-                    <h1 className="text-2xl md:text-4xl font-bold leading-tight text-foreground">{s.title}</h1>
+                    {i === heroSlide ? (
+                      <h1 className="text-2xl md:text-4xl font-bold leading-tight text-foreground">{s.title}</h1>
+                    ) : (
+                      <h2 className="text-2xl md:text-4xl font-bold leading-tight text-foreground">{s.title}</h2>
+                    )}
                     <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-sm">{s.text}</p>
                     <div className="mt-6">
                       {s.key === "start" ? (
