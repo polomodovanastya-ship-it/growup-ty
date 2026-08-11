@@ -43,6 +43,19 @@ const identitySteps = [
 
 const stages = [
   {
+    icon: Search,
+    tint: "amber" as Tint,
+    tag: "SEARCH",
+    title: "Ищи — зачем тебе это",
+    text: "Прежде чем выбирать, важно нащупать мотивацию: зачем тебе вообще разбираться в себе и пробовать. Поиск идентичности требует сил, и без внутреннего «зачем» он быстро гаснет. Цель стадии — не выбрать, а понять, ради чего тебе это нужно.",
+    points: [
+      "Непонятно, зачем выбирать профессию — это нормально",
+      "Нет сил вникать — значит, сначала с силами, а не с выбором",
+      "Достаточно найти один живой «зачем», и появится первый интерес",
+    ],
+    motto: "Сначала — зачем. Потом — что и как.",
+  },
+  {
     icon: Compass,
     tint: "teal" as Tint,
     tag: "FIND",
@@ -104,7 +117,7 @@ const faq = [
 const ThreeStages = () => (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-6xl mx-auto flex items-center justify-between">
-    <Seo title="Откуда берётся «хочу»: три стадии поиска интересов — Как ты?" description="Что такое идентичность, как она формируется и как интерес рождается через стадии Find → Take → Make." path="/articles/three-stages" type="article" />
+    <Seo title="Откуда берётся «хочу»: стадии поиска интересов — Как ты?" description="Что такое идентичность, как она формируется и как интерес рождается через стадии Search → Find → Take → Make." path="/articles/three-stages" type="article" />
       <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
         <ArrowLeft size={16} />
         На главную
@@ -168,14 +181,14 @@ const ThreeStages = () => (
     <section className="px-4 pt-10 pb-4 max-w-6xl mx-auto">
       <ScrollReveal>
         <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mb-2">
-          Как появляется интерес: три стадии
+          Как появляется интерес: четыре стадии
         </h2>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-6">
           Их можно проходить не по порядку, возвращаться назад и перескакивать — но обычно
           путь выглядит так.
         </p>
       </ScrollReveal>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stages.map((s, i) => (
           <ScrollReveal key={s.tag} delay={i * 50}>
             <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]} transition-transform hover:-translate-y-1`}>
