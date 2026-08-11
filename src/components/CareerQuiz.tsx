@@ -186,6 +186,15 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     return "tie";
   };
 
+  const saveResult = (stage: Stage, ans: Stage[], tiebreak: boolean) => {
+    void supabase
+      .from("career_results")
+      .insert({ stage, answers: ans, used_tiebreaker: tiebreak })
+      .then(({ error }) => {
+        if (error) console.error("career_results insert failed", error);
+      });
+  };
+
   const handleAnswer = (stage: Stage) => {
     const newAnswers = [...answers, stage];
     setAnswers(newAnswers);
@@ -193,6 +202,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     // Early exit to heavy if 2 heavy answers already
     const heavyCount = newAnswers.filter((a) => a === "heavy").length;
     if (heavyCount >= 2) {
+      saveResult("heavy", newAnswers, false);
       setScreen("heavy");
       return;
     }
@@ -202,10 +212,13 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     } else {
       const res = computeResult(newAnswers);
       if (res === "tie") {
+        setNeedsTiebreaker(true);
         setScreen("tiebreaker");
       } else if (res === "heavy") {
+        saveResult("heavy", newAnswers, false);
         setScreen("heavy");
       } else {
+        saveResult(res as Stage, newAnswers, false);
         setResult(res as Stage);
         setScreen("result");
       }
@@ -213,12 +226,14 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   };
 
   const handleTiebreaker = (stage: Stage) => {
+    saveResult(stage, [...answers, stage], true);
     setResult(stage);
     setScreen("result");
   };
 
-  const totalSteps = questions.length;
-  const progress = screen === "question" ? ((questionIndex + 1) / totalSteps) * 100 : screen === "tiebreaker" ? 100 : 0;
+  const totalSteps = questions.length + (needsTiebreaker ? 1 : 0);
+  const currentStep = screen === "tiebreaker" ? questions.length + 1 : questionIndex + 1;
+  const progress = showProgress ? ((currentStep - 1) / totalSteps) * 100 : 0;
   const showHeader = screen === "question" || screen === "tiebreaker";
 
   return (
