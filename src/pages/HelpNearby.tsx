@@ -207,7 +207,7 @@ const HelpNearby = () => (
         <ScrollReveal delay={80} className="h-full">
           <div className="h-full rounded-3xl border bg-card px-6 pt-6 pb-4 flex flex-col">
             <h3 className="font-bold text-lg text-foreground mb-1">1221.chat</h3>
-            <p className="text-sm text-muted-foreground">Психологическая помощь подросткам и молодым людям 12–21 года. Бесплатно. Анонимно.</p>
+            <p className="text-sm text-muted-foreground">Психологическая помощь с 12 до 21 года. Бесплатно. Анонимно.</p>
             <p className="mt-2 text-sm font-medium text-foreground">Ежедневно, 14:00–21:30 МСК</p>
             <a
               href="https://1221.chat/"
