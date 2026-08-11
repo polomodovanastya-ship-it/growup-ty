@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import Seo from "@/components/Seo";
 import { useEffect, useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
 import logo from "@/assets/logo.png";
@@ -287,6 +288,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen overflow-hidden">
+    <Seo title="Как ты? — поддержка для подростков" description="Тут можно почувствовать, что ты не один: подкасты, тесты о самочувствии и проверенные ресурсы помощи." path="/" />
       {/* Top menu */}
       <div className="bg-muted/40 border-b border-border/40">
         <div className="max-w-6xl mx-auto px-4 h-10 flex items-center">

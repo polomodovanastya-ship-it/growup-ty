@@ -1,4 +1,5 @@
 import { ArrowLeft, ShieldCheck, MessageCircle, Wallet, Search, ThumbsUp, AlertTriangle } from "lucide-react";
+import Seo from "@/components/Seo";
 import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
@@ -43,6 +44,7 @@ const redFlags = [
 const HowToChoose = () => (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-3xl mx-auto flex items-center justify-between">
+    <Seo title="Как выбрать специалиста — Как ты?" description="На что смотреть при выборе психолога: образование, метод, цена, первый контакт и тревожные звоночки." path="/articles/how-to-choose" type="article" />
       <div className="flex items-center gap-4">
         <Link
           to="/"

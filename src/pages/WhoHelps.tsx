@@ -19,6 +19,7 @@ import {
   Target,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import Seo from "@/components/Seo";
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
@@ -182,6 +183,7 @@ const WhoHelps = () => {
   return (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-6xl mx-auto flex items-center justify-between">
+    <Seo title="К кому обратиться: психолог, психотерапевт, психиатр — Как ты?" description="Чем отличаются психолог, психотерапевт и психиатр, кто чем помогает и к кому идти с твоим запросом." path="/articles/who-helps" type="article" />
       <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
         <ArrowLeft size={16} />
         На главную
