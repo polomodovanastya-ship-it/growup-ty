@@ -39,6 +39,7 @@ const questions = [
       { label: "Интерес к нескольким вариантам", stage: "find" as Stage },
       { label: "Пара проб / мини-кейсов / задач", stage: "take" as Stage },
       { label: "Понимание, что у меня получается по-своему", stage: "make" as Stage },
+      { label: "Ничего особого, не понимаю, зачем это нужно", stage: "find" as Stage },
     ],
   },
   {
