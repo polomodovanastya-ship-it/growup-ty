@@ -155,6 +155,7 @@ const plans: Record<CareerStage, { steps: string[]; motto: string }> = {
 type Screen = "intro" | "question" | "tiebreaker" | "result" | "plan" | "heavy" | "heavy-simple" | "heavy-adult" | "heavy-support";
 
 const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
+  const navigate = useNavigate();
   const [screen, setScreen] = useState<Screen>("intro");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Stage[]>([]);
@@ -262,18 +263,14 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
               >
                 Начать <ArrowRight size={18} />
               </Button>
-              <a
-                href="/articles/three-stages"
-                onClick={(e) => { e.preventDefault(); window.location.href = "/articles/three-stages"; }}
+              <Button
+                variant="ghost"
+                size="lg"
+                className="rounded-full text-base text-muted-foreground hover:text-primary"
+                onClick={() => { onOpenChange(false); navigate("/articles/three-stages"); }}
               >
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  className="rounded-full text-base text-muted-foreground hover:text-primary"
-                >
-                  Просто прочитать про 3 стадии
-                </Button>
-              </a>
+                Просто прочитать про 3 стадии
+              </Button>
             </div>
           </div>
         )}
