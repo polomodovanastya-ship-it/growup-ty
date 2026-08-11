@@ -189,7 +189,7 @@ const HelpNearby = () => (
         <p className="text-sm text-muted-foreground mb-4">Если экстренная помощь не нужна — напиши психологу.</p>
       </ScrollReveal>
       <div className="grid gap-4 md:grid-cols-2">
-        <ScrollReveal>
+        <ScrollReveal className="h-full">
           <div className="h-full rounded-3xl border bg-card px-6 pt-6 pb-4 flex flex-col">
             <h3 className="font-bold text-lg text-foreground mb-1">Твоя территория</h3>
             <p className="text-sm text-muted-foreground">Психологическая помощь подросткам и молодёжи.</p>
@@ -204,7 +204,7 @@ const HelpNearby = () => (
             </a>
           </div>
         </ScrollReveal>
-        <ScrollReveal delay={80}>
+        <ScrollReveal delay={80} className="h-full">
           <div className="h-full rounded-3xl border bg-card px-6 pt-6 pb-4 flex flex-col">
             <h3 className="font-bold text-lg text-foreground mb-1">1221.chat</h3>
             <p className="text-sm text-muted-foreground">Психологическая помощь подросткам и молодым людям 12–21 года. Бесплатно. Анонимно.</p>
