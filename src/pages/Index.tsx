@@ -571,7 +571,7 @@ const Index = () => {
               </>
             );
             const cardClasses =
-              `group h-full rounded-3xl border p-5 ${tintBg[c.tint]} transition-transform hover:-translate-y-1 text-left w-full`;
+              `group flex flex-col h-full rounded-3xl border p-5 ${tintBg[c.tint]} transition-transform hover:-translate-y-1 text-left w-full`;
             return (
               <ScrollReveal key={c.title} delay={i * 100}>
                 {(c as any).href ? (
