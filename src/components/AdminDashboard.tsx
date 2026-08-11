@@ -14,6 +14,13 @@ const MOOD_LABELS: Record<string, string> = {
   nichego: "Не чувствую ничего",
 };
 
+const STAGE_LABELS: Record<string, string> = {
+  find: "FIND — искать",
+  take: "TAKE — пробовать",
+  make: "MAKE — собирать своё",
+  heavy: "Нужна поддержка",
+};
+
 const COLORS = [
   "hsl(var(--primary))",
   "hsl(var(--accent))",
@@ -30,16 +37,19 @@ const AdminDashboard = ({ totalAssessments }: Props) => {
   const [byDay, setByDay] = useState<{ day: string; count: number }[]>([]);
   const [scaleStats, setScaleStats] = useState<{ name: string; avgT: number; lowShare: number }[]>([]);
   const [moods, setMoods] = useState<{ name: string; value: number }[]>([]);
+  const [careerStages, setCareerStages] = useState<{ name: string; value: number }[]>([]);
+  const [careerWeek, setCareerWeek] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
 
-      const [{ data: recent }, { data: results }, { data: clicks }] = await Promise.all([
+      const [{ data: recent }, { data: results }, { data: clicks }, { data: career }] = await Promise.all([
         supabase.from("kidscreen_assessments").select("created_at").gte("created_at", weekAgo),
         supabase.from("kidscreen_scale_results").select("scale_id, t_value, level"),
         supabase.from("mood_clicks").select("mood"),
+        supabase.from("career_results").select("stage, created_at"),
       ]);
 
       setWeekCount(recent?.length ?? 0);
@@ -73,6 +83,15 @@ const AdminDashboard = ({ totalAssessments }: Props) => {
       const m: Record<string, number> = {};
       (clicks ?? []).forEach((c) => { m[c.mood] = (m[c.mood] ?? 0) + 1; });
       setMoods(Object.entries(m).map(([k, v]) => ({ name: MOOD_LABELS[k] ?? k, value: v })).sort((a, b) => b.value - a.value));
+
+      const st: Record<string, number> = {};
+      (career ?? []).forEach((c) => { st[c.stage] = (st[c.stage] ?? 0) + 1; });
+      setCareerStages(
+        Object.entries(st)
+          .map(([k, v]) => ({ name: STAGE_LABELS[k] ?? k, value: v }))
+          .sort((a, b) => b.value - a.value),
+      );
+      setCareerWeek((career ?? []).filter((c) => (c.created_at as string) >= weekAgo).length);
 
       setLoading(false);
     })();
@@ -133,6 +152,28 @@ const AdminDashboard = ({ totalAssessments }: Props) => {
             </ResponsiveContainer>
           )}
         </div>
+      </div>
+
+      <div className="rounded-2xl border border-border/60 bg-card p-5">
+        <div className="flex items-baseline justify-between mb-4 gap-4">
+          <h3 className="font-semibold">Тест «Выбор профессии»: стадии</h3>
+          <p className="text-sm text-muted-foreground">
+            всего {careerStages.reduce((a, b) => a + b.value, 0)} · за 7 дней {careerWeek}
+          </p>
+        </div>
+        {careerStages.length === 0 ? (
+          <p className="text-sm text-muted-foreground">Пока нет данных</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={260}>
+            <PieChart>
+              <Pie data={careerStages} dataKey="value" nameKey="name" outerRadius={90} label>
+                {careerStages.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
       </div>
 
       <div className="rounded-2xl border border-border/60 bg-card p-5">
