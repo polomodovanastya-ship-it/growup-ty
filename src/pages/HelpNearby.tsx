@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Seo from "@/components/Seo";
 import {
   ArrowLeft,
   ArrowRight,
@@ -78,6 +79,7 @@ const helpLinks: HelpLink[] = [
 const HelpNearby = () => (
   <main className="min-h-screen bg-background">
     <header className="px-4 pt-6 pb-2 max-w-5xl mx-auto flex items-center justify-between">
+    <Seo title="Помощь рядом — куда обратиться за поддержкой — Как ты?" description="Экстренные службы, телефоны доверия и бесплатные чаты с психологом для подростков, друзей и родителей." path="/help" />
       <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
         <ArrowLeft size={16} />
         На главную

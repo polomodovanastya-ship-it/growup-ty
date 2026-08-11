@@ -1,4 +1,5 @@
 import { ArrowLeft, Heart, Sparkles, Send, Phone } from "lucide-react";
+import Seo from "@/components/Seo";
 import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
@@ -38,6 +39,7 @@ const About = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <header className="sticky top-0 z-30 border-b border-border/40 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <Seo title="О нас — Как ты?" description="Кто делает проект «Как ты»: Анастасия Поломодова и Наталья Сухова — о команде и о том, зачем мы это создали." path="/about" />
         <div className="max-w-5xl mx-auto px-4 h-14 md:h-16 flex items-center">
           <Link to="/" aria-label="как ты — на главную" className="flex items-center">
             <img src={logo} alt="как ты" className="h-7 md:h-9 w-auto select-none" draggable={false} />
