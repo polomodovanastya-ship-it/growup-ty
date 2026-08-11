@@ -261,17 +261,18 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
               >
                 Начать <ArrowRight size={18} />
               </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="rounded-full text-base text-muted-foreground hover:text-primary"
-                onClick={() => {
-                  setResult("find");
-                  setScreen("result");
-                }}
+              <a
+                href="/articles/three-stages"
+                onClick={(e) => { e.preventDefault(); window.location.href = "/articles/three-stages"; }}
               >
-                Просто прочитать про 3 стадии
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="rounded-full text-base text-muted-foreground hover:text-primary"
+                >
+                  Просто прочитать про 3 стадии
+                </Button>
+              </a>
             </div>
           </div>
         )}
