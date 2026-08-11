@@ -198,7 +198,7 @@ const HelpNearby = () => (
               href="https://www.твоя-территория.онлайн/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-auto pt-6 inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+              className="mt-auto inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <MessageCircle size={15} /> Написать психологу
             </a>
