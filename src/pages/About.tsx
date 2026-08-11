@@ -151,14 +151,6 @@ const About = () => {
           <Heart size={14} className="text-primary" /> Сделано с заботой о подростках
         </div>
 
-        <div className="mt-4 text-center">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <ArrowLeft size={16} /> На главную
-          </Link>
-        </div>
       </section>
     </div>
   );
