@@ -161,12 +161,14 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Stage[]>([]);
   const [result, setResult] = useState<Stage | null>(null);
+  const [needsTiebreaker, setNeedsTiebreaker] = useState(false);
 
   const reset = () => {
     setScreen("intro");
     setQuestionIndex(0);
     setAnswers([]);
     setResult(null);
+    setNeedsTiebreaker(false);
   };
 
   const handleClose = (val: boolean) => {
@@ -233,7 +235,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
 
   const totalSteps = questions.length + (needsTiebreaker ? 1 : 0);
   const currentStep = screen === "tiebreaker" ? questions.length + 1 : questionIndex + 1;
-  const progress = showProgress ? ((currentStep - 1) / totalSteps) * 100 : 0;
+  const progress = ((currentStep - 1) / totalSteps) * 100;
   const showHeader = screen === "question" || screen === "tiebreaker";
 
   return (
