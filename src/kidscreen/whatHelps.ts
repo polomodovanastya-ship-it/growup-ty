@@ -37,6 +37,7 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
   },
   moods: {
     listen: [
+      { title: "Деби Глиори. Что бы ни случилось" },
       { title: "Зачем вообще психолог?", href: "https://mave.stream/e/Ng8tfd3aZI" },
       { title: "Первая сессия", href: "https://mave.stream/e/Yykg2hB0r1" },
     ],
@@ -61,7 +62,11 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
     breathing: true,
   },
   self_perception: {
-    listen: [{ title: "Соцсети и сравнение" }, { title: "Стыд и прокрастинация" }],
+    listen: [
+      { title: "Доктор Сьюз. Это только начало" },
+      { title: "Соцсети и сравнение" },
+      { title: "Стыд и прокрастинация" },
+    ],
     tryTitle: "«Я — это больше, чем…»",
     tryText:
       "Продолжи фразу: «Я — это больше, чем мои оценки, внешность, одна ошибка, чужое мнение». Добавь 3–5 вещей про себя: интересы, качества, умения, людей, мечты.",
@@ -69,14 +74,20 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
     breathing: false,
   },
   autonomy: {
-    listen: [{ title: "Чего я хочу на самом деле?", href: "https://mave.stream/e/F55kiTfaEB" }],
+    listen: [
+      { title: "Доктор Сьюз. Это только начало" },
+      { title: "Чего я хочу на самом деле?", href: "https://mave.stream/e/F55kiTfaEB" },
+    ],
     tryTitle: "Три вещи из любопытства",
     tryText: "Запиши 3 вещи, которые тебе было бы интересно попробовать. Просто из любопытства.",
     nextStep: "Найди для одной из них немного времени на этой неделе.",
     breathing: false,
   },
   parent_relations: {
-    listen: [{ title: "Родители и границы", href: "https://mave.stream/e/XnMGRhw4tX" }],
+    listen: [
+      { title: "Деби Глиори. Что бы ни случилось" },
+      { title: "Родители и границы", href: "https://mave.stream/e/XnMGRhw4tX" },
+    ],
     tryTitle: "Сказать или написать?",
     tryText:
       "Составь одну фразу, которую хочется сказать дома. Выбери, как тебе удобнее: сказать лично, написать сообщение или оставить записку.",
