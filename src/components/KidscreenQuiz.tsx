@@ -659,36 +659,158 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
             </div>
           )}
 
-          {/* Recommendations */}
+          {/* Что поможет */}
           {screen === "recommendations" && profile && (
-            <div className="p-6 md:p-8 space-y-6">
+            <div className="relative p-6 md:p-8 space-y-6">
               <div className="text-center space-y-3">
                 <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
-                  Что можно сделать
+                  Что поможет
                 </DialogTitle>
                 <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                  Маленькие шаги по сферам, которые сейчас просят внимания. Выбирай то, что откликается — без давления.
+                  Здесь можно послушать или почитать, попробовать небольшую практику и выбрать следующий шаг. Бери то, что откликается — ничего обязательного тут нет.
                 </p>
               </div>
 
               {(() => {
-                const focus = profile.scales.filter((s) => s.level === "low" || s.level === "below_avg");
-                const list = focus.length > 0 ? focus : profile.scales;
+                const focus = focusScales(profile.scales);
+                const loweredIds = focus.map((s) => s.scaleId);
                 return (
-                  <div className="space-y-3">
-                    {list.map((s) => (
-                      <div key={s.scaleId} className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <h3 className="font-semibold text-foreground leading-tight">{s.name}</h3>
-                          <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
-                            {s.levelLabel}
-                          </span>
+                  <div className="space-y-4">
+                    {focus.map((s) => {
+                      const help = WHAT_HELPS[s.scaleId];
+                      const isOpen = !!expandedPractices[s.scaleId];
+                      const extra = isOpen ? practicesForScale(s.scaleId, loweredIds) : [];
+                      return (
+                        <div
+                          key={s.scaleId}
+                          className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-4"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <h3 className="font-semibold text-foreground leading-tight">{s.name}</h3>
+                            <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
+                              {s.levelLabel}
+                            </span>
+                          </div>
+
+                          {needsHelpFirst(s) && (
+                            <div className="rounded-xl bg-primary/10 p-3 md:p-4 space-y-2">
+                              <p className="text-sm md:text-base text-foreground leading-relaxed">
+                                Похоже, сейчас тебе правда тяжело. С этим не обязательно справляться в одиночку — рядом есть люди, к которым можно обратиться бесплатно и анонимно.
+                              </p>
+                              <a
+                                href="/help"
+                                className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                              >
+                                Помощь рядом <ArrowRight size={14} />
+                              </a>
+                            </div>
+                          )}
+
+                          {help.listen.length > 0 && (
+                            <div className="space-y-1">
+                              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                Послушать / почитать
+                              </p>
+                              <ul className="space-y-1">
+                                {help.listen.map((l) => (
+                                  <li key={l.title} className="text-sm md:text-base">
+                                    {l.href ? (
+                                      <a
+                                        href={l.href}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-primary hover:underline"
+                                      >
+                                        {l.title}
+                                      </a>
+                                    ) : (
+                                      <span className="text-foreground">{l.title}</span>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          <div className="space-y-1">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                              Попробовать
+                            </p>
+                            <p className="text-sm md:text-base font-medium text-foreground">{help.tryTitle}</p>
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                              {help.tryText}
+                            </p>
+                          </div>
+
+                          <div className="space-y-1">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                              Следующий шаг
+                            </p>
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                              {help.nextStep}
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setExpandedPractices((prev) => ({ ...prev, [s.scaleId]: !prev[s.scaleId] }))
+                            }
+                            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                            aria-expanded={isOpen}
+                          >
+                            {isOpen ? "Свернуть" : "Ещё способы"}
+                            <ChevronDown size={14} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                          </button>
+
+                          {isOpen && extra.length > 0 && (
+                            <div className="space-y-3">
+                              {extra.map((p) => (
+                                <div key={p.id} className="rounded-xl bg-muted/40 p-3 md:p-4 space-y-2">
+                                  <p className="font-semibold text-foreground text-sm md:text-base">{p.title}</p>
+                                  <p className="text-sm text-muted-foreground leading-relaxed">{p.why}</p>
+                                  <ul className="space-y-1">
+                                    {p.what.map((step, i) => (
+                                      <li key={i} className="text-sm text-foreground leading-relaxed">
+                                        — {step}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  <p className="text-sm text-muted-foreground leading-relaxed italic">{p.notice}</p>
+                                </div>
+                              ))}
+                              <p className="text-xs text-muted-foreground">
+                                Некоторые практики удобнее делать на бумаге — возьми лист или открой заметки.
+                              </p>
+                            </div>
+                          )}
                         </div>
+                      );
+                    })}
+
+                    {showBreathing(focus) && (
+                      <div className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-3">
+                        <h3 className="font-semibold text-foreground leading-tight">Дыхание</h3>
                         <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                          {RECOMMENDATIONS[s.scaleId][s.level]}
+                          {BREATHING_INTRO}
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {BREATHING.map((b) => (
+                            <div key={b.title} className="rounded-xl bg-muted/40 p-3 md:p-4 space-y-1">
+                              <p className="font-semibold text-foreground text-sm md:text-base">{b.title}</p>
+                              {b.steps.map((st, i) => (
+                                <p key={i} className="text-sm text-muted-foreground leading-relaxed">
+                                  {st}
+                                </p>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Если какой-то вариант неудобен, можно выбрать другой.
                         </p>
                       </div>
-                    ))}
+                    )}
                   </div>
                 );
               })()}
@@ -730,6 +852,17 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
               </div>
             </div>
           )}
+
+          {/* Постоянный маршрут «Помощь рядом» */}
+          {(screen === "done" || screen === "recommendations") && (
+            <a
+              href="/help"
+              className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-2 text-sm font-semibold hover:opacity-90"
+            >
+              <LifeBuoy size={16} /> Помощь рядом
+            </a>
+          )}
+
         </div>
       </DialogContent>
     </Dialog>
