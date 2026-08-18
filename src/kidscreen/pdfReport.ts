@@ -88,12 +88,24 @@ function buildHtml({ profile, answers, sections, age, sex }: BuildArgs): HTMLEle
     })
     .join("");
 
-  const supportBlock =
-    profile.supportAreas.length > 0
-      ? `<div data-pdf-section style="margin-top:14px;border:1px solid #fecaca;background:#fef2f2;border-radius:12px;padding:12px;">
-          <strong>Сферы, которые просят поддержки:</strong> ${profile.supportAreas.join(", ")}.
-        </div>`
-      : "";
+  const helpHtml = focusScales(profile.scales)
+    .map((s) => {
+      const help = WHAT_HELPS[s.scaleId];
+      const listen = help.listen.map((l) => l.title).join(" · ");
+      return `
+      <div data-pdf-section style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;">
+        <strong style="font-size:14px;">${s.name}</strong>
+        ${listen ? `<div style="margin-top:6px;font-size:12px;"><strong>Послушать / почитать:</strong> ${listen}</div>` : ""}
+        <div style="margin-top:6px;font-size:12px;"><strong>Попробовать:</strong> ${help.tryTitle}. ${help.tryText}</div>
+        <div style="margin-top:6px;font-size:12px;"><strong>Следующий шаг:</strong> ${help.nextStep}</div>
+      </div>`;
+    })
+    .join("");
+
+  const supportBlock = `
+    <h2 data-pdf-section style="font-size:16px;margin:22px 0 10px 0;">Что поможет</h2>
+    ${helpHtml}`;
+
 
   container.innerHTML = `
     <div data-pdf-section style="border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:18px;">
