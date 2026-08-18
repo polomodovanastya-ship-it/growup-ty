@@ -1,5 +1,6 @@
 import type jsPDFType from "jspdf";
 import type { ProfileReport } from "./scoring";
+import { WHAT_HELPS, focusScales } from "./whatHelps";
 
 interface QuestionLite {
   id: string;
