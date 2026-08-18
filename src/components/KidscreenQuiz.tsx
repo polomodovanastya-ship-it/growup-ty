@@ -860,7 +860,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
           {(screen === "done" || screen === "recommendations") && (
             <a
               href="/help"
-              className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-2 text-sm font-semibold hover:opacity-90"
+              className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-2 text-sm font-semibold hover:opacity-90"
             >
               <LifeBuoy size={16} /> Помощь рядом
             </a>
