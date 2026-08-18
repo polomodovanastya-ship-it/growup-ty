@@ -198,6 +198,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
+  const [expandedPractices, setExpandedPractices] = useState<Record<string, boolean>>({});
   const [schoolSkipped, setSchoolSkipped] = useState(false);
 
   const isAdult = age === "18 и старше";
