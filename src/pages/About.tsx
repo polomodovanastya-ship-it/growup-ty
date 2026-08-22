@@ -3,8 +3,8 @@ import Seo from "@/components/Seo";
 import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
-import anastasiaPhoto from "@/assets/anastasia.jpg.asset.json";
-import nataliaPhoto from "@/assets/natalia.jpg.asset.json";
+import anastasiaPhoto from "@/assets/anastasia.jpg";
+import nataliaPhoto from "@/assets/natalia.jpg";
 
 type Creator = {
   name: string;
@@ -22,7 +22,7 @@ const creators: Creator[] = [
     role: "Со-основательница проекта",
     bio: "Верит, что подросткам нужен честный разговор без морали и осуждения. Помогает разбираться с эмоциями простыми словами.",
     initials: "АП",
-    photo: anastasiaPhoto.url,
+    photo: anastasiaPhoto,
     telegram: "AnastasiaPolomodova",
     phone: "+7-926-900-9260",
   },
@@ -31,7 +31,7 @@ const creators: Creator[] = [
     role: "Со-основательница проекта",
     bio: "Заботится о том, чтобы каждый подросток знал: с любой непростой ситуацией можно справиться, и рядом всегда есть те, кто поддержит.",
     initials: "НС",
-    photo: nataliaPhoto.url,
+    photo: nataliaPhoto,
   },
 ];
 

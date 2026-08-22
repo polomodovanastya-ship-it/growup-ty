@@ -3,9 +3,7 @@ import Seo from "@/components/Seo";
 import { useEffect, useState } from "react";
 import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
 import logo from "@/assets/logo.png";
-import heroTeensAsset from "@/assets/hero-teens.jpg.asset.json";
-const heroTeens = heroTeensAsset.url;
-import episode6Audio from "@/assets/episode-6.mp3.asset.json";
+import heroTeens from "@/assets/hero-teens.jpg";
 import pod1 from "@/assets/pod-1.jpg";
 import pod2 from "@/assets/pod-2.jpg";
 import pod3 from "@/assets/pod-3.jpg";
@@ -17,18 +15,12 @@ import pod8 from "@/assets/pod-8.jpg";
 import pod9 from "@/assets/pod-9.jpg";
 import pod10 from "@/assets/pod-10.jpg";
 import pod11 from "@/assets/pod-11.jpg";
-import emojiRelievedAsset from "@/assets/emoji/calm.png.asset.json";
-const emojiRelieved = emojiRelievedAsset.url;
-import emojiSteamAsset from "@/assets/emoji/angry.png.asset.json";
-const emojiSteam = emojiSteamAsset.url;
-import emojiPleadingAsset from "@/assets/emoji/crying.png.asset.json";
-const emojiPleading = emojiPleadingAsset.url;
-import emojiHeartsAsset from "@/assets/emoji/love.png.asset.json";
-const emojiHearts = emojiHeartsAsset.url;
-import emojiAnxiousAsset from "@/assets/emoji/anxious.png.asset.json";
-const emojiAnxious = emojiAnxiousAsset.url;
-import emojiNeutralAsset from "@/assets/emoji/numb.png.asset.json";
-const emojiNeutral = emojiNeutralAsset.url;
+import emojiRelieved from "@/assets/emoji/calm.png";
+import emojiSteam from "@/assets/emoji/angry.png";
+import emojiPleading from "@/assets/emoji/crying.png";
+import emojiHearts from "@/assets/emoji/love.png";
+import emojiAnxious from "@/assets/emoji/anxious.png";
+import emojiNeutral from "@/assets/emoji/numb.png";
 
 
 
@@ -105,6 +97,9 @@ const helpLinks: HelpLink[] = [
   },
 ];
 
+// Локально: /audio/...  Позже Cloudflare CDN: задать базовый URL здесь.
+const AUDIO_BASE = "";
+
 const podcasts = [
   {
     title: "Зачем вообще психолог?",
@@ -112,7 +107,7 @@ const podcasts = [
     icon: Search,
     image: pod1,
     url: "https://mave.stream/e/Ng8tfd3aZI",
-    audio: "/__l5e/assets-v1/4ab7d186-6228-4a13-a8fd-c12703c433cf/episode-1.mp3",
+    audio: `${AUDIO_BASE}/audio/episode-1.mp3`,
     tags: ["самооценка", "мотивация", "тревога"],
   },
   {
@@ -121,7 +116,7 @@ const podcasts = [
     icon: Brain,
     image: pod2,
     url: "https://mave.stream/e/F55kiTfaEB",
-    audio: "/__l5e/assets-v1/b0558ae6-7a17-4af3-b5e2-838db825f783/episode-3.mp3",
+    audio: `${AUDIO_BASE}/audio/episode-3.mp3`,
     tags: ["мотивация", "самооценка", "прокрастинация"],
   },
   {
@@ -130,7 +125,7 @@ const podcasts = [
     icon: Home,
     image: pod3,
     url: "https://mave.stream/e/XnMGRhw4tX",
-    audio: "/__l5e/assets-v1/b22d50fa-421c-4ed3-a75f-1854f2cd2eb8/episode-5.mp3",
+    audio: `${AUDIO_BASE}/audio/episode-5.mp3`,
     tags: ["отношения", "стресс"],
   },
   {
@@ -139,7 +134,7 @@ const podcasts = [
     icon: Shield,
     image: pod4,
     url: "https://mave.stream/e/Yykg2hB0r1",
-    audio: episode6Audio.url,
+    audio: `${AUDIO_BASE}/audio/episode-6.mp3`,
     tags: ["тревога", "самооценка"],
   },
   {
@@ -148,7 +143,7 @@ const podcasts = [
     icon: Flame,
     image: pod5,
     url: "https://mave.stream/e/q2en9dlbty",
-    audio: "/__l5e/assets-v1/0455247d-b570-47ab-ae1b-669931c91046/episode-4.mp3",
+    audio: `${AUDIO_BASE}/audio/episode-4.mp3`,
     tags: ["выгорание", "стресс"],
   },
   {

@@ -23,8 +23,7 @@ import Seo from "@/components/Seo";
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import logo from "@/assets/logo.png";
-import heroImgAsset from "@/assets/who-helps-hero.jpg.asset.json";
-const heroImg = heroImgAsset.url;
+import heroImg from "@/assets/who-helps-hero.jpg";
 
 type Tint = "teal" | "coral" | "violet" | "amber";
 
