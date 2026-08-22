@@ -83,7 +83,7 @@ flowchart LR
 - [x] Убран `lovable-tagger`
 - [x] Playwright config без Lovable
 - [x] `.env.example`, инструкция деплоя (`docs/DEPLOY.md`)
-- [ ] DNS у регистратора → GitHub Pages (ручная настройка, см. `docs/DEPLOY.md`)
-- [ ] GitHub Pages: Source = GitHub Actions
+- [x] DNS у регистратора → GitHub Pages (`kak-ty.live` отвечает)
+- [x] GitHub Pages: Source = GitHub Actions (GitHub Pro)
 
 > Supabase и GitHub Secrets для него — отменены [ADR-0003](./0003-no-backend-static-site-only.md).
