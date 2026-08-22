@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download, ChevronDown, LifeBuoy } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, Download, ChevronDown, LifeBuoy } from "lucide-react";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
 import { generateReportPdf } from "@/kidscreen/pdfReport";
 import { RECOMMENDATIONS } from "@/kidscreen/recommendations";
@@ -195,7 +194,6 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [age, setAge] = useState<string>("");
   const [sex, setSex] = useState<string>("");
   const [profile, setProfile] = useState<ProfileReport | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
   const [expandedPractices, setExpandedPractices] = useState<Record<string, boolean>>({});
@@ -239,7 +237,6 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
     setAge("");
     setSex("");
     setProfile(null);
-    setSubmitError(null);
     setSchoolSkipped(false);
   };
 
@@ -251,11 +248,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const allCurrentAnswered = currentSection?.questions.every((q) => answers[q.id]);
 
 
-  const submit = async () => {
+  const submit = () => {
     setScreen("loading");
-    setSubmitError(null);
 
-    // Конвертируем строковые ответы в числа 1..5
     const numeric: Record<string, number> = {};
     for (const sec of sections) {
       for (const q of sec.questions) {
@@ -265,31 +260,11 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
       }
     }
 
-    // Локальный профиль (как fallback, чтобы UX был мгновенным)
     const local = computeProfile(numeric, {
       skipScaleIds: schoolSkipped ? ["school"] : [],
       nameOverrides: scaleNameOverrides,
     });
     setProfile(local);
-
-
-    // session_token
-    let token = localStorage.getItem("kidscreen_session");
-    if (!token) {
-      token = crypto.randomUUID();
-      localStorage.setItem("kidscreen_session", token);
-    }
-
-    try {
-      const ageNum = age === "до 12" ? 11 : age === "12–14" ? 13 : age === "15–17" ? 16 : age === "18 и старше" ? 18 : undefined;
-      const { error } = await supabase.functions.invoke("submit-kidscreen", {
-        body: { session_token: token, age: ageNum, sex: sex || undefined, answers: numeric },
-      });
-      if (error) console.warn("submit-kidscreen error:", error);
-    } catch (e) {
-      console.warn("submit-kidscreen failed:", e);
-      setSubmitError("Не удалось сохранить результат на сервере, но твой профиль ниже.");
-    }
     setScreen("done");
   };
 
@@ -567,11 +542,6 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                   <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
                     {profile.summary}
                   </p>
-                )}
-                {submitError && (
-                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground bg-muted/40 rounded-full px-3 py-1.5">
-                    <AlertCircle size={14} /> {submitError}
-                  </div>
                 )}
               </div>
 

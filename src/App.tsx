@@ -14,10 +14,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import Admin from "./pages/Admin.tsx";
-import AdminLogin from "./pages/AdminLogin.tsx";
-import ResetPassword from "./pages/ResetPassword.tsx";
-
 
 import About from "./pages/About.tsx";
 import WhoHelps from "./pages/WhoHelps.tsx";
@@ -37,17 +33,12 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
 
-          
           <Route path="/about" element={<About />} />
           <Route path="/articles/who-helps" element={<WhoHelps />} />
           <Route path="/articles/how-to-choose" element={<HowToChoose />} />
           <Route path="/articles/three-stages" element={<ThreeStages />} />
           <Route path="/help" element={<HelpNearby />} />
-
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
