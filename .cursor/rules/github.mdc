@@ -1,0 +1,65 @@
+---
+description: GitHub CLI и git для этого репозитория — push, PR, Actions, Issues
+alwaysApply: true
+---
+
+# GitHub в growup-ty
+
+Репозиторий: `polomodovanastya-ship-it/growup-ty`
+
+## Инструменты
+
+| Инструмент | Назначение |
+|------------|------------|
+| `gh` | PR, Issues, Actions, Releases, API |
+| `git` | коммиты, ветки, push/pull |
+
+## Аутентификация
+
+- **git push/pull:** HTTPS + `gh auth git-credential` (настроено локально в `.git/config`)
+- **gh CLI:** аккаунт `polomodovanastya-ship-it`, scopes: `repo`, `workflow`, `read:org`, `gist`
+- **SSH** (`git@github.com`) не используем — ключ не привязан к GitHub
+
+Не менять **глобальный** `git config`. Только `--local` для этого репо.
+
+## Команды агента
+
+```bash
+# Статус и деплой
+gh run list --limit 5
+gh run view <run-id> --log-failed
+gh workflow run "Deploy to GitHub Pages"
+
+# PR
+gh pr create --title "..." --body "..."
+gh pr list
+gh pr checks <number>
+
+# Репозиторий
+gh repo view
+git push origin main
+git push -u origin <branch>
+```
+
+При push/pull всегда запускать из корня репо с `required_permissions: ["all"]` — иначе credential helper может не сработать.
+
+## Если gh/token протух
+
+Пользователь в терминале:
+
+```bash
+gh auth login -h github.com -p https -s repo,workflow,read:org,gist
+```
+
+Опционально SSH (один раз, интерактивно):
+
+```bash
+gh auth refresh -h github.com -s admin:public_key
+gh ssh-key add ~/.ssh/id_ed25519.pub --title "MacBook Cursor"
+git remote set-url origin git@github.com:polomodovanastya-ship-it/growup-ty.git
+```
+
+## Pages
+
+Деплой: push в `main` → workflow `.github/workflows/deploy-pages.yml`.  
+Source в Settings → Pages должен быть **GitHub Actions**.
