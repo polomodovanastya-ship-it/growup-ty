@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, Download, ChevronDown, LifeBuoy } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download, ChevronDown, LifeBuoy, Headphones, BookOpen } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
 import { generateReportPdf } from "@/kidscreen/pdfReport";
 import { RECOMMENDATIONS } from "@/kidscreen/recommendations";
 import { WHAT_HELPS, focusScales, practicesForScale, needsHelpFirst, showBreathing } from "@/kidscreen/whatHelps";
+import { resolveListenItem } from "@/kidscreen/listenCovers";
 import { BREATHING, BREATHING_INTRO } from "@/kidscreen/practices";
 
 interface KidscreenQuizProps {
@@ -194,6 +196,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [age, setAge] = useState<string>("");
   const [sex, setSex] = useState<string>("");
   const [profile, setProfile] = useState<ProfileReport | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
   const [expandedPractices, setExpandedPractices] = useState<Record<string, boolean>>({});
@@ -248,8 +251,9 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const allCurrentAnswered = currentSection?.questions.every((q) => answers[q.id]);
 
 
-  const submit = () => {
+  const submit = async () => {
     setScreen("loading");
+    setSubmitError(null);
 
     const numeric: Record<string, number> = {};
     for (const sec of sections) {
@@ -265,6 +269,23 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
       nameOverrides: scaleNameOverrides,
     });
     setProfile(local);
+
+    let token = localStorage.getItem("kidscreen_session");
+    if (!token) {
+      token = crypto.randomUUID();
+      localStorage.setItem("kidscreen_session", token);
+    }
+
+    try {
+      const ageNum = age === "до 12" ? 11 : age === "12–14" ? 13 : age === "15–17" ? 16 : age === "18 и старше" ? 18 : undefined;
+      const { error } = await supabase.functions.invoke("submit-kidscreen", {
+        body: { session_token: token, age: ageNum, sex: sex || undefined, answers: numeric },
+      });
+      if (error) console.warn("submit-kidscreen error:", error);
+    } catch (e) {
+      console.warn("submit-kidscreen failed:", e);
+      setSubmitError("Не удалось сохранить результат на сервере, но твой профиль ниже.");
+    }
     setScreen("done");
   };
 
@@ -340,7 +361,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                 <li>• Это <span className="text-foreground font-medium">не тест</span> — здесь нет правильных и неправильных ответов.</li>
                 <li>• Думай о <span className="text-foreground font-medium">последних 7 днях</span>.</li>
                 <li>• Выбирай ответ, который <span className="text-foreground font-medium">первым приходит в голову</span>.</li>
-                <li>• Твои ответы остаются <span className="text-foreground font-medium">только у тебя</span>.</li>
+                <li>• Результаты сохраняются анонимно — для общей статистики проекта.</li>
               </ul>
               <Button
                 size="lg"
@@ -543,6 +564,11 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                     {profile.summary}
                   </p>
                 )}
+                {submitError && (
+                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground bg-muted/40 rounded-full px-3 py-1.5">
+                    <AlertCircle size={14} /> {submitError}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
@@ -634,13 +660,13 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
           {/* Что поможет */}
           {screen === "recommendations" && profile && (
-            <div className="relative p-6 md:p-8 space-y-6">
-              <div className="text-center space-y-3">
+            <div className="relative p-6 md:p-8 space-y-5">
+              <div className="text-center space-y-2">
                 <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
                   Что поможет
                 </DialogTitle>
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                  Здесь можно послушать или почитать, попробовать небольшую практику и выбрать следующий шаг. Бери то, что откликается — ничего обязательного тут нет.
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                  Послушай или почитай, попробуй небольшую практику и выбери следующий шаг. Бери то, что откликается.
                 </p>
               </div>
 
@@ -656,7 +682,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                       return (
                         <div
                           key={s.scaleId}
-                          className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-4"
+                          className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-3"
                         >
                           <div className="flex items-start justify-between gap-3">
                             <h3 className="font-semibold text-foreground leading-tight">{s.name}</h3>
@@ -679,49 +705,86 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                             </div>
                           )}
 
-                          {help.listen.length > 0 && (
-                            <div className="space-y-1">
-                              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                Послушать / почитать
-                              </p>
-                              <ul className="space-y-1">
-                                {help.listen.map((l) => (
-                                  <li key={l.title} className="text-sm md:text-base">
-                                    {l.href ? (
+                          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(140px,38%)] gap-4 md:gap-5 items-start">
+                            <div className="space-y-3 min-w-0">
+                              <div className="space-y-1">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                  Попробовать
+                                </p>
+                                <p className="text-sm md:text-base font-medium text-foreground">{help.tryTitle}</p>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {help.tryText}
+                                </p>
+                              </div>
+
+                              <div className="space-y-1">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                  Следующий шаг
+                                </p>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {help.nextStep}
+                                </p>
+                              </div>
+                            </div>
+
+                            {help.listen.length > 0 && (
+                              <div className="space-y-2 md:pt-0.5">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                  Послушать / почитать
+                                </p>
+                                <div className="flex md:flex-wrap gap-2.5 overflow-x-auto pb-1 -mx-1 px-1 md:mx-0 md:px-0 md:overflow-visible">
+                                  {help.listen.map((raw) => {
+                                    const l = resolveListenItem(raw);
+                                    const inner = (
+                                      <>
+                                        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-muted shadow-sm ring-1 ring-border/50">
+                                          {l.cover ? (
+                                            <img
+                                              src={l.cover}
+                                              alt=""
+                                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                              loading="lazy"
+                                            />
+                                          ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                                              {l.kind === "book" ? <BookOpen size={22} /> : <Headphones size={22} />}
+                                            </div>
+                                          )}
+                                          <span className="absolute left-1.5 top-1.5 inline-flex items-center rounded-md bg-background/90 px-1.5 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur-sm">
+                                            {l.kind === "book" ? (
+                                              <><BookOpen size={10} className="mr-1" />книга</>
+                                            ) : (
+                                              <><Headphones size={10} className="mr-1" />подкаст</>
+                                            )}
+                                          </span>
+                                        </div>
+                                        <span className="mt-1.5 line-clamp-2 text-[11px] leading-snug text-muted-foreground group-hover:text-foreground">
+                                          {l.title}
+                                        </span>
+                                      </>
+                                    );
+                                    const tileClass =
+                                      "group flex w-[72px] shrink-0 flex-col sm:w-[80px] md:w-[calc(50%-5px)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg";
+                                    return l.href ? (
                                       <a
+                                        key={l.title}
                                         href={l.href}
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="text-primary hover:underline"
+                                        className={tileClass}
+                                        title={l.title}
                                       >
-                                        {l.title}
+                                        {inner}
                                       </a>
                                     ) : (
-                                      <span className="text-foreground">{l.title}</span>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          <div className="space-y-1">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                              Попробовать
-                            </p>
-                            <p className="text-sm md:text-base font-medium text-foreground">{help.tryTitle}</p>
-                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                              {help.tryText}
-                            </p>
-                          </div>
-
-                          <div className="space-y-1">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                              Следующий шаг
-                            </p>
-                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                              {help.nextStep}
-                            </p>
+                                      <div key={l.title} className={tileClass} title={l.title}>
+                                        {inner}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
 
                           <button

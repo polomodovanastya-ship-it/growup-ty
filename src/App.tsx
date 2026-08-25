@@ -20,7 +20,9 @@ import WhoHelps from "./pages/WhoHelps.tsx";
 import HowToChoose from "./pages/HowToChoose.tsx";
 import ThreeStages from "./pages/ThreeStages.tsx";
 import HelpNearby from "./pages/HelpNearby.tsx";
-
+import Admin from "./pages/Admin.tsx";
+import AdminLogin from "./pages/AdminLogin.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,9 @@ const App = () => (
           <Route path="/articles/how-to-choose" element={<HowToChoose />} />
           <Route path="/articles/three-stages" element={<ThreeStages />} />
           <Route path="/help" element={<HelpNearby />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-Откроется [http://localhost:8080](http://localhost:8080).
+Откроется [http://localhost:5180](http://localhost:5180).
 
 ## Скрипты
 

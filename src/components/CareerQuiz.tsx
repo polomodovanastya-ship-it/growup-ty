@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -212,6 +213,15 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     return "tie";
   };
 
+  const saveResult = (stage: Stage, ans: Stage[], tiebreak: boolean) => {
+    void supabase
+      .from("career_results")
+      .insert({ stage, answers: ans, used_tiebreaker: tiebreak })
+      .then(({ error }) => {
+        if (error) console.error("career_results insert failed", error);
+      });
+  };
+
   const handleAnswer = (stage: Stage) => {
     const newAnswers = [...answers, stage];
     setAnswers(newAnswers);
@@ -219,6 +229,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
     // Early exit to search if 2 search answers already
     const searchCount = newAnswers.filter((a) => a === "search").length;
     if (searchCount >= 2) {
+      saveResult("search", newAnswers, false);
       setResult("search");
       setScreen("result");
       return;
@@ -232,9 +243,11 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
         setNeedsTiebreaker(true);
         setScreen("tiebreaker");
       } else if (res === "search") {
+        saveResult("search", newAnswers, false);
         setResult("search");
         setScreen("result");
       } else {
+        saveResult(res, newAnswers, false);
         setResult(res);
         setScreen("result");
       }
@@ -242,6 +255,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
   };
 
   const handleTiebreaker = (stage: Stage) => {
+    saveResult(stage, [...answers, stage], true);
     setResult(stage);
     setScreen("result");
   };
@@ -286,7 +300,7 @@ const CareerQuiz = ({ open, onOpenChange }: CareerQuizProps) => {
             <ul className="space-y-2 text-base text-muted-foreground">
               <li>• Это <span className="text-foreground font-medium">не тест</span> — здесь нет правильных и неправильных ответов.</li>
               <li>• Выбирай ответ, который <span className="text-foreground font-medium">первым приходит в голову</span>.</li>
-              <li>• Твои ответы остаются <span className="text-foreground font-medium">только у тебя</span>.</li>
+              <li>• Результаты сохраняются анонимно — для общей статистики проекта.</li>
             </ul>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button

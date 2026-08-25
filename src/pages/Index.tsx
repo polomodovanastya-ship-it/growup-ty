@@ -129,6 +129,15 @@ const podcasts = [
     tags: ["отношения", "стресс"],
   },
   {
+    title: "Свой или чужой?",
+    description: "С кем я дружу и почему друзей приходится выбирать",
+    icon: Users,
+    image: pod11,
+    url: "https://mave.stream/e/Gz0IgdwTzc",
+    audio: `${AUDIO_BASE}/audio/svoy-ili-chuzhoy.mp3`,
+    tags: ["отношения", "одиночество"],
+  },
+  {
     title: "Первая сессия",
     description: "Что происходит на первой встрече и что значит конфиденциальность",
     icon: Shield,
@@ -180,13 +189,6 @@ const podcasts = [
     icon: MessageCircle,
     image: pod10,
     tags: ["тревога", "выгорание", "мотивация"],
-  },
-  {
-    title: "Свой или чужой?",
-    description: "С кем я дружу и почему друзей приходится выбирать",
-    icon: Users,
-    image: pod11,
-    tags: ["отношения", "одиночество"],
   },
 ];
 

@@ -2,7 +2,7 @@
 
 Инструкция для завершения переезда с Lovable. Решения: [ADR-0002](./adr/0002-migrate-from-lovable-to-github-pages-and-cursor.md), [ADR-0003](./adr/0003-no-backend-static-site-only.md).
 
-Сайт **полностью статический** — секреты для сборки не нужны.
+Для **админки и сохранения результатов тестов** нужен Supabase — см. **[SUPABASE-SETUP.md](./SUPABASE-SETUP.md)**.
 
 ## 1. GitHub: включить Pages
 
@@ -35,7 +35,7 @@
 
 Push в `main` запускает [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml):
 
-1. `npm ci` → `npm run build` (включая SPA fallback `404.html`)
+1. `npm ci` → `npm run build` (нужны GitHub Secrets `VITE_SUPABASE_*` — см. [SUPABASE-SETUP.md](./SUPABASE-SETUP.md))
 2. Артефакт `dist/` → GitHub Pages
 
 Ручной запуск: **Actions** → **Deploy to GitHub Pages** → **Run workflow**.
@@ -44,14 +44,16 @@ Push в `main` запускает [`.github/workflows/deploy-pages.yml`](../.git
 
 - [ ] `https://kak-ty.live/` открывается
 - [ ] Прямые ссылки работают: `/help`, `/about`, `/articles/who-helps`
-- [ ] Kidscreen-тест показывает результат и скачивает PDF (данные не уходят на сервер)
+- [ ] Kidscreen-тест показывает результат и скачивает PDF; запись в Supabase (`kidscreen_assessments`)
+- [ ] Career-квиз сохраняет стадию в `career_results`
+- [ ] `/admin` — дашборд после настройки роли admin
 - [ ] `https://kak-ty.live/sitemap.xml` актуален
 
 ## Локальная разработка
 
 ```bash
 npm install
-npm run dev            # http://localhost:8080
+npm run dev            # http://localhost:5180
 npm run build          # проверить prod-сборку
 npm run preview        # локальный просмотр dist/
 ```
