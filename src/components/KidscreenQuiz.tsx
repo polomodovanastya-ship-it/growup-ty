@@ -705,7 +705,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                             </div>
                           )}
 
-                          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(140px,38%)] gap-4 md:gap-5 items-start">
+                          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-4 md:gap-5 items-start">
                             <div className="space-y-3 min-w-0">
                               <div className="space-y-1">
                                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -728,16 +728,16 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                             </div>
 
                             {help.listen.length > 0 && (
-                              <div className="space-y-2 md:pt-0.5">
+                              <div className="space-y-1.5 md:pt-0.5 self-start">
                                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                                   Послушать / почитать
                                 </p>
-                                <div className="flex md:flex-wrap gap-2.5 overflow-x-auto pb-1 -mx-1 px-1 md:mx-0 md:px-0 md:overflow-visible">
+                                <div className="flex flex-nowrap gap-2 overflow-x-auto pb-0.5 -mx-1 px-1 md:mx-0 md:px-0 md:overflow-visible md:flex-wrap">
                                   {help.listen.map((raw) => {
                                     const l = resolveListenItem(raw);
                                     const inner = (
                                       <>
-                                        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-muted shadow-sm ring-1 ring-border/50">
+                                        <div className="relative h-[72px] w-[54px] overflow-hidden rounded-md bg-muted shadow-sm ring-1 ring-border/50">
                                           {l.cover ? (
                                             <img
                                               src={l.cover}
@@ -747,24 +747,20 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                                             />
                                           ) : (
                                             <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                                              {l.kind === "book" ? <BookOpen size={22} /> : <Headphones size={22} />}
+                                              {l.kind === "book" ? <BookOpen size={16} /> : <Headphones size={16} />}
                                             </div>
                                           )}
-                                          <span className="absolute left-1.5 top-1.5 inline-flex items-center rounded-md bg-background/90 px-1.5 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur-sm">
-                                            {l.kind === "book" ? (
-                                              <><BookOpen size={10} className="mr-1" />книга</>
-                                            ) : (
-                                              <><Headphones size={10} className="mr-1" />подкаст</>
-                                            )}
+                                          <span className="absolute left-1 top-1 inline-flex items-center rounded bg-background/90 p-0.5 text-foreground shadow-sm backdrop-blur-sm" title={l.kind === "book" ? "книга" : "подкаст"}>
+                                            {l.kind === "book" ? <BookOpen size={9} /> : <Headphones size={9} />}
                                           </span>
                                         </div>
-                                        <span className="mt-1.5 line-clamp-2 text-[11px] leading-snug text-muted-foreground group-hover:text-foreground">
+                                        <span className="mt-1 line-clamp-2 w-[54px] text-[10px] leading-snug text-muted-foreground group-hover:text-foreground">
                                           {l.title}
                                         </span>
                                       </>
                                     );
                                     const tileClass =
-                                      "group flex w-[72px] shrink-0 flex-col sm:w-[80px] md:w-[calc(50%-5px)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg";
+                                      "group flex w-[54px] shrink-0 flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md";
                                     return l.href ? (
                                       <a
                                         key={l.title}

@@ -34,18 +34,21 @@ const STAGE_LABELS: Record<string, string> = {
   make: "MAKE — собирать своё",
 };
 
+/** Solid colors — CSS vars like --accent are too pale for charts */
 const COLORS = [
-  "hsl(var(--primary))",
-  "hsl(var(--accent))",
-  "hsl(var(--secondary))",
-  "hsl(var(--muted-foreground))",
-  "hsl(var(--destructive))",
-  "hsl(var(--ring))",
-  "#94a3b8",
-  "#f59e0b",
-  "#10b981",
-  "#6366f1",
+  "#0d7377", // teal
+  "#e85d4c", // coral
+  "#2563eb", // blue
+  "#d97706", // amber
+  "#7c3aed", // violet
+  "#059669", // green
+  "#db2777", // pink
+  "#475569", // slate
 ];
+
+const RISK_BAR = "#e85d4c";
+const AXIS_FILL = "#1e3a4c";
+const MUTED_FILL = "#5a6f7d";
 
 const isRiskLevel = (level: string) => level === "low" || level === "below_avg";
 
@@ -153,18 +156,10 @@ const AdminDashboard = () => {
         <h2 className="text-xl font-semibold">KIDSCREEN</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <ChartCard title="Возраст">
-            {ageData.length === 0 ? (
-              <EmptyState />
-            ) : (
-              <PieChartBlock data={ageData} />
-            )}
+            {ageData.length === 0 ? <EmptyState /> : <PieChartBlock data={ageData} />}
           </ChartCard>
           <ChartCard title="Пол">
-            {sexData.length === 0 ? (
-              <EmptyState />
-            ) : (
-              <PieChartBlock data={sexData} />
-            )}
+            {sexData.length === 0 ? <EmptyState /> : <PieChartBlock data={sexData} />}
           </ChartCard>
         </div>
 
@@ -176,17 +171,36 @@ const AdminDashboard = () => {
           {riskZones.length === 0 ? (
             <EmptyState />
           ) : (
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={riskZones} layout="vertical" margin={{ left: 8, right: 16 }}>
-                <XAxis type="number" domain={[0, 100]} unit="%" fontSize={12} />
-                <YAxis type="category" dataKey="name" width={160} fontSize={11} />
+            <ResponsiveContainer width="100%" height={360}>
+              <BarChart data={riskZones} layout="vertical" margin={{ left: 4, right: 28, top: 4, bottom: 4 }}>
+                <XAxis
+                  type="number"
+                  domain={[0, 100]}
+                  unit="%"
+                  fontSize={12}
+                  tick={{ fill: MUTED_FILL }}
+                  stroke={MUTED_FILL}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={180}
+                  fontSize={12}
+                  tick={{ fill: AXIS_FILL }}
+                  stroke={MUTED_FILL}
+                />
                 <Tooltip
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid #e2e8f0",
+                    color: AXIS_FILL,
+                  }}
                   formatter={(value: number, _name, item) => [
                     `${value}% (${item.payload.count} из ${kidscreenTotal || "—"})`,
                     "В зоне риска",
                   ]}
                 />
-                <Bar dataKey="share" name="В зоне риска" fill="hsl(var(--destructive))" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="share" name="В зоне риска" fill={RISK_BAR} radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -200,7 +214,7 @@ const AdminDashboard = () => {
           {careerStages.length === 0 ? (
             <EmptyState />
           ) : (
-            <PieChartBlock data={careerStages} height={280} />
+            <PieChartBlock data={careerStages} height={300} />
           )}
         </div>
       </section>
@@ -215,28 +229,69 @@ const ChartCard = ({ title, children }: { title: string; children: React.ReactNo
   </div>
 );
 
-const EmptyState = () => <p className="text-sm text-muted-foreground py-8 text-center">Пока нет данных</p>;
+const EmptyState = () => (
+  <p className="text-sm text-muted-foreground py-8 text-center">Пока нет данных</p>
+);
 
 const PieChartBlock = ({
   data,
-  height = 240,
+  height = 280,
 }: {
   data: { name: string; value: number }[];
   height?: number;
-}) => (
-  <ResponsiveContainer width="100%" height={height}>
-    <PieChart>
-      <Pie data={data} dataKey="value" nameKey="name" outerRadius={90} label={({ name, percent }) =>
-        `${name} (${Math.round(percent * 100)}%)`
-      }>
-        {data.map((_, i) => (
-          <Cell key={i} fill={COLORS[i % COLORS.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart>
-  </ResponsiveContainer>
-);
+}) => {
+  const total = data.reduce((sum, d) => sum + d.value, 0);
+
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <PieChart margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="42%"
+          outerRadius={78}
+          innerRadius={36}
+          paddingAngle={2}
+          stroke="#fff"
+          strokeWidth={2}
+        >
+          {data.map((_, i) => (
+            <Cell key={i} fill={COLORS[i % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip
+          contentStyle={{
+            borderRadius: 12,
+            border: "1px solid #e2e8f0",
+            color: AXIS_FILL,
+          }}
+          formatter={(value: number, name: string) => [
+            `${value} (${total ? Math.round((value / total) * 100) : 0}%)`,
+            name,
+          ]}
+        />
+        <Legend
+          verticalAlign="bottom"
+          align="center"
+          layout="horizontal"
+          iconType="circle"
+          iconSize={10}
+          wrapperStyle={{ paddingTop: 12, fontSize: 13, color: AXIS_FILL, lineHeight: "1.6" }}
+          formatter={(value: string, entry) => {
+            const count = (entry.payload as { value?: number })?.value ?? 0;
+            const pct = total ? Math.round((count / total) * 100) : 0;
+            return (
+              <span style={{ color: AXIS_FILL, fontWeight: 500 }}>
+                {value} — {pct}%
+              </span>
+            );
+          }}
+        />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+};
 
 export default AdminDashboard;

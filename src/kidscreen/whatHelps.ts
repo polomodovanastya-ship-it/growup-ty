@@ -37,7 +37,7 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
   },
   moods: {
     listen: [
-      { title: "Деби Глиори. Что бы ни случилось" },
+      { title: "Деби Глиори. Что бы ни случилось", href: "https://www.chitai-gorod.ru/product/chto-by-ni-sluchilos-2603339" },
       { title: "Зачем вообще психолог?", href: "https://mave.stream/e/Ng8tfd3aZI" },
       { title: "Первая сессия", href: "https://mave.stream/e/Yykg2hB0r1" },
     ],
@@ -63,7 +63,7 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
   },
   self_perception: {
     listen: [
-      { title: "Доктор Сьюз. Это только начало" },
+      { title: "Доктор Сьюз. Это только начало", href: "https://www.ozon.ru/search/?text=%D0%94%D0%BE%D0%BA%D1%82%D0%BE%D1%80%20%D0%A1%D1%8C%D1%8E%D0%B7%20%D0%AD%D1%82%D0%BE%20%D1%82%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE%20%D0%BD%D0%B0%D1%87%D0%B0%D0%BB%D0%BE" },
       { title: "Соцсети и сравнение" },
       { title: "Стыд и прокрастинация" },
     ],
@@ -75,7 +75,7 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
   },
   autonomy: {
     listen: [
-      { title: "Доктор Сьюз. Это только начало" },
+      { title: "Доктор Сьюз. Это только начало", href: "https://www.ozon.ru/search/?text=%D0%94%D0%BE%D0%BA%D1%82%D0%BE%D1%80%20%D0%A1%D1%8C%D1%8E%D0%B7%20%D0%AD%D1%82%D0%BE%20%D1%82%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE%20%D0%BD%D0%B0%D1%87%D0%B0%D0%BB%D0%BE" },
       { title: "Чего я хочу на самом деле?", href: "https://mave.stream/e/F55kiTfaEB" },
     ],
     tryTitle: "Три вещи из любопытства",
@@ -85,7 +85,7 @@ export const WHAT_HELPS: Record<ScaleId, WhatHelps> = {
   },
   parent_relations: {
     listen: [
-      { title: "Деби Глиори. Что бы ни случилось" },
+      { title: "Деби Глиори. Что бы ни случилось", href: "https://www.chitai-gorod.ru/product/chto-by-ni-sluchilos-2603339" },
       { title: "Родители и границы", href: "https://mave.stream/e/XnMGRhw4tX" },
     ],
     tryTitle: "Сказать или написать?",
