@@ -131,7 +131,7 @@ const specialists: Specialist[] = [
     how: "Разбираете интересы и ценности, смотрите на реальные профессии и строите план шагов.",
     meds: "Не медицинская помощь",
     duration: "От 1–3 встреч",
-    tags: ["выбор профессии", "учёба"],
+    tags: ["мотивация", "учёба"],
   },
 ];
 
@@ -139,7 +139,7 @@ const tags = [
   { label: "тревога", icon: HeartHandshake, tint: "teal" as Tint },
   { label: "отношения", icon: HeartHandshake, tint: "coral" as Tint },
   { label: "учёба", icon: GraduationCap, tint: "amber" as Tint },
-  { label: "выбор профессии", icon: Signpost, tint: "violet" as Tint },
+  { label: "мотивация", icon: Signpost, tint: "violet" as Tint },
   { label: "самооценка", icon: Star, tint: "teal" as Tint },
 ];
 
@@ -216,6 +216,39 @@ const WhoHelps = () => {
       </ScrollReveal>
     </section>
 
+    {/* Tags — filter specialists */}
+    <section className="px-4 pt-2 pb-6 max-w-6xl mx-auto">
+      <ScrollReveal>
+        <div className="rounded-3xl border bg-card p-4 md:px-5 md:py-4 flex flex-col gap-3">
+          <p className="font-semibold text-foreground text-sm md:text-base leading-snug">
+            Если тебе трудно понять, с чего начать…
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            {tags.map((t) => (
+              <button
+                key={t.label}
+                type="button"
+                onClick={() => setActiveTag(activeTag === t.label ? null : t.label)}
+                className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm whitespace-nowrap text-foreground hover:border-primary/50 transition-colors ${activeTag === t.label ? "border-primary" : ""}`}
+              >
+                <t.icon className={tintInk[t.tint]} size={16} />
+                {t.label}
+              </button>
+            ))}
+            {activeTag && (
+              <button
+                type="button"
+                onClick={() => setActiveTag(null)}
+                className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm whitespace-nowrap text-muted-foreground hover:text-primary transition-colors"
+              >
+                сбросить
+              </button>
+            )}
+          </div>
+        </div>
+      </ScrollReveal>
+    </section>
+
     {/* Specialist cards */}
     <section id="details" className="px-4 pb-4 max-w-6xl mx-auto scroll-mt-20">
       <ScrollReveal>
@@ -223,9 +256,9 @@ const WhoHelps = () => {
           Виды помощи и кому они могут подойти
         </h2>
       </ScrollReveal>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,260px),1fr))]">
         {filtered.map((s, i) => (
-          <ScrollReveal key={s.title} delay={i * 50}>
+          <ScrollReveal key={s.title} delay={i * 50} className="h-full">
             <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]} transition-transform hover:-translate-y-1`}>
               <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[s.tint]}`}>{s.title}</h3>
               <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
@@ -250,37 +283,6 @@ const WhoHelps = () => {
           </ScrollReveal>
         ))}
       </div>
-    </section>
-
-    {/* Tags */}
-    <section className="px-4 py-6 max-w-6xl mx-auto">
-      <ScrollReveal>
-        <div className="rounded-3xl border bg-card p-4 md:p-5 flex flex-wrap items-center gap-3">
-          <p className="font-semibold text-foreground text-sm md:text-base mr-2">
-            Если тебе трудно понять,<br className="hidden md:block" /> с чего начать…
-          </p>
-          {tags.map((t) => (
-            <button
-              key={t.label}
-              type="button"
-              onClick={() => setActiveTag(activeTag === t.label ? null : t.label)}
-              className={`inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm text-foreground hover:border-primary/50 transition-colors ${activeTag === t.label ? "border-primary" : ""}`}
-            >
-              <t.icon className={tintInk[t.tint]} size={16} />
-              {t.label}
-            </button>
-          ))}
-          {activeTag && (
-            <button
-              type="button"
-              onClick={() => setActiveTag(null)}
-              className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              сбросить
-            </button>
-          )}
-        </div>
-      </ScrollReveal>
     </section>
 
     {/* CTA banners */}
