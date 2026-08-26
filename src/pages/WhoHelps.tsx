@@ -9,10 +9,7 @@ import {
   HelpCircle,
   HeartHandshake,
   Briefcase,
-  Search,
   Signpost,
-  Phone,
-  MessageCircle,
   Star,
   CalendarClock,
   AlertTriangle,
@@ -287,32 +284,27 @@ const WhoHelps = () => {
 
     {/* CTA banners */}
     <section className="px-4 pb-10 max-w-6xl mx-auto grid gap-4 md:grid-cols-2">
-      <ScrollReveal>
-        <div className="h-full rounded-3xl bg-primary text-primary-foreground p-6">
+      <ScrollReveal className="h-full">
+        <div className="h-full rounded-3xl bg-primary text-primary-foreground p-6 flex flex-col">
           <h3 className="text-xl md:text-2xl font-bold mb-1">Помощь рядом</h3>
           <p className="text-sm opacity-90 mb-5">Бесплатные проверенные ресурсы и поддержка, когда это нужно.</p>
-          <div className="flex flex-wrap gap-2">
-            <Link to="/help" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
-              <Phone size={15} className="text-primary" /> Телефоны доверия
-            </Link>
-            <Link to="/help" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
-              <MessageCircle size={15} className="text-primary" /> Чаты поддержки
-            </Link>
-            <Link to="/help" className="inline-flex items-center gap-2 rounded-full bg-card text-foreground px-4 py-2 text-sm font-medium">
-              <Star size={15} className="text-primary" /> Полезные сервисы
-            </Link>
-          </div>
+          <Link
+            to="/help"
+            className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-card text-foreground px-5 py-2.5 text-sm font-medium"
+          >
+            Открыть раздел <ArrowRight size={15} />
+          </Link>
         </div>
       </ScrollReveal>
-      <ScrollReveal delay={80}>
-        <div className="h-full rounded-3xl tint-coral border p-6">
+      <ScrollReveal delay={80} className="h-full">
+        <div className="h-full rounded-3xl tint-coral border p-6 flex flex-col">
           <h3 className="text-xl md:text-2xl font-bold mb-1 tint-coral-ink">Как выбрать специалиста</h3>
           <p className="text-sm text-muted-foreground mb-5">На что смотреть, о чём спросить и как понять, что вам подходит.</p>
           <Link
             to="/articles/how-to-choose"
-            className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+            className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
           >
-            <Search size={15} /> Посмотреть варианты <ArrowRight size={15} />
+            Открыть раздел <ArrowRight size={15} />
           </Link>
         </div>
       </ScrollReveal>
@@ -331,10 +323,12 @@ const WhoHelps = () => {
         {faq.map((f, i) => (
           <ScrollReveal key={f.q} delay={i * 50}>
             <article className={`h-full rounded-3xl border p-5 ${tintBg[f.tint]}`}>
-              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
-                <HelpCircle className={tintInk[f.tint]} size={22} />
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-11 h-11 shrink-0 rounded-2xl bg-card/70 flex items-center justify-center">
+                  <HelpCircle className={tintInk[f.tint]} size={22} />
+                </div>
+                <p className={`font-bold text-base leading-tight pt-2 ${tintInk[f.tint]}`}>{f.q}</p>
               </div>
-              <p className={`font-bold text-base leading-tight mb-3 ${tintInk[f.tint]}`}>{f.q}</p>
               <p className="text-sm text-muted-foreground leading-relaxed">{f.a}</p>
             </article>
           </ScrollReveal>
