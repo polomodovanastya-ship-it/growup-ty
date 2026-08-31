@@ -12,6 +12,7 @@ import { RECOMMENDATIONS } from "@/kidscreen/recommendations";
 import { WHAT_HELPS, focusScales, practicesForScale, needsHelpFirst, showBreathing } from "@/kidscreen/whatHelps";
 import { resolveListenItem } from "@/kidscreen/listenCovers";
 import { BREATHING, BREATHING_INTRO } from "@/kidscreen/practices";
+import BreathingDiagram from "@/components/BreathingDiagram";
 
 interface KidscreenQuizProps {
   open: boolean;
@@ -828,14 +829,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {BREATHING.map((b) => (
-                            <div key={b.title} className="rounded-xl bg-muted/40 p-3 md:p-4 space-y-1">
-                              <p className="font-semibold text-foreground text-sm md:text-base">{b.title}</p>
-                              {b.steps.map((st, i) => (
-                                <p key={i} className="text-sm text-muted-foreground leading-relaxed">
-                                  {st}
-                                </p>
-                              ))}
-                            </div>
+                            <BreathingDiagram key={b.id} id={b.id} title={b.title} />
                           ))}
                         </div>
                         <p className="text-xs text-muted-foreground">

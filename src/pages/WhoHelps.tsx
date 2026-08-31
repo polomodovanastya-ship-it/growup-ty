@@ -8,17 +8,14 @@ import {
   GraduationCap,
   HelpCircle,
   HeartHandshake,
-  Briefcase,
   Signpost,
   Star,
-  CalendarClock,
-  AlertTriangle,
-  Target,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Seo from "@/components/Seo";
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import logo from "@/assets/logo.png";
 import heroImg from "@/assets/who-helps-hero.jpg";
 
@@ -256,26 +253,51 @@ const WhoHelps = () => {
       <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,260px),1fr))]">
         {filtered.map((s, i) => (
           <ScrollReveal key={s.title} delay={i * 50} className="h-full">
-            <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]} transition-transform hover:-translate-y-1`}>
-              <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[s.tint]}`}>{s.title}</h3>
-              <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
-                <s.icon className={tintInk[s.tint]} size={22} />
+            <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]}`}>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-11 h-11 shrink-0 rounded-2xl bg-card/70 flex items-center justify-center">
+                  <s.icon className={tintInk[s.tint]} size={22} />
+                </div>
+                <div className="min-w-0">
+                  <h3 className={`font-bold text-base leading-tight ${tintInk[s.tint]}`}>{s.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{s.tagline}</p>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4">{s.short}</p>
-              <dl className="space-y-2.5 text-sm">
-                <div>
-                  <dt className="text-xs font-medium text-muted-foreground">Кто ведёт</dt>
-                  <dd className="text-foreground leading-relaxed">{s.who}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-medium text-muted-foreground">Сколько длится</dt>
-                  <dd className="text-foreground leading-relaxed">{s.duration}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-medium text-muted-foreground">Лекарства</dt>
-                  <dd className="text-foreground leading-relaxed">{s.meds}</dd>
-                </div>
-              </dl>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.short}</p>
+
+              <Accordion type="single" collapsible className="mt-3">
+                <AccordionItem value="details" className="border-none">
+                  <AccordionTrigger
+                    className={`py-2 text-sm font-medium hover:no-underline ${tintInk[s.tint]}`}
+                  >
+                    Подробнее
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-0">
+                    <dl className="space-y-2.5 text-sm">
+                      <div>
+                        <dt className="text-xs font-medium text-muted-foreground">Кто ведёт</dt>
+                        <dd className="text-foreground leading-relaxed">{s.who}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-xs font-medium text-muted-foreground">Когда подходит</dt>
+                        <dd className="text-foreground leading-relaxed">{s.when}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-xs font-medium text-muted-foreground">Как проходит</dt>
+                        <dd className="text-foreground leading-relaxed">{s.how}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-xs font-medium text-muted-foreground">Сколько длится</dt>
+                        <dd className="text-foreground leading-relaxed">{s.duration}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-xs font-medium text-muted-foreground">Лекарства</dt>
+                        <dd className="text-foreground leading-relaxed">{s.meds}</dd>
+                      </div>
+                    </dl>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </article>
           </ScrollReveal>
         ))}
