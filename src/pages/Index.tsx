@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import Seo from "@/components/Seo";
 import { useEffect, useState } from "react";
-import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, UserCheck, HandHeart, Search, Compass, LifeBuoy, Phone, Link as LinkIcon } from "lucide-react";
+import { Headphones, ClipboardCheck, ListChecks, ArrowRight, Brain, Users, Sparkles, Shield, MessageCircle, Flame, ChevronDown, ChevronUp, Home, Repeat, Smartphone, HandHeart, Search, LifeBuoy, Phone, Link as LinkIcon, Menu } from "lucide-react";
 import logo from "@/assets/logo.png";
 import heroTeens from "@/assets/hero-teens.jpg";
 import pod1 from "@/assets/pod-1.jpg";
@@ -21,6 +21,7 @@ import emojiPleading from "@/assets/emoji/crying.png";
 import emojiHearts from "@/assets/emoji/love.png";
 import emojiAnxious from "@/assets/emoji/anxious.png";
 import emojiNeutral from "@/assets/emoji/numb.png";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 
 
@@ -212,7 +213,6 @@ const checkups = [
     title: "Давай познакомимся",
     description: "Короткий опросник о самочувствии — 3–5 минут.",
     cta: "Пройти опросник",
-    icon: HandHeart,
     action: "kidscreen",
     tint: "teal" as Tint,
   },
@@ -220,7 +220,6 @@ const checkups = [
     title: "Задумался о выборе профессии",
     description: "Разберись, что тебе ближе и с чего начать поиск.",
     cta: "Пройти тест",
-    icon: Compass,
     action: "career-quiz",
     tint: "amber" as Tint,
   },
@@ -228,7 +227,6 @@ const checkups = [
     title: "К кому обратиться",
     description: "Психолог, психотерапевт, психиатр — кто чем помогает.",
     cta: "Читать статью",
-    icon: UserCheck,
     href: "/articles/who-helps",
     tint: "violet" as Tint,
   },
@@ -263,7 +261,7 @@ const heroSlides = [
   {
     key: "start",
     icon: Sparkles,
-    title: "Разобраться в том, что с тобой происходит",
+    title: "Понять, как мне сейчас",
     text: "Короткий опросник о самочувствии — 3-5 минут.",
     cta: "Начать",
     href: "#",
@@ -277,6 +275,7 @@ const Index = () => {
   const [kidscreenOpen, setKidscreenOpen] = useState(false);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [heroSlide, setHeroSlide] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 5000);
@@ -303,34 +302,86 @@ const Index = () => {
   return (
     <div className="min-h-screen overflow-hidden">
     <Seo title="Как ты? — поддержка для подростков" description="Тут можно почувствовать, что ты не один: подкасты, тесты о самочувствии и проверенные ресурсы помощи." path="/" />
-      {/* Top menu */}
-      <div className="bg-muted/40 border-b border-border/40">
-        <div className="max-w-6xl mx-auto px-4 h-10 flex items-center">
-          <nav className="flex items-center gap-5 text-sm font-medium lowercase">
-            <a href="#checkups" className="text-foreground hover:text-primary transition-colors">С чего начать</a>
-            <span className="h-4 w-px bg-border" />
-            <a href="#podcasts" className="text-foreground hover:text-primary transition-colors">слушать</a>
-            <span className="h-4 w-px bg-border" />
-            <Link to="/help" className="text-foreground hover:text-primary transition-colors">помощь рядом</Link>
-            <span className="h-4 w-px bg-border" />
-            <Link to="/articles/who-helps" className="text-foreground hover:text-primary transition-colors">к кому обратиться</Link>
-            <span className="h-4 w-px bg-border" />
-            <Link to="/about" className="text-foreground hover:text-primary transition-colors">о нас</Link>
-          </nav>
+      {/* Top bar: brand + burger menu */}
+      <header className="bg-muted/40 border-b border-border/40">
+        <div className="max-w-6xl mx-auto px-4 h-12 flex items-center justify-between">
+          <Link to="/" className="flex items-center" aria-label="как ты — на главную">
+            <img src={logo} alt="как ты" className="h-7 w-auto select-none" draggable={false} />
+          </Link>
+          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground hover:bg-muted transition-colors"
+                aria-label="Открыть меню"
+              >
+                <Menu size={22} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[min(100%,20rem)]">
+              <SheetHeader>
+                <SheetTitle className="text-left">Меню</SheetTitle>
+              </SheetHeader>
+              <nav className="mt-8 flex flex-col gap-1">
+                {[
+                  { label: "С чего начать", href: "#checkups", external: false },
+                  { label: "Слушать", href: "#podcasts", external: false },
+                  { label: "Помощь рядом", href: "/help", external: true },
+                  { label: "К кому обратиться", href: "/articles/who-helps", external: true },
+                  { label: "О нас", href: "/about", external: true },
+                ].map((item) =>
+                  item.external ? (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ),
+                )}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
-      </div>
+      </header>
 
 
       {/* Hero */}
       <section className="px-4 pt-4 pb-6 md:pt-6 md:pb-8 max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-stretch">
           {/* Left: rotating block */}
-          <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] bg-muted/50 border border-border/50 p-6 md:p-10 min-h-[320px] md:min-h-[520px] flex flex-col justify-between">
-            <img src={logo} alt="как ты" className="h-8 md:h-10 w-auto self-start select-none" draggable={false} />
-
-            <div className="relative mt-6 flex-1">
+          <div className="relative overflow-hidden rounded-[28px] md:rounded-[36px] bg-muted/50 border border-border/50 p-5 md:p-7 min-h-[220px] md:min-h-[360px] flex flex-col justify-between">
+            <div className="relative flex-1 min-h-[140px] md:min-h-[200px]">
               {heroSlides.map((s, i) => {
                 const Icon = s.icon;
+                const cta =
+                  s.key === "start" ? (
+                    <button
+                      type="button"
+                      onClick={() => setKidscreenOpen(true)}
+                      className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform whitespace-nowrap"
+                    >
+                      {s.cta} <ArrowRight size={18} />
+                    </button>
+                  ) : (
+                    <a
+                      href={s.href}
+                      className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform whitespace-nowrap"
+                    >
+                      {s.cta} <ArrowRight size={18} />
+                    </a>
+                  );
                 return (
                   <div
                     key={s.key}
@@ -338,37 +389,24 @@ const Index = () => {
                       i === heroSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
                     }`}
                   >
-                    <Icon className="text-primary mb-3" size={28} />
-                    {i === heroSlide ? (
-                      <h1 className="text-2xl md:text-4xl font-bold leading-tight text-foreground">{s.title}</h1>
-                    ) : (
-                      <h2 className="text-2xl md:text-4xl font-bold leading-tight text-foreground">{s.title}</h2>
-                    )}
-                    <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-sm">{s.text}</p>
-                    <div className="mt-6">
-                      {s.key === "start" ? (
-                        <button
-                          type="button"
-                          onClick={() => setKidscreenOpen(true)}
-                          className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
-                        >
-                          {s.cta} <ArrowRight size={18} />
-                        </button>
-                      ) : (
-                        <a
-                          href={s.href}
-                          className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm md:text-base font-semibold shadow-lg hover:scale-105 transition-transform"
-                        >
-                          {s.cta} <ArrowRight size={18} />
-                        </a>
-                      )}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
+                      <div className="min-w-0 flex-1">
+                        <Icon className="text-primary mb-2" size={24} />
+                        {i === heroSlide ? (
+                          <h1 className="text-2xl md:text-3xl font-bold leading-tight text-foreground">{s.title}</h1>
+                        ) : (
+                          <h2 className="text-2xl md:text-3xl font-bold leading-tight text-foreground">{s.title}</h2>
+                        )}
+                        <p className="mt-2 text-sm md:text-base text-muted-foreground max-w-sm">{s.text}</p>
+                      </div>
+                      <div className="mt-5 sm:mt-0 shrink-0 sm:self-center">{cta}</div>
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            <div className="flex items-center gap-2 mt-6">
+            <div className="flex items-center gap-2 mt-4">
               {heroSlides.map((s, i) => (
                 <button
                   key={s.key}
@@ -386,7 +424,7 @@ const Index = () => {
             <img
               src={heroTeens}
               alt="Подростки разговаривают на диване"
-              className="w-full h-[260px] md:h-full md:min-h-[520px] object-cover object-center"
+              className="w-full h-[220px] md:h-full md:min-h-[360px] object-cover object-center"
               width={1600}
               height={896}
             />
@@ -446,7 +484,7 @@ const Index = () => {
 
 
       {/* Podcasts */}
-      <section id="podcasts" className="px-4 pt-2 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
+      <section id="podcasts" className="px-4 pt-2 pb-6 md:pb-8 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
           <div className="flex items-center gap-2 mb-6">
             <Headphones className="text-primary" size={24} />
@@ -538,11 +576,12 @@ const Index = () => {
       </div>
 
       {/* Checkups */}
-      <section id="checkups" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
+      <section id="checkups" className="px-4 pt-6 md:pt-8 pb-6 md:pb-8 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
-          <h2 className="text-center text-lg md:text-2xl font-bold text-foreground mb-6">
-            С чего начать
-          </h2>
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles className="text-primary" size={24} />
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">С чего начать</h2>
+          </div>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -552,9 +591,6 @@ const Index = () => {
                 <h3 className={`font-bold text-base leading-tight mb-4 ${tintInk[c.tint]}`}>
                   {c.title}
                 </h3>
-                <div className="w-11 h-11 rounded-2xl bg-card/70 flex items-center justify-center mb-4">
-                  <c.icon className={tintInk[c.tint]} size={22} />
-                </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">{c.description}</p>
                 <div className="mt-auto">
                   <span className="inline-flex items-center gap-1 text-sm font-medium text-foreground hover:gap-2 transition-all">
@@ -599,7 +635,7 @@ const Index = () => {
       <KidscreenQuiz open={kidscreenOpen} onOpenChange={setKidscreenOpen} />
 
       {/* Emergency help teaser */}
-      <section id="help-links" className="px-4 pt-12 md:pt-16 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
+      <section id="help-links" className="px-4 pt-6 md:pt-8 pb-12 md:pb-16 max-w-5xl mx-auto scroll-mt-20">
         <ScrollReveal>
           <div className="rounded-[2rem] border bg-card p-6 md:p-10">
             <div className="flex items-center gap-2 mb-2">
