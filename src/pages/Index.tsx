@@ -239,7 +239,23 @@ const checklists = [
   { title: "Первые шаги к терапевту", icon: MessageCircle },
 ];
 
-const INITIAL_VISIBLE = 3;
+/** Сколько подкастов в одном ряду сетки: 1 / 2 / 3 */
+function usePodcastRowCount() {
+  const [count, setCount] = useState(3);
+
+  useEffect(() => {
+    const update = () => {
+      if (window.matchMedia("(min-width: 1024px)").matches) setCount(3);
+      else if (window.matchMedia("(min-width: 640px)").matches) setCount(2);
+      else setCount(1);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return count;
+}
 
 const heroSlides = [
   {
@@ -276,6 +292,7 @@ const Index = () => {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [heroSlide, setHeroSlide] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const podcastRowCount = usePodcastRowCount();
 
   useEffect(() => {
     const id = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 5000);
@@ -297,7 +314,7 @@ const Index = () => {
 
   const filteredLinks = helpLinks;
 
-  const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, INITIAL_VISIBLE);
+  const visiblePodcasts = showAllPodcasts ? podcasts : podcasts.slice(0, podcastRowCount);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -547,14 +564,14 @@ const Index = () => {
               </>
             );
             return (
-              <ScrollReveal key={p.title} delay={i < INITIAL_VISIBLE ? i * 100 : 0}>
+              <ScrollReveal key={p.title} delay={i < podcastRowCount ? i * 100 : 0}>
                 <div className={cardClasses}>{cardInner}</div>
               </ScrollReveal>
             );
           })}
         </div>
 
-        {podcasts.length > INITIAL_VISIBLE && (
+        {podcasts.length > podcastRowCount && (
           <div className="flex justify-center mt-6">
             <Button
               variant="ghost"
@@ -564,7 +581,7 @@ const Index = () => {
               {showAllPodcasts ? (
                 <>Свернуть <ChevronUp size={16} /></>
               ) : (
-                <>Ещё {podcasts.length - INITIAL_VISIBLE} выпусков <ChevronDown size={16} /></>
+                <>Ещё {podcasts.length - podcastRowCount} выпусков <ChevronDown size={16} /></>
               )}
             </Button>
           </div>

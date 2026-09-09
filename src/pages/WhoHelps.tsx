@@ -16,6 +16,13 @@ import Seo from "@/components/Seo";
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import logo from "@/assets/logo.png";
 import heroImg from "@/assets/who-helps-hero.jpg";
 
@@ -99,20 +106,7 @@ const specialists: Specialist[] = [
     how: "Ставите цель, разбиваете её на шаги, отслеживаете прогресс.",
     meds: "Не медицинская помощь",
     duration: "От нескольких встреч",
-    tags: ["самооценка"],
-  },
-  {
-    title: "Тьютор",
-    icon: GraduationCap,
-    tint: "teal",
-    short: "Если нужны поддержка в учёбе, организация времени и развитие навыков обучения.",
-    tagline: "Про учёбу и образовательный маршрут",
-    who: "Наставник в учёбе и образовательном маршруте.",
-    when: "Не понятно, куда поступать, как выстроить подготовку, что выбрать из предметов и курсов.",
-    how: "Помогает собрать образовательный план и найти ресурсы под твои интересы.",
-    meds: "Не медицинская помощь",
-    duration: "По необходимости",
-    tags: ["учёба"],
+    tags: ["самооценка", "мотивация"],
   },
   {
     title: "Карьерный консультант",
@@ -250,58 +244,77 @@ const WhoHelps = () => {
           Виды помощи и кому они могут подойти
         </h2>
       </ScrollReveal>
-      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,260px),1fr))]">
-        {filtered.map((s, i) => (
-          <ScrollReveal key={s.title} delay={i * 50} className="h-full">
-            <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]}`}>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-11 h-11 shrink-0 rounded-2xl bg-card/70 flex items-center justify-center">
-                  <s.icon className={tintInk[s.tint]} size={22} />
-                </div>
-                <div className="min-w-0">
-                  <h3 className={`font-bold text-base leading-tight ${tintInk[s.tint]}`}>{s.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{s.tagline}</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.short}</p>
+      {filtered.length === 0 ? (
+        <p className="text-center text-sm text-muted-foreground py-8">
+          По этому запросу пока нет подходящих карточек. Попробуй другой тег или сбрось фильтр.
+        </p>
+      ) : (
+        <Carousel
+          key={activeTag ?? "all"}
+          opts={{ align: "start", loop: false }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {filtered.map((s) => (
+              <CarouselItem
+                key={s.title}
+                className="pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/3"
+              >
+                <article className={`h-full rounded-3xl border p-5 ${tintBg[s.tint]}`}>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-11 h-11 shrink-0 rounded-2xl bg-card/70 flex items-center justify-center">
+                      <s.icon className={tintInk[s.tint]} size={22} />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className={`font-bold text-base leading-tight ${tintInk[s.tint]}`}>{s.title}</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{s.tagline}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.short}</p>
 
-              <Accordion type="single" collapsible className="mt-3">
-                <AccordionItem value="details" className="border-none">
-                  <AccordionTrigger
-                    className={`py-2 text-sm font-medium hover:no-underline ${tintInk[s.tint]}`}
-                  >
-                    Подробнее
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-0">
-                    <dl className="space-y-2.5 text-sm">
-                      <div>
-                        <dt className="text-xs font-medium text-muted-foreground">Кто ведёт</dt>
-                        <dd className="text-foreground leading-relaxed">{s.who}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-xs font-medium text-muted-foreground">Когда подходит</dt>
-                        <dd className="text-foreground leading-relaxed">{s.when}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-xs font-medium text-muted-foreground">Как проходит</dt>
-                        <dd className="text-foreground leading-relaxed">{s.how}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-xs font-medium text-muted-foreground">Сколько длится</dt>
-                        <dd className="text-foreground leading-relaxed">{s.duration}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-xs font-medium text-muted-foreground">Лекарства</dt>
-                        <dd className="text-foreground leading-relaxed">{s.meds}</dd>
-                      </div>
-                    </dl>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </article>
-          </ScrollReveal>
-        ))}
-      </div>
+                  <Accordion type="single" collapsible className="mt-3">
+                    <AccordionItem value="details" className="border-none">
+                      <AccordionTrigger
+                        className={`py-2 text-sm font-medium hover:no-underline ${tintInk[s.tint]}`}
+                      >
+                        Подробнее
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-0">
+                        <dl className="space-y-2.5 text-sm">
+                          <div>
+                            <dt className="text-xs font-medium text-muted-foreground">Кто ведёт</dt>
+                            <dd className="text-foreground leading-relaxed">{s.who}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs font-medium text-muted-foreground">Когда подходит</dt>
+                            <dd className="text-foreground leading-relaxed">{s.when}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs font-medium text-muted-foreground">Как проходит</dt>
+                            <dd className="text-foreground leading-relaxed">{s.how}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs font-medium text-muted-foreground">Сколько длится</dt>
+                            <dd className="text-foreground leading-relaxed">{s.duration}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-xs font-medium text-muted-foreground">Лекарства</dt>
+                            <dd className="text-foreground leading-relaxed">{s.meds}</dd>
+                          </div>
+                        </dl>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </article>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <CarouselPrevious className="static translate-y-0 left-auto right-auto" />
+            <CarouselNext className="static translate-y-0 left-auto right-auto" />
+          </div>
+        </Carousel>
+      )}
     </section>
 
     {/* CTA banners */}
@@ -333,29 +346,36 @@ const WhoHelps = () => {
     </section>
 
     <section className="px-4 pb-16 max-w-6xl mx-auto">
-
-
       <ScrollReveal>
         <h2 className="text-xl md:text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-2">
           <HelpCircle className="text-primary" size={22} />
           Частые вопросы
         </h2>
       </ScrollReveal>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {faq.map((f, i) => (
-          <ScrollReveal key={f.q} delay={i * 50}>
-            <article className={`h-full rounded-3xl border p-5 ${tintBg[f.tint]}`}>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-11 h-11 shrink-0 rounded-2xl bg-card/70 flex items-center justify-center">
-                  <HelpCircle className={tintInk[f.tint]} size={22} />
+      <Carousel opts={{ align: "start", loop: false }} className="w-full">
+        <CarouselContent className="-ml-4">
+          {faq.map((f) => (
+            <CarouselItem
+              key={f.q}
+              className="pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/3"
+            >
+              <article className={`h-full rounded-3xl border p-5 ${tintBg[f.tint]}`}>
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-11 h-11 shrink-0 rounded-2xl bg-card/70 flex items-center justify-center">
+                    <HelpCircle className={tintInk[f.tint]} size={22} />
+                  </div>
+                  <p className={`font-bold text-base leading-tight pt-2 ${tintInk[f.tint]}`}>{f.q}</p>
                 </div>
-                <p className={`font-bold text-base leading-tight pt-2 ${tintInk[f.tint]}`}>{f.q}</p>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">{f.a}</p>
-            </article>
-          </ScrollReveal>
-        ))}
-      </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{f.a}</p>
+              </article>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <CarouselPrevious className="static translate-y-0 left-auto right-auto" />
+          <CarouselNext className="static translate-y-0 left-auto right-auto" />
+        </div>
+      </Carousel>
 
       <ScrollReveal>
         <p className="mt-10 text-center text-base text-muted-foreground">Мы рядом, когда тебе нужно.</p>
