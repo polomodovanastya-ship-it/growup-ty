@@ -60,11 +60,17 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
     }, []);
 
     const scrollPrev = React.useCallback(() => {
+      const autoScroll = api?.plugins()?.autoScroll;
+      autoScroll?.stop();
       api?.scrollPrev();
+      autoScroll?.play(1200);
     }, [api]);
 
     const scrollNext = React.useCallback(() => {
+      const autoScroll = api?.plugins()?.autoScroll;
+      autoScroll?.stop();
       api?.scrollNext();
+      autoScroll?.play(1200);
     }, [api]);
 
     const handleKeyDown = React.useCallback(

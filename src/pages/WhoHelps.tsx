@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Seo from "@/components/Seo";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import {
@@ -23,6 +23,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { createAutoScrollPlugin } from "@/lib/autoScroll";
 import logo from "@/assets/logo.png";
 import heroImg from "@/assets/who-helps-hero.jpg";
 
@@ -166,6 +167,8 @@ const faq = [
 const WhoHelps = () => {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const filtered = activeTag ? specialists.filter((s) => s.tags.includes(activeTag)) : specialists;
+  const specialistsAutoScroll = useMemo(() => [createAutoScrollPlugin()], [activeTag]);
+  const faqAutoScroll = useMemo(() => [createAutoScrollPlugin()], []);
 
   return (
   <main className="min-h-screen bg-background">
@@ -251,8 +254,9 @@ const WhoHelps = () => {
       ) : (
         <Carousel
           key={activeTag ?? "all"}
-          opts={{ align: "start", loop: false }}
-          className="w-full"
+          opts={{ align: "start", loop: true }}
+          plugins={specialistsAutoScroll}
+          className="relative w-full px-10 sm:px-12"
         >
           <CarouselContent className="-ml-4">
             {filtered.map((s) => (
@@ -309,10 +313,8 @@ const WhoHelps = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="mt-4 flex items-center justify-center gap-2">
-            <CarouselPrevious className="static translate-y-0 left-auto right-auto" />
-            <CarouselNext className="static translate-y-0 left-auto right-auto" />
-          </div>
+          <CarouselPrevious className="!left-0 border bg-background shadow-sm" />
+          <CarouselNext className="!right-0 border bg-background shadow-sm" />
         </Carousel>
       )}
     </section>
@@ -352,7 +354,11 @@ const WhoHelps = () => {
           Частые вопросы
         </h2>
       </ScrollReveal>
-      <Carousel opts={{ align: "start", loop: false }} className="w-full">
+      <Carousel
+        opts={{ align: "start", loop: true }}
+        plugins={faqAutoScroll}
+        className="relative w-full px-10 sm:px-12"
+      >
         <CarouselContent className="-ml-4">
           {faq.map((f) => (
             <CarouselItem
@@ -371,10 +377,8 @@ const WhoHelps = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="mt-4 flex items-center justify-center gap-2">
-          <CarouselPrevious className="static translate-y-0 left-auto right-auto" />
-          <CarouselNext className="static translate-y-0 left-auto right-auto" />
-        </div>
+        <CarouselPrevious className="!left-0 border bg-background shadow-sm" />
+        <CarouselNext className="!right-0 border bg-background shadow-sm" />
       </Carousel>
 
       <ScrollReveal>

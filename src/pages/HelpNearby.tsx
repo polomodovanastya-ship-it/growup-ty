@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Seo from "@/components/Seo";
 import {
@@ -15,6 +15,14 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { createAutoScrollPlugin } from "@/lib/autoScroll";
 import logo from "@/assets/logo.png";
 import { cn } from "@/lib/utils";
 
@@ -127,6 +135,7 @@ const HelpNearby = () => {
   const location = useLocation();
   const [audience, setAudience] = useState<Audience | null>(null);
   const [flashId, setFlashId] = useState<string | null>(null);
+  const resourcesAutoScroll = useMemo(() => [createAutoScrollPlugin()], []);
 
   useEffect(() => {
     const fromHash = audienceFromHash(location.hash);
@@ -513,52 +522,63 @@ const HelpNearby = () => {
           <p className="text-sm text-muted-foreground mb-4">Материалы, подростковые пространства и другие проекты.</p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {helpLinks.map((l, i) => {
-            const favicon = l.url.startsWith("http") ? faviconFor(l.url) : null;
-            return (
-              <ScrollReveal key={l.title} delay={i * 60}>
-                <a
-                  href={l.url}
-                  target={l.url.startsWith("http") ? "_blank" : undefined}
-                  rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className={`group rounded-2xl border bg-card p-4 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col ${
-                    l.emergency ? "border-destructive/40" : ""
-                  }`}
+        <Carousel
+          opts={{ align: "start", loop: true }}
+          plugins={resourcesAutoScroll}
+          className="relative w-full px-10 sm:px-12"
+        >
+          <CarouselContent className="-ml-4">
+            {helpLinks.map((l) => {
+              const favicon = l.url.startsWith("http") ? faviconFor(l.url) : null;
+              return (
+                <CarouselItem
+                  key={l.title}
+                  className="pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/3"
                 >
-                  <div
-                    className={`-mx-4 mb-3 h-16 overflow-hidden flex items-center justify-center ${
-                      l.emergency ? "bg-destructive/10" : "bg-primary/10"
+                  <a
+                    href={l.url}
+                    target={l.url.startsWith("http") ? "_blank" : undefined}
+                    rel={l.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className={`group rounded-2xl border bg-card p-4 pt-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-full flex flex-col ${
+                      l.emergency ? "border-destructive/40" : ""
                     }`}
                   >
-                    {l.emergency ? (
-                      <Phone className="text-destructive transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
-                    ) : favicon ? (
-                      <img
-                        src={favicon}
-                        alt=""
-                        className="w-8 h-8 rounded-lg transition-transform duration-500 group-hover:scale-110"
-                        loading="lazy"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).style.display = "none";
-                        }}
-                      />
-                    ) : (
-                      <LinkIcon className="text-primary transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
-                    )}
-                  </div>
-                  <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">{l.title}</h3>
-                  <p className="text-xs text-muted-foreground">{l.description}</p>
-                  <div className="mt-auto">
-                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                      {l.url.startsWith("http") ? "Открыть сайт" : "Позвонить"} <ArrowRight size={12} />
-                    </span>
-                  </div>
-                </a>
-              </ScrollReveal>
-            );
-          })}
-        </div>
+                    <div
+                      className={`-mx-4 mb-3 h-16 overflow-hidden flex items-center justify-center ${
+                        l.emergency ? "bg-destructive/10" : "bg-primary/10"
+                      }`}
+                    >
+                      {l.emergency ? (
+                        <Phone className="text-destructive transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
+                      ) : favicon ? (
+                        <img
+                          src={favicon}
+                          alt=""
+                          className="w-8 h-8 rounded-lg transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        <LinkIcon className="text-primary transition-transform duration-500 group-hover:scale-110" size={26} strokeWidth={1.5} />
+                      )}
+                    </div>
+                    <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">{l.title}</h3>
+                    <p className="text-xs text-muted-foreground">{l.description}</p>
+                    <div className="mt-auto">
+                      <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+                        {l.url.startsWith("http") ? "Открыть сайт" : "Позвонить"} <ArrowRight size={12} />
+                      </span>
+                    </div>
+                  </a>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          <CarouselPrevious className="!left-0 border bg-background shadow-sm" />
+          <CarouselNext className="!right-0 border bg-background shadow-sm" />
+        </Carousel>
 
         <ScrollReveal>
           <p className="mt-10 text-center text-base text-muted-foreground">Ты не один(а). Мы рядом, когда тебе нужно.</p>

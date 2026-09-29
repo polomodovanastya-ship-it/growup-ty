@@ -257,6 +257,14 @@ function usePodcastRowCount() {
   return count;
 }
 
+const navItems = [
+  { label: "С чего начать", href: "#checkups", external: false },
+  { label: "Слушать", href: "#podcasts", external: false },
+  { label: "Помощь рядом", href: "/help", external: true },
+  { label: "К кому обратиться", href: "/articles/who-helps", external: true },
+  { label: "О нас", href: "/about", external: true },
+] as const;
+
 const heroSlides = [
   {
     key: "listen",
@@ -319,57 +327,71 @@ const Index = () => {
   return (
     <div className="min-h-screen overflow-hidden">
     <Seo title="Как ты? — поддержка для подростков" description="Тут можно почувствовать, что ты не один: подкасты, тесты о самочувствии и проверенные ресурсы помощи." path="/" />
-      {/* Top bar: brand + burger menu */}
+      {/* Top bar: brand + desktop nav / burger */}
       <header className="bg-muted/40 border-b border-border/40">
-        <div className="max-w-6xl mx-auto px-4 h-12 flex items-center justify-between">
-          <Link to="/" className="flex items-center" aria-label="как ты — на главную">
+        <div className="max-w-6xl mx-auto px-4 h-12 flex items-center gap-4">
+          <Link to="/" className="flex items-center shrink-0" aria-label="как ты — на главную">
             <img src={logo} alt="как ты" className="h-7 w-auto select-none" draggable={false} />
           </Link>
-          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground hover:bg-muted transition-colors"
-                aria-label="Открыть меню"
-              >
-                <Menu size={22} />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[min(100%,20rem)]">
-              <SheetHeader>
-                <SheetTitle className="text-left">Меню</SheetTitle>
-              </SheetHeader>
-              <nav className="mt-8 flex flex-col gap-1">
-                {[
-                  { label: "С чего начать", href: "#checkups", external: false },
-                  { label: "Слушать", href: "#podcasts", external: false },
-                  { label: "Помощь рядом", href: "/help", external: true },
-                  { label: "К кому обратиться", href: "/articles/who-helps", external: true },
-                  { label: "О нас", href: "/about", external: true },
-                ].map((item) =>
-                  item.external ? (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
-                    >
-                      {item.label}
-                    </a>
-                  ),
+
+          <nav className="hidden lg:flex items-center gap-5 text-sm font-medium lowercase ml-auto">
+            {navItems.map((item, i) => (
+              <span key={item.href} className="flex items-center gap-5">
+                {i > 0 && <span className="h-4 w-px bg-border" aria-hidden />}
+                {item.external ? (
+                  <Link to={item.href} className="text-foreground hover:text-primary transition-colors">
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a href={item.href} className="text-foreground hover:text-primary transition-colors">
+                    {item.label}
+                  </a>
                 )}
-              </nav>
-            </SheetContent>
-          </Sheet>
+              </span>
+            ))}
+          </nav>
+
+          <div className="ml-auto lg:hidden">
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground hover:bg-muted transition-colors"
+                  aria-label="Открыть меню"
+                >
+                  <Menu size={22} />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[min(100%,20rem)]">
+                <SheetHeader>
+                  <SheetTitle className="text-left">Меню</SheetTitle>
+                </SheetHeader>
+                <nav className="mt-8 flex flex-col gap-1">
+                  {navItems.map((item) =>
+                    item.external ? (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
+                      >
+                        {item.label}
+                      </a>
+                    ),
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 
