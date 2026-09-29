@@ -256,7 +256,7 @@ const WhoHelps = () => {
           key={activeTag ?? "all"}
           opts={{ align: "start", loop: true }}
           plugins={specialistsAutoScroll}
-          className="relative w-full px-10 sm:px-12"
+          className="relative w-full"
         >
           <CarouselContent className="-ml-4">
             {filtered.map((s) => (
@@ -313,8 +313,8 @@ const WhoHelps = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="!left-0 !right-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-none !border-0 !bg-foreground/10 !text-foreground !shadow-none hover:!bg-foreground/20 disabled:opacity-30" />
-          <CarouselNext className="!right-0 !left-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-none !border-0 !bg-foreground/10 !text-foreground !shadow-none hover:!bg-foreground/20 disabled:opacity-30" />
+          <CarouselPrevious className="!left-1 !right-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-3xl !border-0 !bg-transparent !text-foreground !shadow-none hover:!bg-transparent disabled:opacity-30" />
+          <CarouselNext className="!right-1 !left-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-3xl !border-0 !bg-transparent !text-foreground !shadow-none hover:!bg-transparent disabled:opacity-30" />
         </Carousel>
       )}
     </section>
@@ -357,7 +357,7 @@ const WhoHelps = () => {
       <Carousel
         opts={{ align: "start", loop: true }}
         plugins={faqAutoScroll}
-        className="relative w-full px-10 sm:px-12"
+        className="relative w-full"
       >
         <CarouselContent className="-ml-4">
           {faq.map((f) => (
@@ -377,8 +377,8 @@ const WhoHelps = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="!left-0 !right-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-none !border-0 !bg-foreground/10 !text-foreground !shadow-none hover:!bg-foreground/20 disabled:opacity-30" />
-        <CarouselNext className="!right-0 !left-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-none !border-0 !bg-foreground/10 !text-foreground !shadow-none hover:!bg-foreground/20 disabled:opacity-30" />
+        <CarouselPrevious className="!left-1 !right-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-3xl !border-0 !bg-transparent !text-foreground !shadow-none hover:!bg-transparent disabled:opacity-30" />
+        <CarouselNext className="!right-1 !left-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-3xl !border-0 !bg-transparent !text-foreground !shadow-none hover:!bg-transparent disabled:opacity-30" />
       </Carousel>
 
       <ScrollReveal>
