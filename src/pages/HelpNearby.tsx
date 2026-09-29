@@ -576,8 +576,8 @@ const HelpNearby = () => {
               );
             })}
           </CarouselContent>
-          <CarouselPrevious className="!left-0 border bg-background shadow-sm" />
-          <CarouselNext className="!right-0 border bg-background shadow-sm" />
+          <CarouselPrevious className="!left-0 !right-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-none !border-0 !bg-foreground/10 !text-foreground !shadow-none hover:!bg-foreground/20 disabled:opacity-30" />
+          <CarouselNext className="!right-0 !left-auto !top-0 !bottom-0 !h-auto !w-10 !translate-y-0 !rounded-none !border-0 !bg-foreground/10 !text-foreground !shadow-none hover:!bg-foreground/20 disabled:opacity-30" />
         </Carousel>
 
         <ScrollReveal>
