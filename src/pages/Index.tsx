@@ -224,6 +224,13 @@ const checkups = [
     tint: "amber" as Tint,
   },
   {
+    title: "Журнал самопомощи",
+    description: "Техники, которые можно попробовать, когда тревожно или мыслей слишком много.",
+    cta: "Открыть журнал",
+    href: "/journal",
+    tint: "coral" as Tint,
+  },
+  {
     title: "К кому обратиться",
     description: "Психолог, психотерапевт, психиатр — кто чем помогает.",
     cta: "Читать статью",
@@ -259,6 +266,7 @@ function usePodcastRowCount() {
 
 const navItems = [
   { label: "С чего начать", href: "#checkups", external: false },
+  { label: "Журнал", href: "/journal", external: true },
   { label: "Слушать", href: "#podcasts", external: false },
   { label: "Помощь рядом", href: "/help", external: true },
   { label: "К кому обратиться", href: "/articles/who-helps", external: true },
