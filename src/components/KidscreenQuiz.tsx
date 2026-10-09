@@ -1,18 +1,16 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download, ChevronDown, LifeBuoy, Headphones, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Loader2, AlertCircle, Download, ChevronDown, LifeBuoy, BookOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { computeProfile, answerToValue, type ProfileReport } from "@/kidscreen/scoring";
 import { generateReportPdf } from "@/kidscreen/pdfReport";
 import { RECOMMENDATIONS } from "@/kidscreen/recommendations";
-import { WHAT_HELPS, focusScales, practicesForScale, needsHelpFirst, showBreathing } from "@/kidscreen/whatHelps";
-import { resolveListenItem } from "@/kidscreen/listenCovers";
-import { BREATHING, BREATHING_INTRO } from "@/kidscreen/practices";
-import BreathingDiagram from "@/components/BreathingDiagram";
+import { focusScales } from "@/kidscreen/whatHelps";
 
 interface KidscreenQuizProps {
   open: boolean;
@@ -191,7 +189,8 @@ const SEX_OPTIONS = [
 
 
 const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
-  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done" | "recommendations">("intro");
+  const navigate = useNavigate();
+  const [screen, setScreen] = useState<"intro" | "demographics" | "questions" | "loading" | "done">("intro");
   const [sectionIndex, setSectionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [age, setAge] = useState<string>("");
@@ -200,7 +199,6 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [expandedScales, setExpandedScales] = useState<Record<string, boolean>>({});
-  const [expandedPractices, setExpandedPractices] = useState<Record<string, boolean>>({});
   const [schoolSkipped, setSchoolSkipped] = useState(false);
 
   const isAdult = age === "18 и старше";
@@ -232,7 +230,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
 
   const totalSections = sections.length;
   const currentSection = sections[sectionIndex];
-  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" || screen === "recommendations" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
+  const progress = screen === "intro" || screen === "demographics" ? 0 : screen === "done" || screen === "loading" ? 100 : ((sectionIndex + 1) / totalSections) * 100;
 
   const reset = () => {
     setScreen("intro");
@@ -336,7 +334,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
           <div className="px-6 md:px-8 pt-6 pb-4 border-b border-border/40 bg-background">
             <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
               <span className="font-medium">
-                {screen === "done" || screen === "recommendations" ? "Готово" : `Шаг ${sectionIndex + 1} из ${totalSections}`}
+                {screen === "done" ? "Готово" : `Шаг ${sectionIndex + 1} из ${totalSections}`}
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
@@ -626,238 +624,16 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
                   size="lg"
                   className="rounded-full gap-2 px-6"
                   onClick={() => {
-                    setScreen("recommendations");
-                    requestAnimationFrame(() => {
-                      const el = document.getElementById("kidscreen-body");
-                      if (el) el.scrollTop = 0;
-                    });
+                    const focusScaleIds = profile ? focusScales(profile.scales).map((s) => s.scaleId) : [];
+                    handleClose(false);
+                    navigate("/journal", { state: { focusScaleIds } });
                   }}
                 >
-                  Далее <ArrowRight size={18} />
+                  <BookOpen size={18} /> Журнал самопомощи
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="rounded-full gap-2 px-6"
-                  onClick={handleDownloadPdf}
-                  disabled={pdfLoading}
-                >
-                  {pdfLoading ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin" /> Готовим PDF…
-                    </>
-                  ) : (
-                    <>
-                      <Download size={18} /> Скачать PDF
-                    </>
-                  )}
-                </Button>
-                <Button size="lg" variant="ghost" className="rounded-full gap-2 px-6" onClick={() => handleClose(false)}>
-                  Закрыть
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Что поможет */}
-          {screen === "recommendations" && profile && (
-            <div className="relative p-6 md:p-8 space-y-5">
-              <div className="text-center space-y-2">
-                <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
-                  Что поможет
-                </DialogTitle>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                  Послушай или почитай, попробуй небольшую практику и выбери следующий шаг. Бери то, что откликается.
-                </p>
-              </div>
-
-              {(() => {
-                const focus = focusScales(profile.scales);
-                const loweredIds = focus.map((s) => s.scaleId);
-                return (
-                  <div className="space-y-4">
-                    {focus.map((s) => {
-                      const help = WHAT_HELPS[s.scaleId];
-                      const isOpen = !!expandedPractices[s.scaleId];
-                      const extra = isOpen ? practicesForScale(s.scaleId, loweredIds) : [];
-                      return (
-                        <div
-                          key={s.scaleId}
-                          className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-3"
-                        >
-                          <div className="flex items-start justify-between gap-3">
-                            <h3 className="font-semibold text-foreground leading-tight">{s.name}</h3>
-                            <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">
-                              {s.levelLabel}
-                            </span>
-                          </div>
-
-                          {needsHelpFirst(s) && (
-                            <div className="rounded-xl bg-primary/10 p-3 md:p-4 space-y-2">
-                              <p className="text-sm md:text-base text-foreground leading-relaxed">
-                                Похоже, сейчас тебе правда тяжело. С этим не обязательно справляться в одиночку — рядом есть люди, к которым можно обратиться бесплатно и анонимно.
-                              </p>
-                              <a
-                                href="/help"
-                                className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
-                              >
-                                Помощь рядом <ArrowRight size={14} />
-                              </a>
-                            </div>
-                          )}
-
-                          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-4 md:gap-5 items-start">
-                            <div className="space-y-3 min-w-0">
-                              <div className="space-y-1">
-                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                  Попробовать
-                                </p>
-                                <p className="text-sm md:text-base font-medium text-foreground">{help.tryTitle}</p>
-                                <p className="text-sm text-muted-foreground leading-relaxed">
-                                  {help.tryText}
-                                </p>
-                              </div>
-
-                              <div className="space-y-1">
-                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                  Следующий шаг
-                                </p>
-                                <p className="text-sm text-muted-foreground leading-relaxed">
-                                  {help.nextStep}
-                                </p>
-                              </div>
-                            </div>
-
-                            {help.listen.length > 0 && (
-                              <div className="space-y-1.5 md:pt-0.5 self-start">
-                                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                  Послушать / почитать
-                                </p>
-                                <div className="flex flex-nowrap gap-2 overflow-x-auto pb-0.5 -mx-1 px-1 md:mx-0 md:px-0 md:overflow-visible md:flex-wrap">
-                                  {help.listen.map((raw) => {
-                                    const l = resolveListenItem(raw);
-                                    const inner = (
-                                      <>
-                                        <div className="relative h-[72px] w-[54px] overflow-hidden rounded-md bg-muted shadow-sm ring-1 ring-border/50">
-                                          {l.cover ? (
-                                            <img
-                                              src={l.cover}
-                                              alt=""
-                                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                              loading="lazy"
-                                            />
-                                          ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                                              {l.kind === "book" ? <BookOpen size={16} /> : <Headphones size={16} />}
-                                            </div>
-                                          )}
-                                          <span className="absolute left-1 top-1 inline-flex items-center rounded bg-background/90 p-0.5 text-foreground shadow-sm backdrop-blur-sm" title={l.kind === "book" ? "книга" : "подкаст"}>
-                                            {l.kind === "book" ? <BookOpen size={9} /> : <Headphones size={9} />}
-                                          </span>
-                                        </div>
-                                        <span className="mt-1 line-clamp-2 w-[54px] text-[10px] leading-snug text-muted-foreground group-hover:text-foreground">
-                                          {l.title}
-                                        </span>
-                                      </>
-                                    );
-                                    const tileClass =
-                                      "group flex w-[54px] shrink-0 flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md";
-                                    return l.href ? (
-                                      <a
-                                        key={l.title}
-                                        href={l.href}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className={tileClass}
-                                        title={l.title}
-                                      >
-                                        {inner}
-                                      </a>
-                                    ) : (
-                                      <div key={l.title} className={tileClass} title={l.title}>
-                                        {inner}
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setExpandedPractices((prev) => ({ ...prev, [s.scaleId]: !prev[s.scaleId] }))
-                            }
-                            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                            aria-expanded={isOpen}
-                          >
-                            {isOpen ? "Свернуть" : "Ещё способы"}
-                            <ChevronDown size={14} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
-                          </button>
-
-                          {isOpen && extra.length > 0 && (
-                            <div className="space-y-3">
-                              {extra.map((p) => (
-                                <div key={p.id} className="rounded-xl bg-muted/40 p-3 md:p-4 space-y-2">
-                                  <p className="font-semibold text-foreground text-sm md:text-base">{p.title}</p>
-                                  <p className="text-sm text-muted-foreground leading-relaxed">{p.why}</p>
-                                  <ul className="space-y-1">
-                                    {p.what.map((step, i) => (
-                                      <li key={i} className="text-sm text-foreground leading-relaxed">
-                                        — {step}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                  <p className="text-sm text-muted-foreground leading-relaxed italic">{p.notice}</p>
-                                </div>
-                              ))}
-                              <p className="text-xs text-muted-foreground">
-                                Некоторые практики удобнее делать на бумаге — возьми лист или открой заметки.
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-
-                    {showBreathing(focus) && (
-                      <div className="rounded-2xl border border-border/60 bg-card p-4 md:p-5 space-y-3">
-                        <h3 className="font-semibold text-foreground leading-tight">Дыхание</h3>
-                        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                          {BREATHING_INTRO}
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {BREATHING.map((b) => (
-                            <BreathingDiagram key={b.id} id={b.id} title={b.title} />
-                          ))}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          Если какой-то вариант неудобен, можно выбрать другой.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-
-              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full gap-2 px-6"
-                  onClick={() => {
-                    setScreen("done");
-                    requestAnimationFrame(() => {
-                      const el = document.getElementById("kidscreen-body");
-                      if (el) el.scrollTop = 0;
-                    });
-                  }}
-                >
-                  <ArrowLeft size={18} /> К результатам
-                </Button>
-                <Button
-                  size="lg"
                   className="rounded-full gap-2 px-6"
                   onClick={handleDownloadPdf}
                   disabled={pdfLoading}
@@ -880,7 +656,7 @@ const KidscreenQuiz = ({ open, onOpenChange }: KidscreenQuizProps) => {
           )}
 
           {/* Постоянный маршрут «Помощь рядом» */}
-          {(screen === "done" || screen === "recommendations") && (
+          {screen === "done" && (
             <a
               href="/help"
               className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-2 text-sm font-semibold hover:opacity-90"

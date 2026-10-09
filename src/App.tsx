@@ -20,6 +20,7 @@ import WhoHelps from "./pages/WhoHelps.tsx";
 import HowToChoose from "./pages/HowToChoose.tsx";
 import ThreeStages from "./pages/ThreeStages.tsx";
 import HelpNearby from "./pages/HelpNearby.tsx";
+import Journal from "./pages/Journal.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/articles/how-to-choose" element={<HowToChoose />} />
           <Route path="/articles/three-stages" element={<ThreeStages />} />
           <Route path="/help" element={<HelpNearby />} />
+          <Route path="/journal" element={<Journal />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/reset-password" element={<ResetPassword />} />

@@ -33,6 +33,7 @@ const jobs: Job[] = [
   { files: collect("src/assets/who-helps-hero.jpg"), maxWidth: 960, quality: 82 },
   { files: collect("src/assets/three-stages-hero.jpg"), maxWidth: 1200, quality: 82 },
   { files: collect("src/assets/pod-*.jpg"), maxWidth: 512, quality: 80 },
+  { files: collect("src/assets/journal/*.jpg"), maxWidth: 1024, quality: 82 },
   { files: collect("src/assets/emoji/*.png"), maxWidth: 128 },
   { files: collect("src/assets/logo.png"), maxWidth: 320 },
   { files: collect("public/og-image.png"), maxWidth: 1200 },
